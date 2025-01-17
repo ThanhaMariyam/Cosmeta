@@ -1,0 +1,168 @@
+:root {
+    --vine-purple: #8B008B;
+    --medium-purple: #9932CC;
+    --light-lavender: #E6E6FA;
+    --soft-lavender: #D8BFD8;
+    --white: #FFFFFF;
+    --gradient: linear-gradient(135deg, #8B008B, #9932CC);
+}
+
+html, body {
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    background: var(--vine-purple) !important;
+    height: 60px;
+    padding: 0;
+}
+
+.navbar-brand {
+    color: var(--light-lavender) !important;
+    font-size: 24px;
+    font-style: italic;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+    background: linear-gradient(135deg, rgba(139, 0, 139, 0.05), rgba(216, 191, 216, 0.15));
+}
+
+.otp-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(139, 0, 139, 0.15);
+    border: 1px solid var(--soft-lavender);
+}
+
+.otp-title {
+    color: var(--vine-purple);
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.otp-message {
+    text-align: center;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.otp-inputs {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.otp-input {
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--soft-lavender);
+    border-radius: 8px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--vine-purple);
+}
+
+.otp-input:focus {
+    border-color: var(--vine-purple);
+    box-shadow: 0 0 0 3px rgba(139, 0, 139, 0.1);
+    outline: none;
+}
+
+.verify-btn {
+    background: var(--gradient);
+    border: none;
+    padding: 10px;
+    height: 45px;
+    width: 100%;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.verify-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #660066, #800080);
+    transform: translateY(-2px);
+}
+
+.verify-btn:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+}
+
+.resend-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.resend-link a {
+    color: var(--vine-purple);
+    text-decoration: none;
+}
+
+.resend-link a:hover {
+    text-decoration: underline;
+}
+
+.otp-error {
+    color: rgb(160, 0, 0);
+    font-size: small;
+    text-align: center;
+    margin-top: 10px;
+    min-height: 20px;
+}
+
+/* New timer styles */
+.timer {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: var(--vine-purple);
+    font-weight: bold;
+}
+
+.timer.warning {
+    color: #ff4444;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+footer {
+    background: var(--light-lavender);
+    padding: 30px 0;
+    margin-top: auto;
+}
+
+@media (max-width: 768px) {
+    .otp-container {
+        margin: 0 15px;
+        padding: 20px;
+    }
+
+    .otp-input {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+}

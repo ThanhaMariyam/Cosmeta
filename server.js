@@ -2,6 +2,9 @@ const express=require("express")
 const app=express()
 const ejs=require("ejs")
 const path=require("path")
+const passport=require('passport')
+require('./config/passportSetup')
+require('dotenv').config
 const userRouter=require("./router/userRoute")
 const adminRouter=require("./router/adminRoute")
 const connectDB=require('./db/connectDb')
@@ -17,11 +20,8 @@ app.use(session({
     cookie: { maxAge:600000}
   }))
 
-  app.use(cors({
-    origin: 'http://localhost:3000',  // Your frontend URL
-    credentials: true
-}));
-
+  app.use(passport.initialize())
+  app.use(passport.session())
 
 
 app.use(express.static('public'))

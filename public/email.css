@@ -1,0 +1,122 @@
+:root {
+    --vine-purple: #8B008B;
+    --medium-purple: #9932CC;
+    --light-lavender: #E6E6FA;
+    --soft-lavender: #D8BFD8;
+    --white: #FFFFFF;
+    --gradient: linear-gradient(135deg, #8B008B, #9932CC);
+}
+
+html, body {
+    min-height: 100vh;
+    margin: 0;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    background: var(--vine-purple) !important;
+    height: 60px;
+    padding: 0;
+}
+
+.navbar-brand {
+    color: var(--light-lavender) !important;
+    font-size: 24px;
+    font-style: italic;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+    background: linear-gradient(135deg, rgba(139, 0, 139, 0.05), rgba(216, 191, 216, 0.15));
+}
+
+.reset-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(139, 0, 139, 0.15);
+    border: 1px solid var(--soft-lavender);
+}
+
+.reset-title {
+    color: var(--vine-purple);
+    font-size: 24px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.reset-message {
+    text-align: center;
+    color: #666;
+    margin-bottom: 25px;
+}
+
+.form-control {
+    border: 2px solid var(--soft-lavender);
+    border-radius: 8px;
+    padding: 10px;
+    height: 45px;
+    color: var(--vine-purple);
+}
+
+.form-control:focus {
+    border-color: var(--vine-purple);
+    box-shadow: 0 0 0 3px rgba(139, 0, 139, 0.1);
+    outline: none;
+}
+
+.reset-btn {
+    background: var(--gradient);
+    border: none;
+    padding: 10px;
+    height: 45px;
+    width: 100%;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.reset-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #660066, #800080);
+    transform: translateY(-2px);
+}
+
+footer {
+    background: var(--light-lavender);
+    padding: 30px 0;
+    margin-top: auto;
+}
+
+.footer-title {
+    color: black;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.footer-links a {
+    color: var(--vine-purple);
+    
+    display: block;
+    margin-bottom: 8px;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .reset-container {
+        margin: 0 15px;
+        padding: 20px;
+    }
+}

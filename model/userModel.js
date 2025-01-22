@@ -18,6 +18,14 @@ const userSchema=new mongoose.Schema({
         type:Boolean,
         default:false
         
+    },
+    isBlocked:{
+        type:Boolean,
+        default:false
+
+    },
+    googleId:{
+        type:String
     }
 })
 module.exports=mongoose.model("user",userSchema)

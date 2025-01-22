@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cosmeta Admin - Categories</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <!-- Add Cropper.js CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Add Cropper.js JS -->
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs/dist/cropper.min.js"></script>
+
+    <style>
+      .sidebar {
+        min-height: 100vh;
+        background-color: #1a1a1a;
+        color: white;
+      }
+      .sidebar .nav-link {
+        color: #ffffff;
+        padding: 0.8rem 1rem;
+        opacity: 0.8;
+      }
+      .sidebar .nav-link:hover {
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .sidebar .nav-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        opacity: 1;
+      }
+      .category-image {
+        width: 100px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 5px;
+      }
+      .table td {
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-auto px-0 sidebar">
+          <div class="d-flex flex-column p-3">
+            <h3 class="mb-4">Cosmeta</h3>
+            <ul class="nav nav-pills flex-column gap-2">
+              <li class="nav-item">
+                <a href="/admin/dashboard" class="nav-link">
+                  <i class="bi bi-speedometer2 me-2"></i>
+                  Dashboard
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/admin/user" class="nav-link">
+                  <i class="bi bi-people me-2"></i>
+                  Users
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/admin/products" class="nav-link">
+                  <i class="bi bi-box me-2"></i>
+                  Products
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/admin/category" class="nav-link active">
+                  <i class="bi bi-tags me-2"></i>
+                  Category
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/admin/brand" class="nav-link">
+                  <i class="bi bi-award me-2"></i>
+                  Brands
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="bi bi-cart me-2"></i>
+                  Orders
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="bi bi-ticket-perforated me-2"></i>
+                  Coupons
+                </a>
+              </li>
+              <li style="margin-bottom: 5%" class="nav-item">
+                <a href="#" class="nav-link">
+                  <i class="bi bi-gift me-2"></i>
+                  Offers
+                </a>
+              </li>
+            </ul>
+            <a href="/admin/logout">
+              <button
+                style="margin-left: 9%"
+                class="btn btn-outline-light mt-auto"
+              >
+                <i class="bi bi-box-arrow-right me-2"></i>
+                Logout
+              </button>
+            </a>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col px-4 py-3">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Categories</h2>
+            <div class="d-flex gap-3 align-items-center">
+              <div class="search-box">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Search categories"
+                />
+              </div>
+              <button
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#addCategoryModal"
+              >
+                <i class="bi bi-plus-lg me-2"></i>Add Category
+              </button>
+            </div>
+          </div>
+
+          <!-- Categories Table -->
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Category Name</th>
+                  <th>Description</th>
+                  <th>Products Count</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if (categories && categories.length > 0) { %> <%
+                categories.forEach(function(category) { %>
+                <tr>
+                  <td>
+                    <img
+                      src="<%= category.imageUrl %>"
+                      alt="<%= category.name %>"
+                      class="category-image"
+                    />
+                  </td>
+                  <td><%= category.name %></td>
+                  <td><%= category.description %></td>
+                  <td><%= category.productCount %></td>
+                  <td>
+                    <button
+                      class="btn btn-sm btn-outline-primary me-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editCategoryModal<%= category._id %>">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                  
+                    <div
+                      class="modal fade"
+                      id="editCategoryModal<%= category._id %>"
+                      tabindex="-1"
+                    >
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Edit Category</h5>
+                            <button
+                              type="button"
+                              class="btn-close"
+                              data-bs-dismiss="modal"
+                            ></button>
+                          </div>
+                          <div class="modal-body">
+                            <form
+                              id="editCategoryForm<%= category._id %>"
+                              action="/admin/category/edit/<%= category._id %>"
+                              method="post"
+                              enctype="multipart/form-data"
+                              data-categoryid="<%= category._id %>"
+                            >
+                              <div class="mb-3">
+                                <label class="form-label">Category Name</label>
+                                <input
+                                  type="text"
+                                  class="form-control"
+                                  name="name"
+                                  value="<%= category.name %>"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Category Image</label>
+                                <input
+                                  type="file"
+                                  class="form-control"
+                                  name="imageUrl"
+                                  id="imageInputE<%= category._id %>"
+                                  accept="image/*"
+                                />
+                              </div>
+                              <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea
+                                  class="form-control"
+                                  name="description"
+                                  value="<%= category.description %>"
+                                  rows="3"
+                                >
+                                    <%= category.description %></textarea>
+                                
+                              </div>
+
+                              <div class="mb-3">
+                                <img
+                                id="imagePreviewE<%= category._id %>"
+                                src="#"
+                                alt="Image Preview"
+                                style="max-width: 100%; display: none"
+                                />
+                            </div>
+
+                              <div class="modal-footer">
+                                <button
+                                  type="button"
+                                  class="btn btn-secondary"
+                                  data-bs-dismiss="modal"
+                                >
+                                  Cancel
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                  Save Changes
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <form
+                      action="/admin/category/delete/<%= category._id %>"
+                      method="post"
+                      style="display: inline"
+                    >
+                      <button class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                <% }); %> <% } else { %>
+                <tr>
+                  <td colspan="5" class="text-center">
+                    No categories available
+                  </td>
+                </tr>
+                <% } %>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination -->
+          <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="#">1</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Category Modal -->
+    <div class="modal fade" id="addCategoryModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add New Category</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form
+              id="addCategoryForm"
+              action="/admin/category/add"
+              method="post"
+              enctype="multipart/form-data"
+            >
+              <div class="mb-3">
+                <label class="form-label">Category Name</label>
+                <input type="text" class="form-control" name="name" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Category Image</label>
+                <input
+                  type="file"
+                  class="form-control"
+                  id="imageInput"
+                  name="imageUrl"
+                  accept="image/*"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea
+                  class="form-control"
+                  name="description"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <img
+                  id="imagePreview"
+                  src="#"
+                  alt="Image Preview"
+                  style="max-width: 100%; display: none"
+                />
+              </div>
+
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  form="addCategoryForm"
+                  class="btn btn-primary"
+                >
+                  Add Category
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var imageInput = document.getElementById("imageInput");
+        var imagePreview = document.getElementById("imagePreview");
+        var cropper;
+
+        imageInput.addEventListener("change", function (event) {
+          var file = event.target.files[0];
+          if (file) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+              imagePreview.style.display = "block";
+              imagePreview.src = e.target.result;
+
+              if (cropper) {
+                cropper.destroy();
+              }
+
+              cropper = new Cropper(imagePreview, {
+                aspectRatio: 16 / 9,
+                viewMode: 1,
+                zoomable: true,
+                scalable: true,
+                cropBoxResizable: true,
+              });
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+
+        // Capture the cropped image before the form is submitted
+        var form = document.getElementById("addCategoryForm");
+        form.addEventListener("submit", function (event) {
+          event.preventDefault(); // Prevent default form submission
+
+          if (cropper) {
+            var canvas = cropper.getCroppedCanvas();
+            canvas.toBlob(function (blob) {
+              // Create a FormData object and append the cropped image
+              var formData = new FormData(form); // Create FormData from the form
+
+              // Check if 'imageUrl' exists in formData and remove it
+              if (formData.has("imageUrl")) {
+                formData.delete("imageUrl"); // Remove the old 'imageUrl' entry if it exists
+              }
+
+              formData.append("imageUrl", blob, "cropped-image.jpg");
+
+              // Send the form data (with cropped image) to the server
+              fetch("/admin/category/add", {
+                method: "POST",
+                body: formData,
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  // Handle the response here
+                  console.log(data);
+                  window.location.reload(); // Reload to show the updated category list
+                })
+                .catch((error) => {
+                  console.error("Error:", error);
+                });
+            });
+          }
+        });
+      });
+    </script>
+
+    <script>
+
+      document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll('form[id^="editCategoryForm"]').forEach((form) => {
+    const categoryId = form.getAttribute("data-categoryid");
+    const imageInput = document.getElementById(`imageInputE${categoryId}`);
+    const imagePreview = document.getElementById(`imagePreviewE${categoryId}`);
+    let cropper;
+
+    // Handle image input and initialize Cropper.js
+    imageInput.addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          imagePreview.style.display = "block";
+          imagePreview.src = e.target.result;
+
+          // Destroy existing cropper instance if any
+          if (cropper) cropper.destroy();
+
+          // Initialize cropper
+          cropper = new Cropper(imagePreview, {
+            aspectRatio: 16 / 9,
+            viewMode: 1,
+            zoomable: true,
+            scalable: true,
+            cropBoxResizable: true,
+          });
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Handle form submission
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      const formData = new FormData(form);
+
+      // Add cropped image if available
+      if (cropper) {
+        const canvas = cropper.getCroppedCanvas();
+        canvas.toBlob((blob) => {
+          formData.delete("imageUrl"); // Remove old image
+          formData.append("imageUrl", blob, "cropped-image.jpg"); // Add cropped image
+
+          fetch(`/admin/category/edit/${categoryId}`, {
+            method: "POST",
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log(data);
+              window.location.reload();
+            })
+            .catch((error) => console.error(error));
+        });
+      }
+    });
+  });
+});
+
+
+        </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+<div class="search" > 
+    <input type="text" placeholder="Search">
+    <i class="bi bi-search"></i>
+</div>
+<% if (!user) { %>
+ <h1><%user%></h1>
+<a id="signupBtn" style="background-color: purple; color: white; height: 37px; margin-top: 27px; margin-left: 80px;"
+ href="/login" class="btn">Signin</a>
+ <% } %>
+ <% if (user) { %>
+<div class="small">
+    <a href=""><i class="bi bi-heart-fill"></i> </a>
+
+   <a href=""><i class="bi bi-bag-fill"></i></a>
+    
+  
+    <a href="/profile"> <i class="bi bi-person-circle"></i></a>
+    <% } %>
+   
+</div>
+
+
+
+   

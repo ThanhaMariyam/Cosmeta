@@ -18,22 +18,13 @@ const upload = multer({
     if (file.mimetype.startsWith('image/')) {
       cb(null, true);
     } else {
-        console.log("ekodlgjfsnknf")
       cb(new Error('Not an image! Please upload an image.'), false);
     }
   },
 });
 
-const uploadFields = (req, res)=> {
-    
-    console.log( req.file);
-    console.log('Body:', req.body);
-
-    res.status(200).json({ message: 'Upload successful!' });
-  }
 
 
 module.exports = {
-  upload,
-  uploadFields,
+  upload
 };

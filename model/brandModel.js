@@ -13,7 +13,13 @@ const brandSchema=new mongoose.Schema({
     productCount: {
         type: Number,
         default: 0,
-        min: 0
+        min:0
+        
+    },
+    isListed:{
+        type:Boolean,
+        default:true
+
     },
     origin: {
         type: String,

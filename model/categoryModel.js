@@ -11,10 +11,16 @@ const categorySchema=new mongoose.Schema({
         required:true
 
     },
+    isListed:{
+        type:Boolean,
+        default:true
+
+    },
     description:{
         type:String,
         default:''
     },
+    
     productCount:{    
         type:Number,
         default:0

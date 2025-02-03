@@ -1,0 +1,126 @@
+.card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .card-img-top {
+     
+    height: 150px;
+    object-fit: contain;
+    position: relative;
+  }
+  
+  .card-title {
+    font-size: medium;
+    font-weight: 600;
+  }
+  
+  .card-text {
+    font-size: 0.875rem;
+    color: #666;
+  }
+  
+  
+  
+  
+  .view{
+      background-color: rgb(169, 114, 169);
+      color: white;
+  }
+  .view:hover{
+      background-color: purple;
+      color: white;
+  }
+  
+  
+  /* Pagination Styles */
+  .pagination .page-link {
+    color:rgb(0, 0, 0) ;
+  }
+  
+  .pagination .page-item.active .page-link {
+    background-color:rgb(169, 114, 169);
+    border-color: purple;
+  }
+  .navbar-brand .a{
+      position: absolute;
+  
+  }
+   a{
+      color:purple;
+  }
+  .box{
+      margin-top: 3px;
+      height: 80px;
+      display: flex;
+      box-shadow:2px 2px 1px rgba(0, 0, 0, 0.15) ;
+     
+  }
+  .item{
+      display: flex;
+      width: 40%;
+     
+      margin-left: 5%;
+      justify-content: space-between;
+      margin-top: 30px;
+      
+  
+  }
+  .item a{
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+  }
+  .search input{
+      width: 400px;
+      height: 40px;
+      margin-top: 27px;
+      margin-left: 50px;
+      border:0.3px solid grey;
+      border-radius: 200px;
+      padding-left: 50px;
+      position: relative;
+  }
+  .search{
+      display: flex;
+      
+  }
+  .search i{
+      position: absolute;
+      margin-top: 35px;
+      margin-left: 75px;
+      color: #666;
+  }
+  .small{
+      display: flex;
+      
+      width: 130px;
+      justify-content: space-between;
+      margin-left: 70px;
+  }
+  .small a{
+      font-size: x-large;
+      color: purple;
+      margin-top: 30px;
+  }
+  .headings{
+     margin-top: 0;
+      width: 30%;
+      text-align: center;
+      color: purple;
+      
+      
+  }
+  .headings p{
+      text-align: center;
+  }
+  .bread{
+     
+      margin-top: 30px;
+      width: 40%;
+      margin-left: 30px;
+  }
+  .bread a{
+      text-decoration: none;
+  }

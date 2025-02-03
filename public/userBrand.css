@@ -1,0 +1,80 @@
+.brand-card {
+    background-color: #fff;
+    border-radius: 15px;
+    border: 2px solid #ce93d8; /* Medium lavender border */
+    transition: transform 0.3s ease;
+  }
+  .brand-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgb(245, 185, 255);
+  }
+  .card-header {
+    background-color: #e8cded; /* Darker lavender header */
+    border-radius: 13px 13px 0 0 !important;
+    text-align: center;
+    
+    
+  }
+  .card-text{
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+  }
+
+  .navbar-brand .a {
+    position: absolute;
+  }
+  a {
+    color: purple;
+  }
+  .box {
+    background-color: white;
+    margin-top: 3px;
+    height: 80px;
+    display: flex;
+    flex-shrink: 0;
+    box-shadow: 2px 2px 1px rgba(0, 0, 0, 0.15);
+  }
+  .item {
+    display: flex;
+    width: 40%;
+
+    margin-left: 5%;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+  .item a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+  }
+  .search input {
+    width: 400px;
+    height: 40px;
+    margin-top: 27px;
+    margin-left: 50px;
+    border: 0.3px solid grey;
+    border-radius: 200px;
+    padding-left: 50px;
+    position: relative;
+  }
+  .search {
+    display: flex;
+  }
+  .search i {
+    position: absolute;
+    margin-top: 35px;
+    margin-left: 75px;
+    color: #666;
+  }
+  .small {
+    display: flex;
+
+    width: 130px;
+    justify-content: space-between;
+    margin-left: 70px;
+  }
+  .small a{
+    font-size: x-large;
+    color: purple;
+    margin-top: 30px;
+  }

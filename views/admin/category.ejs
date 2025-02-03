@@ -49,6 +49,38 @@
       .table td {
         vertical-align: middle;
       }
+      .pagination {
+        margin-top: -24px;
+      }
+      .pagination .page-item.disabled .page-link {
+        color: #6c757d;
+      }
+      .pagination .page-item.active .page-link {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+      }
+      .form-style {
+        position: relative;
+        font-size: 15px;
+      }
+      .form-style span {
+        position: absolute;
+        left: 55%;
+        bottom: 3px;
+        font-size: small;
+      }
+      #submit-error {
+        color: red;
+        font-size: small;
+      }
+      #editsubmit-error {
+        color: red;
+        font-size: small;
+      }
+      .form-style span i {
+        color: seagreen;
+        font-size: 15px;
+      }
     </style>
   </head>
   <body>
@@ -128,6 +160,7 @@
               <div class="search-box">
                 <input
                   type="text"
+                  id="categorySearch"
                   class="form-control"
                   placeholder="Search categories"
                 />
@@ -154,7 +187,7 @@
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="categoryTable">
                 <% if (categories && categories.length > 0) { %> <%
                 categories.forEach(function(category) { %>
                 <tr>
@@ -172,10 +205,11 @@
                     <button
                       class="btn btn-sm btn-outline-primary me-2"
                       data-bs-toggle="modal"
-                      data-bs-target="#editCategoryModal<%= category._id %>">
+                      data-bs-target="#editCategoryModal<%= category._id %>"
+                    >
                       <i class="bi bi-pencil"></i>
                     </button>
-                  
+
                     <div
                       class="modal fade"
                       id="editCategoryModal<%= category._id %>"
@@ -198,15 +232,22 @@
                               method="post"
                               enctype="multipart/form-data"
                               data-categoryid="<%= category._id %>"
+                              onsubmit="return validateEditCategory()"
                             >
-                              <div class="mb-3">
+                              <div class="mb-3 form-style">
                                 <label class="form-label">Category Name</label>
                                 <input
                                   type="text"
                                   class="form-control"
                                   name="name"
                                   value="<%= category.name %>"
+                                  id="categoryeditName"
+                                  onkeyup="validateEditName()"
                                 />
+                                <span
+                                  id="editname-error"
+                                  style="color: red"
+                                ></span>
                               </div>
                               <div class="mb-3">
                                 <label class="form-label">Category Image</label>
@@ -216,28 +257,35 @@
                                   name="imageUrl"
                                   id="imageInputE<%= category._id %>"
                                   accept="image/*"
+                                  required
                                 />
                               </div>
-                              <div class="mb-3">
+                              <div class="mb-3 form-style">
                                 <label class="form-label">Description</label>
                                 <textarea
                                   class="form-control"
                                   name="description"
                                   value="<%= category.description %>"
                                   rows="3"
+                                  id="categoryEditDescription"
+                                  onkeyup="validateEditDescription()"
                                 >
-                                    <%= category.description %></textarea>
-                                
+                                    <%= category.description %></textarea
+                                >
+                                <span
+                                  id="editdescription-error"
+                                  style="color: red"
+                                ></span>
                               </div>
 
                               <div class="mb-3">
                                 <img
-                                id="imagePreviewE<%= category._id %>"
-                                src="#"
-                                alt="Image Preview"
-                                style="max-width: 100%; display: none"
+                                  id="imagePreviewE<%= category._id %>"
+                                  src="#"
+                                  alt="Image Preview"
+                                  style="max-width: 100%; display: none"
                                 />
-                            </div>
+                              </div>
 
                               <div class="modal-footer">
                                 <button
@@ -250,6 +298,7 @@
                                 <button type="submit" class="btn btn-primary">
                                   Save Changes
                                 </button>
+                                <div><p id="editsubmit-error"></p></div>
                               </div>
                             </form>
                           </div>
@@ -258,13 +307,32 @@
                     </div>
 
                     <form
-                      action="/admin/category/delete/<%= category._id %>"
+                      action="/admin/category/toggle-list/<%= category._id %>"
                       method="post"
                       style="display: inline"
                     >
+                      <% if (category.length > 0) { %> <% if (category.isListed)
+                      { %>
+
                       <button class="btn btn-sm btn-outline-danger">
-                        <i class="bi bi-trash"></i>
+                        <i class="bi bi-dash-circle"></i>
                       </button>
+                      <% } else { %>
+
+                      <button class="btn btn-sm btn-outline-success">
+                        <i class="bi bi-plus-circle"></i>
+                      </button>
+                      <% } %> <% } else { %> <% if (category.isListed) { %>
+
+                      <button class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-dash-circle"></i>
+                      </button>
+                      <% } else { %>
+
+                      <button class="btn btn-sm btn-outline-secondary">
+                        <i class="bi bi-plus-circle"></i>
+                      </button>
+                      <% } %> <% } %>
                     </form>
                   </td>
                 </tr>
@@ -279,21 +347,32 @@
             </table>
           </div>
 
-          <!-- Pagination -->
           <nav aria-label="Page navigation" class="mt-4">
             <ul class="pagination justify-content-center">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
+              <li class="page-item <%= currentPage===1?'disabled':'' %>">
+                <a
+                  class="page-link"
+                  href="/admin/category?page=<%= currentPage-1 %>"
+                  aria-label="Previous"
+                >
                   <span aria-hidden="true">&laquo;</span>
                 </a>
               </li>
-              <li class="page-item active">
-                <a class="page-link" href="#">1</a>
+              <% for (let i = 1; i <= totalPages; i++) { %>
+              <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+                <a class="page-link" href="/admin/category?page=<%= i %>"
+                  ><%= i %></a
+                >
               </li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
+              <% } %>
+              <li
+                class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>"
+              >
+                <a
+                  class="page-link"
+                  href="/admin/category?page=<%= currentPage + 1 %>"
+                  aria-label="Next"
+                >
                   <span aria-hidden="true">&raquo;</span>
                 </a>
               </li>
@@ -321,10 +400,18 @@
               action="/admin/category/add"
               method="post"
               enctype="multipart/form-data"
+              onsubmit="return validateCategory()"
             >
-              <div class="mb-3">
+              <div class="mb-3 form-style">
                 <label class="form-label">Category Name</label>
-                <input type="text" class="form-control" name="name" />
+                <input
+                  type="text"
+                  class="form-control"
+                  name="name"
+                  id="categoryName"
+                  onkeyup="validateName()"
+                />
+                <span id="name-error" style="color: red"></span>
               </div>
               <div class="mb-3">
                 <label class="form-label">Category Image</label>
@@ -334,15 +421,19 @@
                   id="imageInput"
                   name="imageUrl"
                   accept="image/*"
+                  required
                 />
               </div>
-              <div class="mb-3">
+              <div class="mb-3 form-style">
                 <label class="form-label">Description</label>
                 <textarea
                   class="form-control"
                   name="description"
                   rows="3"
+                  id="categoryDescription"
+                  onkeyup="validateDescription()"
                 ></textarea>
+                <span id="description-error" style="color: red"></span>
               </div>
               <div class="mb-3">
                 <img
@@ -352,6 +443,7 @@
                   style="max-width: 100%; display: none"
                 />
               </div>
+              <p style="color: red; font-size: medium" id="error-mssg"></p>
 
               <div class="modal-footer">
                 <button
@@ -368,6 +460,7 @@
                 >
                   Add Category
                 </button>
+                <div><p id="submit-error"></p></div>
               </div>
             </form>
           </div>
@@ -378,6 +471,7 @@
       document.addEventListener("DOMContentLoaded", function () {
         var imageInput = document.getElementById("imageInput");
         var imagePreview = document.getElementById("imagePreview");
+        const error = document.getElementById("error-mssg");
         var cropper;
 
         imageInput.addEventListener("change", function (event) {
@@ -393,7 +487,7 @@
               }
 
               cropper = new Cropper(imagePreview, {
-                aspectRatio: 16 / 9,
+                aspectRatio: 4 / 4,
                 viewMode: 1,
                 zoomable: true,
                 scalable: true,
@@ -430,8 +524,12 @@
                 .then((response) => response.json())
                 .then((data) => {
                   // Handle the response here
-                  console.log(data);
-                  window.location.reload(); // Reload to show the updated category list
+                  if (data.success) {
+                    window.location.href = "/admin/category";
+                  } else {
+                    error.textContent = data.message;
+                  }
+                  // Reload to show the updated category list
                 })
                 .catch((error) => {
                   console.error("Error:", error);
@@ -440,72 +538,195 @@
           }
         });
       });
+
+      let nameerror = document.getElementById("name-error");
+      let descriptionerror = document.getElementById("description-error");
+      let submiterror = document.getElementById("submit-error");
+      function validateName() {
+        let name = document.getElementById("categoryName").value;
+        if (name.length === 0) {
+          nameerror.innerHTML = "category name is required.";
+          return false;
+        }
+        if (name.length < 3) {
+          nameerror.innerHTML = "require atleat 3 characters";
+          return false;
+        }
+        if (!name.match(/^[A-Za-z][A-Za-z0-9.]/)) {
+          nameerror.innerHTML = "Name Invalid";
+          return false;
+        }
+        nameerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+        return true;
+      }
+      function validateDescription() {
+        let description = document.getElementById("categoryDescription").value;
+        if (description.length === 0) {
+          descriptionerror.innerHTML = "Description is required.";
+          return false;
+        }
+        if (description.length < 10) {
+          descriptionerror.innerHTML = "Atleast 10 characters is needed.";
+          return false;
+        }
+        if (!description.match(/^[A-Za-z][A-Za-z0-9._,''"":]/)) {
+          descriptionerror.innerHTML = "Invalid description.";
+          return false;
+        }
+        descriptionerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+        return true;
+      }
+      function validateCategory() {
+        if (!validateName() || !validateDescription()) {
+          submiterror.innerHTML = "Fix errors to Add Product.";
+          return false;
+        }
+        return true;
+      }
     </script>
 
     <script>
-
       document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll('form[id^="editCategoryForm"]').forEach((form) => {
-    const categoryId = form.getAttribute("data-categoryid");
-    const imageInput = document.getElementById(`imageInputE${categoryId}`);
-    const imagePreview = document.getElementById(`imagePreviewE${categoryId}`);
-    let cropper;
+        document
+          .querySelectorAll('form[id^="editCategoryForm"]')
+          .forEach((form) => {
+            const categoryId = form.getAttribute("data-categoryid");
+            const imageInput = document.getElementById(
+              `imageInputE${categoryId}`
+            );
+            const imagePreview = document.getElementById(
+              `imagePreviewE${categoryId}`
+            );
+            let cropper;
 
-    // Handle image input and initialize Cropper.js
-    imageInput.addEventListener("change", function (event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          imagePreview.style.display = "block";
-          imagePreview.src = e.target.result;
+            // Handle image input and initialize Cropper.js
+            imageInput.addEventListener("change", function (event) {
+              const file = event.target.files[0];
+              if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                  imagePreview.style.display = "block";
+                  imagePreview.src = e.target.result;
 
-          // Destroy existing cropper instance if any
-          if (cropper) cropper.destroy();
+                  // Destroy existing cropper instance if any
+                  if (cropper) cropper.destroy();
 
-          // Initialize cropper
-          cropper = new Cropper(imagePreview, {
-            aspectRatio: 16 / 9,
-            viewMode: 1,
-            zoomable: true,
-            scalable: true,
-            cropBoxResizable: true,
+                  // Initialize cropper
+                  cropper = new Cropper(imagePreview, {
+                    aspectRatio: 4 / 4,
+                    viewMode: 1,
+                    zoomable: true,
+                    scalable: true,
+                    cropBoxResizable: true,
+                  });
+                };
+                reader.readAsDataURL(file);
+              }
+            });
+
+            // Handle form submission
+            form.addEventListener("submit", function (event) {
+              event.preventDefault();
+              const formData = new FormData(form);
+
+              // Add cropped image if available
+              if (cropper) {
+                const canvas = cropper.getCroppedCanvas();
+                canvas.toBlob((blob) => {
+                  formData.delete("imageUrl"); // Remove old image
+                  formData.append("imageUrl", blob, "cropped-image.jpg"); // Add cropped image
+
+                  fetch(`/admin/category/edit/${categoryId}`, {
+                    method: "POST",
+                    body: formData,
+                  })
+                    .then((response) => response.json())
+                    .then((data) => {
+                      console.log(data);
+                      window.location.reload();
+                    })
+                    .catch((error) => console.error(error));
+                });
+              }
+            });
           });
-        };
-        reader.readAsDataURL(file);
+      });
+      let editnameerror = document.getElementById("editname-error");
+      let editdescriptionerror = document.getElementById(
+        "editdescription-error"
+      );
+      let editsubmiterror = document.getElementById("editsubmit-error");
+      function validateEditName() {
+        let editname = document.getElementById("categoryeditName").value;
+        if (editname.length === 0) {
+          editnameerror.innerHTML = "category name is required.";
+          return false;
+        }
+        if (ediname.length < 3) {
+          editnameerror.innerHTML = "require atleat 3 characters";
+          return false;
+        }
+        if (!name.match(/^[A-Za-z][A-Za-z0-9.]/)) {
+          editnameerror.innerHTML = "Name Invalid";
+          return false;
+        }
+        editnameerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+        return true;
       }
-    });
-
-    // Handle form submission
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-      const formData = new FormData(form);
-
-      // Add cropped image if available
-      if (cropper) {
-        const canvas = cropper.getCroppedCanvas();
-        canvas.toBlob((blob) => {
-          formData.delete("imageUrl"); // Remove old image
-          formData.append("imageUrl", blob, "cropped-image.jpg"); // Add cropped image
-
-          fetch(`/admin/category/edit/${categoryId}`, {
-            method: "POST",
-            body: formData,
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log(data);
-              window.location.reload();
-            })
-            .catch((error) => console.error(error));
-        });
+      function validateEditDescription() {
+        let description = document.getElementById(
+          "categoryEditDescription"
+        ).value;
+        if (description.length === 0) {
+          editdescriptionerror.innerHTML = "Description is required.";
+          return false;
+        }
+        if (description.length < 10) {
+          editdescriptionerror.innerHTML = "Atleast 10 characters is needed.";
+          return false;
+        }
+        if (!description.match(/^[A-Za-z][A-Za-z0-9._,''"":]/)) {
+          editdescriptionerror.innerHTML = "Invalid description.";
+          return false;
+        }
+        editdescriptionerror.innerHTML =
+          '<i class="bi bi-check-circle-fill"></i>';
+        return true;
       }
-    });
-  });
-});
+      function validateEditCategory() {
+        if (!validateEditName() || !validateEditDescription()) {
+          editsubmiterror.innerHTML = "Fix errors to Add Product.";
+          return false;
+        }
+        return true;
+      }
+    </script>
+    <script>
+      const searchInput = document.getElementById("categorySearch");
+      const productTable = document.getElementById("categoryTable");
+      const rows = productTable.getElementsByTagName("tr");
 
+      searchInput.addEventListener("input", () => {
+        const filter = searchInput.value.toLowerCase();
 
-        </script>
+        // Loop through all table rows
+        for (let i = 0; i < rows.length; i++) {
+          const cells = rows[i].getElementsByTagName("td");
+          let match = false;
+
+          // Check each cell in the row
+          for (let j = 0; j < cells.length; j++) {
+            if (cells[j] && cells[j].innerText.toLowerCase().includes(filter)) {
+              match = true;
+              break;
+            }
+          }
+
+          // Toggle row visibility based on match
+          rows[i].style.display = match ? "" : "none";
+        }
+      });
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
   </body>

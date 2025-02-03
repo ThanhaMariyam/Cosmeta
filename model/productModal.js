@@ -2,7 +2,8 @@ const mongoose=require('mongoose')
 const productSchema=new mongoose.Schema({
     name:{
         type:String,
-        required:true
+        required:true,
+        unique:true
     },
     brand:{
         type:String,
@@ -24,6 +25,11 @@ const productSchema=new mongoose.Schema({
         type:[String],
         required:true
     },
+    isListed:{
+        type:Boolean,
+        default:true
+
+    },
     shades:[{
         color:{
             type:String,
@@ -37,6 +43,7 @@ const productSchema=new mongoose.Schema({
     description:{
         type:String
     }
-})
+},
+{timestamps:true})
 
 module.exports=mongoose.model('product',productSchema)

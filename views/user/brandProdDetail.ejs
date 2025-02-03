@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>product details</title>
+    <link rel="stylesheet" href="/userSignup.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="/brandProdDetail.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <%- include('../partials/nav.ejs') %>
+    <!-- navbar -->
+    <div class="box">
+      <div class="item">
+        <a href="/">Home</a>
+        <a href="/category">Category</a>
+        <a style="color: purple" href="">Brand</a>
+        <a href="">About us</a>
+        <a href="">Contact us</a>
+      </div>
+      <%- include('../partials/header.ejs') %>
+    </div>
+    <!-- heading -->
+    <div class="bread">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/brand">Brand</a></li>
+          <li class="breadcrumb-item">
+            <a href="/products?brand=<%= brand._id %>"
+              ><%= brand.name || 'unknown brand' %></a
+            >
+          </li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <%= product.name %>
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+    <!-- main content -->
+
+    <div style="margin-bottom: 30px; margin-top: 20px" class="container">
+      <div class="row">
+        <div style="display: flex; height: 400px" class="col-md-6">
+          <div class="col-3">
+            <% product.images.forEach((image, index) => { %>
+            <div style="margin-top: 10px; margin-left: 20px" class="col-6">
+              <img
+                style="height: 120px; object-fit: contain; margin-right: 10px"
+                src="<%= image %>"
+                class="img-fluid small-image"
+                alt="<%= product.name %> - Shade <%= index + 1 %>"
+                onclick="updateLargeImage('<%= image %>')"
+              />
+            </div>
+            <% }); %>
+          </div>
+
+          <div
+            style="
+              flex-grow: 1;
+              display: flex;
+              margin-top: 40px;
+              margin-left: 80px;
+              overflow: hidden;
+              position: relative;
+            "
+          >
+            <img
+              id="largeImage"
+              style="
+                object-fit: contain;
+                height: 320px;
+                transition: transform 0.3s ease;
+                cursor: zoom-in;
+              "
+              src="<%= product.images[0] %>"
+              class="img-fluid"
+              alt="<%= product.name %>"
+            />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h3 style="margin-top: 10px"><%= product.name %></h3>
+          <p class="lead">
+            <i class="bi bi-currency-rupee"></i><%= product.price %>
+            <span
+              ><i
+                style="text-decoration: line-through"
+                class="bi bi-currency-rupee"
+              ></i
+              ><%= parseFloat(product.price)+250 %></span
+            >
+            <button
+              style="
+                height: 20px;
+                padding-top: 0;
+                border-radius: 6px;
+                background-color: rgb(218, 185, 21);
+                border: none;
+                margin-left: 10px;
+                font-size: small;
+              "
+            >
+              -<%= ((250/product.price)*100).toFixed(2) %>%
+            </button>
+          </p>
+          <p class="rating">
+            <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i
+            ><i class="bi bi-star-fill"></i> <i class="bi bi-star-fill"></i
+            ><i class="bi bi-star-half"></i>4.5/5
+          </p>
+
+          <p class="stok">Stock:<%= product.stock %></p>
+
+          <p style="margin-top: 5px"><%= product.description %></p>
+          <div class="shades-container">
+            Shade: <% product.shades.forEach(shade => { %>
+            <div
+              class="shade-circle"style="background-color: <%= shade.color %>"
+              title="<%= shade.name %>"
+            ></div>
+            <% }) %>
+            <p>Brand: <span><%= brand.name %></span></p>
+          </div>
+
+          <div class="d-flex align-items-center mb-3">
+            <label for="quantity" class="me-3">Quantity:</label>
+            <div class="input-group" style="max-width: 150px">
+              <input
+                style="
+                  height: 30px;
+                  margin-bottom: 0;
+                  margin-top: 8px;
+                  margin-right: 10px;
+                "
+                type="number"
+                class="form-control"
+                id="quantity"
+                value="1"
+                min="1"
+                max="<%= product.stock %>"
+              />
+              <button
+                style="
+                  border: 0.2px solid purple;
+                  height: 30px;
+                  margin-top: 8px;
+                  padding-top: 2px;
+                  border-radius: 50px;
+                  font-weight: bold;
+                "
+                class="btn"
+              >
+                <i style="color: purple" class="bi bi-heart-fill me-2"></i>Add
+              </button>
+            </div>
+          </div>
+          <div class="d-flex justify-content-between mb-3">
+            <a href="/cart">
+              <button class="btn btn-primary">
+                <i class="bi bi-bag-fill me-2"></i>Add to Cart
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr style="border: 1px solid grey" />
+
+    <%- include('../partials/review.ejs') %>
+    <!-- Similar Collections Section -->
+    <div style="margin-bottom: 30px" class="container">
+      <h3
+        style="
+          text-align: center;
+          color: purple;
+          margin-top: 25px;
+          margin-bottom: 18px;
+        "
+      >
+        Similar Collections
+      </h3>
+      <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+        <% similarProducts.forEach(product => { %>
+        <div class="col-md-3">
+          <div class="card h-100">
+            <img
+              src="<%= product.images[0] %>"
+              class="img-fluid card-img-top"
+              alt="<%= product.name %>"
+            />
+            <div class="card-body">
+              <h5 class="card-title"><%= product.name %></h5>
+              <p class="card-text">
+                <i class="bi bi-currency-rupee"></i><%= product.price %>
+              </p>
+              <% if (product.stock <= 0) { %>
+              <p
+                style="
+                  background-color: rgb(255, 255, 255);
+                  border: none;
+                  color: rgb(138, 0, 0);
+                  position: absolute;
+                  padding: 1px 20px;
+                  margin-top: -150px;
+                  margin-left: 85px;
+                  font-size: small;
+                  font-weight: bold;
+                "
+              >
+                Out of Stock
+              </p>
+              <% } else if(product.stock <=3) { %>
+              <p
+                style="
+                  background-color: rgb(255, 255, 255);
+                  border: none;
+                  color: rgb(138, 0, 0);
+                  position: absolute;
+                  padding: 1px 20px;
+                  margin-top: -150px;
+                  margin-left: 85px;
+                  font-size: small;
+                  font-weight: bold;
+                "
+              >
+                Only few left
+              </p>
+              <% } %>
+              <a
+                href="/productDetail/<%= product._id %>"
+                class="btn btn-primary"
+                >View Product</a
+              >
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+    <!-- footer -->
+    <%- include('../partials/footer') %>
+    <script>
+      function updateLargeImage(imageUrl) {
+        const largeImage = document.getElementById("largeImage");
+        largeImage.src = imageUrl;
+      }
+      largeImage.addEventListener("click", (e) => {
+        const isZoomed = largeImage.style.transform === "scale(2)";
+        largeImage.style.transform = isZoomed ? "scale(1)" : "scale(2)";
+        largeImage.style.cursor = isZoomed ? "zoom-in" : "zoom-out";
+      });
+
+      // Adjust zoom position on mouse move
+      largeImage.addEventListener("mousemove", (e) => {
+        if (largeImage.style.transform === "scale(2)") {
+          const rect = largeImage.getBoundingClientRect();
+          const x = ((e.clientX - rect.left) / rect.width) * 100;
+          const y = ((e.clientY - rect.top) / rect.height) * 100;
+          largeImage.style.transformOrigin = `${x}% ${y}%`;
+        }
+      });
+    </script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

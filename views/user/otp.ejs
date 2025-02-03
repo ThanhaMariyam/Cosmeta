@@ -1,245 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cosmela - OTP Verification</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/otp.css">
-</head>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="/otp.css" />
+  </head>
 
-<body>
+  <body>
     <!-- Header -->
-    <nav class="navbar">
-        <div class="container position-relative">
-            <a class="navbar-brand" href="#">Cosmeta</a>
-            <div style="color: white; font-family: Georgia, 'Times New Roman', Times, serif;" class="header-icons">
-                -The real beauty destination-
-            </div>
-        </div>
-    </nav>
+    <%- include('../partials/nav.ejs') %>
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="otp-container">
-            <h2 class="otp-title">Verify Your Email</h2>
-            <p style="margin-left: 40%; font-size: smaller;" class="text-danger">
-                <%= message %>
-            </p>
-            <p class="otp-message">Please enter the 4-digit code sent to<br>your email address</p>
+      <div class="otp-container">
+        <h2 class="otp-title">Verify Your Email</h2>
+        <p style="margin-left: 40%; font-size: smaller" class="text-danger">
+          <%= message %>
+        </p>
+        <p class="otp-message">
+          Please enter the 4-digit code sent to<br />your email address
+        </p>
 
+        <div class="timer" id="timer">Time remaining: 30s</div>
 
-            <div class="timer" id="timer">Time remaining: 30s</div>
-
-            <form id="otpForm" method="post" action="/user/otp" onsubmit="return validateOTP(event)">
-                <div class="otp-inputs">
-                    <input type="text" name="otp" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 0)">
-                    <input type="text" name="otp" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 1)">
-                    <input type="text" name="otp" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 2)">
-                    <input type="text" name="otp" class="otp-input" maxlength="1" onkeyup="moveToNext(this, 3)">
-                </div>
-                <div class="otp-error" id="otp-error"></div>
-                <button type="submit" class="verify-btn" id="verifyButton">Verify</button>
-            </form>
-            <form action="/user/resend-otp" method="post" onsubmit="return resendOTP()">
-            <div class="resend-link">
-                Didn't receive the code? <button type="submit" style="background-color: white; border: none; color: rgb(142, 6, 160); ">Resend</button>
-            </div>
+        <form
+          id="otpForm"
+          method="post"
+          action="/otp"
+          onsubmit="return validateOTP(event)"
+        >
+          <div class="otp-inputs">
+            <input
+              type="text"
+              name="otp"
+              class="otp-input"
+              maxlength="1"
+              onkeyup="moveToNext(this, 0)"
+            />
+            <input
+              type="text"
+              name="otp"
+              class="otp-input"
+              maxlength="1"
+              onkeyup="moveToNext(this, 1)"
+            />
+            <input
+              type="text"
+              name="otp"
+              class="otp-input"
+              maxlength="1"
+              onkeyup="moveToNext(this, 2)"
+            />
+            <input
+              type="text"
+              name="otp"
+              class="otp-input"
+              maxlength="1"
+              onkeyup="moveToNext(this, 3)"
+            />
+          </div>
+          <div class="otp-error" id="otp-error"></div>
+          <button type="submit" class="verify-btn" id="verifyButton">
+            Verify
+          </button>
         </form>
-
-        </div>
+        <form action="/resend-otp" method="post" onsubmit="return resendOTP()">
+          <div class="resend-link">
+            Didn't receive the code?
+            <button
+              type="submit"
+              style="
+                background-color: white;
+                border: none;
+                color: rgb(142, 6, 160);
+              "
+            >
+              Resend
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- Footer remains the same -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <h5>Cosmeta</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Testimonials</a></li>
-                        <li><a href="#">Authenticity</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h5>Contact us</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Phone: +1234567890</a></li>
-                        <li><a href="#">Email: info@cosmeta.com</a></li>
-                        <li><a href="#">Mon-Sat 9AM to 10PM</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h5>Customers</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Payment & Shipping</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">cancellation & Return </a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3">
-                    <h5>Top categories</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#"> Nykaa</a></li>
-                        <li><a href="#">Lakme</a></li>
-                        <li><a href="#">Maybelline </a></li>
-                        <li><a href="#"> Faces Canada</a></li>
-                        <li><a href="#">Mac </a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <%- include('../partials/footer') %>
 
     <script>
-        let timeLeft = 30;
-        let timerId = null;
+      let timeLeft = 30;
+      let timerId = null;
 
-        function startTimer() {
-            const timerElement = document.getElementById('timer');
-            const verifyButton = document.getElementById('verifyButton');
-            const inputs = document.querySelectorAll('.otp-input');
+      function startTimer() {
+        const timerElement = document.getElementById("timer");
+        const verifyButton = document.getElementById("verifyButton");
+        const inputs = document.querySelectorAll(".otp-input");
 
-            timerId = setInterval(() => {
-                timeLeft--;
-                timerElement.textContent = `Time remaining: ${timeLeft}s`;
+        timerId = setInterval(() => {
+          timeLeft--;
+          timerElement.textContent = `Time remaining: ${timeLeft}s`;
 
-                if (timeLeft <= 10) {
-                    timerElement.classList.add('warning');
-                }
+          if (timeLeft <= 10) {
+            timerElement.classList.add("warning");
+          }
 
-                if (timeLeft <= 0) {
-                    clearInterval(timerId);
-                    timerElement.textContent = 'Time expired!';
-                    verifyButton.disabled = true;
-                    inputs.forEach(input => {
-                        input.disabled = true;
-                    });
-                    document.getElementById('otp-error').textContent = 'OTP expired. Please request a new one.';
-                }
-            }, 1000);
+          if (timeLeft <= 0) {
+            clearInterval(timerId);
+            timerElement.textContent = "Time expired!";
+            verifyButton.disabled = true;
+            inputs.forEach((input) => {
+              input.disabled = true;
+            });
+            document.getElementById("otp-error").textContent =
+              "OTP expired. Please request a new one.";
+          }
+        }, 1000);
+      }
+
+      // Start timer when page loads
+      window.onload = startTimer;
+
+      function moveToNext(input, index) {
+        if (input.value.length === 1) {
+          const inputs = document.querySelectorAll(".otp-input");
+          if (index < inputs.length - 1) {
+            inputs[index + 1].focus();
+          }
         }
+        validateInput(input);
+      }
 
-        // Start timer when page loads
-        window.onload = startTimer;
-
-        function moveToNext(input, index) {
-            if (input.value.length === 1) {
-                const inputs = document.querySelectorAll('.otp-input');
-                if (index < inputs.length - 1) {
-                    inputs[index + 1].focus();
-                }
-            }
-            validateInput(input);
+      function validateInput(input) {
+        if (!/^\d*$/.test(input.value)) {
+          input.value = "";
+          document.getElementById("otp-error").textContent =
+            "Please enter numbers only";
+        } else {
+          document.getElementById("otp-error").textContent = "";
         }
+      }
 
-        function validateInput(input) {
-            if (!/^\d*$/.test(input.value)) {
-                input.value = '';
-                document.getElementById('otp-error').textContent = 'Please enter numbers only';
-            } else {
-                document.getElementById('otp-error').textContent = '';
-            }
-        }
+      function validateOTP(event) {
+        event.preventDefault(); // Prevent default form submission
 
-        function validateOTP(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            if (timeLeft <= 0) {
-                document.getElementById('otp-error').textContent = 'OTP expired. Please request a new one.';
-                return false; // Return false to prevent submission
-            }
-
-            const inputs = document.querySelectorAll('.otp-input');
-            const otp = Array.from(inputs).map(input => input.value).join('');
-
-            if (otp.length !== 4) {
-                document.getElementById('otp-error').textContent = 'Please enter all 4 digits';
-                return false; // Return false to prevent submission
-            }
-
-            if (!/^\d{4}$/.test(otp)) {
-                document.getElementById('otp-error').textContent = 'Invalid OTP format';
-                return false; // Return false to prevent submission
-            }
-
-            // If validation is successful, you can manually submit the form
-            console.log('OTP Submitted:', otp);
-
-            // Submit the form using JavaScript
-            event.target.submit(); // This will trigger the form submission to the server
-            return true;
-        }
-
-
-
-
-// Timer function
-function startTimer() {
-    timerId = setInterval(() => {
-        timeLeft--;
-        const timerElement = document.getElementById('timer');
-        
         if (timeLeft <= 0) {
+          document.getElementById("otp-error").textContent =
+            "OTP expired. Please request a new one.";
+          return false; // Return false to prevent submission
+        }
+
+        const inputs = document.querySelectorAll(".otp-input");
+        const otp = Array.from(inputs)
+          .map((input) => input.value)
+          .join("");
+
+        if (otp.length !== 4) {
+          document.getElementById("otp-error").textContent =
+            "Please enter all 4 digits";
+          return false; // Return false to prevent submission
+        }
+
+        if (!/^\d{4}$/.test(otp)) {
+          document.getElementById("otp-error").textContent =
+            "Invalid OTP format";
+          return false; // Return false to prevent submission
+        }
+
+        // If validation is successful, you can manually submit the form
+        console.log("OTP Submitted:", otp);
+
+        // Submit the form using JavaScript
+        event.target.submit(); // This will trigger the form submission to the server
+        return true;
+      }
+
+      // Timer function
+      function startTimer() {
+        timerId = setInterval(() => {
+          timeLeft--;
+          const timerElement = document.getElementById("timer");
+
+          if (timeLeft <= 0) {
             clearInterval(timerId);
             // Disable inputs and button when timer expires
-            const inputs = document.querySelectorAll('.otp-input');
-            const verifyButton = document.getElementById('verifyButton');
-            inputs.forEach(input => {
-                input.disabled = true;
+            const inputs = document.querySelectorAll(".otp-input");
+            const verifyButton = document.getElementById("verifyButton");
+            inputs.forEach((input) => {
+              input.disabled = true;
             });
             verifyButton.disabled = true;
-            timerElement.textContent = 'Time expired!';
-            timerElement.classList.add('warning');
-        } else {
+            timerElement.textContent = "Time expired!";
+            timerElement.classList.add("warning");
+          } else {
             timerElement.textContent = `Time remaining: ${timeLeft}s`;
             if (timeLeft <= 10) {
-                timerElement.classList.add('warning');
+              timerElement.classList.add("warning");
             }
-        }
-    }, 1000);
-}
+          }
+        }, 1000);
+      }
 
-function resendOTP() {
-    
-            // Reset timer
-            clearInterval(timerId);
-            timeLeft = 30;
+      function resendOTP() {
+        // Reset timer
+        clearInterval(timerId);
+        timeLeft = 30;
 
-            // Re-enable inputs and button
-            const inputs = document.querySelectorAll('.otp-input');
-            const verifyButton = document.getElementById('verifyButton');
-            inputs.forEach(input => {
-                input.disabled = false;
-                input.value = '';
-            });
-            verifyButton.disabled = false;
+        // Re-enable inputs and button
+        const inputs = document.querySelectorAll(".otp-input");
+        const verifyButton = document.getElementById("verifyButton");
+        inputs.forEach((input) => {
+          input.disabled = false;
+          input.value = "";
+        });
+        verifyButton.disabled = false;
 
-            // Reset timer display
-            const timerElement = document.getElementById('timer');
-            timerElement.classList.remove('warning');
-            timerElement.textContent = `Time remaining: ${timeLeft}s`;
+        // Reset timer display
+        const timerElement = document.getElementById("timer");
+        timerElement.classList.remove("warning");
+        timerElement.textContent = `Time remaining: ${timeLeft}s`;
 
-            // Start new timer
-            startTimer();
+        // Start new timer
+        startTimer();
 
-            // Clear any error messages
-            document.getElementById('otp-error').textContent = '';
+        // Clear any error messages
+        document.getElementById("otp-error").textContent = "";
 
-            // Show success alert
-            alert('New OTP has been sent to your email');
-        } 
-    
-    
-
-
-
-
+        // Show success alert
+        alert("New OTP has been sent to your email");
+      }
     </script>
-</body>
-
+  </body>
 </html>

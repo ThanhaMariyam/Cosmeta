@@ -1,87 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Cosmeta - Password Reset</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/email.css">
-</head>
-<body>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/email.css" />
+  </head>
+  <body>
     <!-- Header -->
-    <nav class="navbar">
-        <div class="container">
-            <a class="navbar-brand" href="#">Cosmeta</a>
-            <div class="navbar-text text-white">-The real beauty destination-</div>
-        </div>
-    </nav>
+    <%- include('../partials/nav.ejs') %>
 
     <!-- Main Content -->
     <div class="main-content">
-        <div class="reset-container">
-            <h2 class="reset-title">Forgot Password?</h2>
-            <p style="font-size: small;" class="reset-message">
-                Enter the email address you used when you joined<br>
-                and we'll send you an OTP to reset your password
-            </p>
-            <p style="font-size: smaller; margin-left: 28%;" class="text-danger"><%= message %></p>
-            <form action="/user/email" method="post">
-                <div class="mb-4">
-                    <input type="email" class="form-control" name="email" placeholder="Email address">
-                </div>
-                <a href="/user/otp">
-                    <button type="submit" class="reset-btn" >Reset password</button>
-
-                </a>
-                
-            </form>
-        </div>
+      <div class="reset-container">
+        <h2 class="reset-title">Forgot Password?</h2>
+        <p style="font-size: small" class="reset-message">
+          Enter the email address you used when you joined<br />
+          and we'll send you an OTP to reset your password
+        </p>
+        <p style="font-size: smaller; margin-left: 28%" class="text-danger">
+          <%= message %>
+        </p>
+        <form action="/email" method="post">
+          <div class="mb-4">
+            <input
+              type="email"
+              class="form-control"
+              name="email"
+              placeholder="Email address"
+            />
+          </div>
+          <a href="/otp">
+            <button type="submit" class="reset-btn">Reset password</button>
+          </a>
+        </form>
+      </div>
     </div>
 
     <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    <h6 class="footer-title">Cosmeta</h6>
-                    <div class="footer-links">
-                        <a href="#">About Us</a>
-                        <a href="#">Contact Us</a>
-                        <a href="#">Testimonials</a>
-                        <a href="#">Authenticity</a>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <h6 class="footer-title">Contact us</h6>
-                    <div class="footer-links">
-                        <a href="#">Phone: +1234567890</a>
-                        <a href="#">Email: info@cosmeta.com</a>
-                        <a href="#">Mon-Sat 9AM to 10PM</a>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <h6 class="footer-title">Customers</h6>
-                    <div class="footer-links">
-                        <a href="#">Payment & Shipping</a>
-                        <a href="#">FAQ</a>
-                        <a href="#">Cancellation & Return</a>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <h6 class="footer-title">Top Categories</h6>
-                    <div class="footer-links">
-                        <a href="#">Nykaa</a>
-                        <a href="#">Lakme</a>
-                        <a href="#">Maybelline</a>
-                        <a href="#">Faces Canada</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <%- include('../partials/footer') %>
 
     <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-</body>
+  </body>
 </html>

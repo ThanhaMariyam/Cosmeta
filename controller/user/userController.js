@@ -1,5 +1,6 @@
-const userSchema = require("../model/userModel");
-const otpSchema = require("../model/otpModel");
+const userSchema = require("../../model/userModel");
+const otpSchema = require("../../model/otpModel");
+const productSchema=require("../../model/productModal")
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 const bodyparser = require("body-parser");
@@ -43,7 +44,7 @@ const postSignup = async (req, res) => {
 
     await sendOTP(email, otp);
     console.log("otp sent to", email);
-    res.redirect("/user/otp");
+    res.redirect("/otp");
   } catch (error) {
     console.error(error);
     res.render("user/signup", { message: "Something went wrong!" });
@@ -92,9 +93,9 @@ const verifyOtp = async (req, res) => {
       req.session.temapUser = null;
       req.session.isSignup = false;
       await otpSchema.deleteMany({ email: tempUser.email });
-      console.log("user verified and registered");
-      return res.send("home page");
-    }
+      req.session.user=newUser
+      res.redirect("/")
+      }
     if (req.session.isForgotPassword) {
       const email = req.session.userEmail;
       if (!email) {
@@ -107,7 +108,7 @@ const verifyOtp = async (req, res) => {
       }
       req.session.isForgotPassword = false;
       console.log("otp verified");
-      return res.redirect("/user/forgot");
+      return res.redirect("/forgot");
     }
   } catch (error) {
     console.error(error);
@@ -125,14 +126,20 @@ const loadLogin = (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     const user = await userSchema.findOne({ email, password });
     if (!user)
       return res.render("user/login", {
         message: "Incorrect password or email!",
       });
+      if (user.isBlocked) {
+        return res.render("user/login", {
+          message: "This account is blocked.",
+        });
+      }
+    req.session.user=user;
+   res.redirect("/")
 
-    req.session.user = true;
-    res.send("home page");
   } catch (error) {
     res.render("user/login", { message: "something went wrong" });
   }
@@ -166,7 +173,7 @@ const forgotOtp = async (req, res) => {
     console.log("session email=", req.session.userEmail);
     await sendOTP(email, otp);
 
-    res.redirect("/user/otp");
+    res.redirect("/otp");
   } catch (error) {
     console.error(error);
     res.render("user/email");
@@ -185,7 +192,7 @@ const SetNewPassword = async (req, res) => {
     if (!email) {
       console.log("email not found");
 
-      return res.redirect("/user/email");
+      return res.redirect("/email");
     }
     console.log(newPassword, confirmPassword);
     if (newPassword !== confirmPassword) {
@@ -197,14 +204,14 @@ const SetNewPassword = async (req, res) => {
     if (!user) {
       console.log("user not found");
 
-      return res.redirect("/user/email");
+      return res.redirect("/email");
     }
 
     user.password = newPassword;
     await user.save();
     console.log("password reset succesfully");
 
-    res.redirect("/user/login");
+    res.redirect("/login");
   } catch (error) {
     console.log(error);
     res.render("user/forgot", { message: "Something went wrong" });
@@ -264,6 +271,17 @@ const resendOtp = async (req, res) => {
   }
 };
 
+
+
+
+
+
+
+const loadCart=(req,res)=>{
+  res.render('/cart')
+}
+
+
 module.exports = {
   loadSignup,
   postSignup,
@@ -276,4 +294,6 @@ module.exports = {
   loadResetPassword,
   SetNewPassword,
   resendOtp,
+  loadCart
+
 };

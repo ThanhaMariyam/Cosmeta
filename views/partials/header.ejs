@@ -9,9 +9,24 @@
  <% } %>
  <% if (user) { %>
 <div class="small">
-    <a href=""><i class="bi bi-heart-fill"></i> </a>
+    <a href="/wishlist"><i class="bi bi-heart-fill"></i> </a>
 
-   <a href=""><i class="bi bi-bag-fill"></i></a>
+   <a href="/cart"><i class="bi bi-bag-fill" style="position: relative;">
+    <span id="cart-badge" class="badge" style="position: absolute;
+    top: 15px;
+    right: -5px;
+    background: rgb(142, 35, 200);
+    color: white;
+    font-size: 12px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-weight: bold;
+    visibility: hidden;">0</span>
+   </i></a>
     
   
     <a href="/profile"> <i class="bi bi-person-circle"></i></a>

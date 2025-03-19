@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+
+  />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <link rel="stylesheet" href="/userSignup.css" />
+    <link rel="stylesheet" href="/home.css" />
+    <style>
+        .product-card {
+            border: none;
+            background: #fff;
+            padding: 10px;
+           
+        }
+        
+        .back-link {
+            color: #621163;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .continue-shopping {
+            background: #740f71;
+            border: none;
+            padding: 12px;
+           
+        }
+        .continue-shopping:hover {
+            background: #531c59;
+        }
+        .track-order {
+            color: #666;
+            text-decoration: none;
+        }
+        .price {
+            font-weight: 600;
+        }
+        .rating {
+            color: #be8e00;
+        }
+        .footer-link{
+            color: #531c59;
+        }
+    </style>
+</head>
+<body >
+ <!-- Header -->
+ <%- include('../partials/nav.ejs') %>
+ <!-- navbar -->
+ <div class="box">
+   <div class="item">
+     <a href="/">Home</a>
+     <a href="/category">Category</a>
+     <a href="/brand">Brand</a>
+     <a href="">About us</a>
+     <a href="">Contact us</a>
+   </div>
+   <%- include('../partials/header.ejs') %>
+ </div>
+    <div class="container py-4">
+       
+        <!-- Order Confirmation -->
+         <div class="row">
+        <div class=" col-lg-8">
+            <div class="rounded-3 p-4 mb-4">
+            <div class="d-flex align-items-center mb-3">
+                <div class=" rounded-circle p-2 me-3" style="background-color: #672a6e;">
+                    <svg class="svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div>
+                    <p class="mb-0 text-muted">OrderId <%= order.orderId %></p>
+                    <h5 class="mb-0">Order Placed Successfully...</h5>
+                    <a href="">Track Order</a>
+                </div>
+            </div>
+            
+            <p class="mb-4" style="color: #4e1853;">Thank you for your order!</p>
+
+            <!-- Delivery Details -->
+            <div class="mb-3">
+                <h6>Delivery</h6>
+                <p class="mb-1"><%= order.deliveryAddress.firstName %> <%= order.deliveryAddress.phone %> <%= order.deliveryAddress.streetAddress %> <%= order.deliveryAddress.pincode %></p> 
+            </div>
+
+            <!-- Time -->
+            <div class="mb-3">
+                <h6>Expected Delivery</h6>
+                <p class="mb-1"><%= order.estimateDelivery.toLocaleDateString('en-IN',{dateStyle:'long'}) %></p>
+            </div>
+
+            <!-- Payment -->
+            <div class="mb-3">
+                <h6>Payment</h6>
+                <p class="mb-1"><%= order.paymentMethod %></p>
+            </div>
+
+            <!-- Bonus Points -->
+            <div class="bg-light rounded p-3 col-6">
+                <p class="mb-0">🎉 Congratulations! You have earned <%= bonus.bonusPoints %> bonuses</p>
+            </div>
+        </div>
+        
+        </div>
+        
+
+    
+<!-- Product Recommendations -->
+<div class="col-lg-4" style="background-color: #f5f5f5;">
+    <h4 class="mb-4 text-center" style="color: rgb(103, 7, 103);">You may also like</h4>
+    <div class="row flex-nowrap overflow-auto g-3">
+        <% similarProducts.forEach(product => { %>
+        <div class="col-auto">
+            <div class="card p-2 text-center" style="width: 200px;">
+                
+                <!-- Image -->
+                <img src="<%= product.images[0] %>"
+                     class="img-fluid rounded"
+                     alt="<%= product.name %>"
+                     style="height: 150px; object-fit: cover;">
+
+                     <div class="rating">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                      </div>
+
+                <!-- Product Name -->
+                <h6 class="mt-2"><%= product.name %></h6>
+
+                <!-- Price -->
+                <div class="col-6 " style="display: flex;">
+                    <i class="bi bi-currency-rupee"></i><%= product.price %>
+                    <!-- View Product Button -->
+                <button id="add-to-cart-btn-<%= product._id %>" style="background-color: purple; color: white;margin-left: 95%; width: 42px;" class="btn" onclick="addToCart('<%= product._id %>', 'add-to-cart-btn-<%= product._id %>')">
+                    <i class="bi bi-cart3"></i>
+                </button>
+            </div>
+
+                
+            </div>
+        </div>
+        <% }) %>
+    </div>
+    
+    <!-- Continue Shopping Button -->
+     <a href="/">
+    <button class="btn continue-shopping text-white w-100 mt-3">Continue shopping</button></a>
+</div>
+</div>
+        <!-- Footer Links -->
+        <div class="d-flex justify-content-center gap-3 mt-3">
+            <a href="#" class=" small footer-link">Need About us?</a>
+            <a href="#" class=" small footer-link">Contact us</a>
+        </div>
+    </div>
+      <!-- footer -->
+      <%- include('../partials/footer') %>
+      <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+      <script>
+       
+function addToCart(productId, buttonId) {
+    const button = document.getElementById(buttonId);
+    button.disabled = true; // Disable button to prevent multiple clicks
+
+    fetch("/cart/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ productId })
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            window.location.href = "/cart"; // Redirect to cart page
+        } else {
+            button.disabled = false; // Re-enable button if failed
+            Toastify({
+                text: "Failed to add product to cart. Try again.",
+                duration: 3000,
+                close: true,
+                gravity: "bottom",
+                position: "center",
+                style: { backgroundColor: "red" }
+            }).showToast();
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        button.disabled = false; // Re-enable button
+        Toastify({
+            text: "Something went wrong. Try again.",
+            duration: 3000,
+            close: true,
+            gravity: "bottom",
+            position: "center",
+            style: { backgroundColor: "red" }
+        }).showToast();
+    });
+}
+</script>
+
+     
+</body>
+</html>

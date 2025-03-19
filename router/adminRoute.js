@@ -34,6 +34,14 @@ const {
   unblockUser
 } = require("../controller/admin/customerController")
 
+const {orderLists,
+  orderDetails,
+  orderStatus,
+  returnOrder,
+  approveReturn,
+  rejectReturn
+} = require("../controller/admin/orderManagement")
+
 const { checkSession, isLogin } = require("../middleware/adminAuth");
 
 admin.get("/login", isLogin, loadLogin);
@@ -42,7 +50,7 @@ admin.get("/dashboard", checkSession, adminHome);
 
 admin.get("/products", checkSession, loadProduct);
 admin.get("/products/add", checkSession, loadAddProduct);
-admin.post("/products/add", upload.array("images", 3), addProduct);
+admin.post("/products/add", upload.array("images", 3),checkSession, addProduct);
 admin.get("/products/edit/:id", checkSession, productEditPage);
 admin.post("/products/edit/:id", upload.array("images", 3), editProduct);
 admin.post("/products/toggle-list/:id", productListing);
@@ -61,4 +69,12 @@ admin.get("/brand", checkSession, loadBrand);
 admin.post("/brand/add", addBrand);
 admin.post("/brand/toggle-list/:id", brandListing);
 admin.post("/brand/edit/:id", brandEdit);
+
+admin.get("/orderManagement",orderLists)
+admin.get("/orderDetails/:orderId",orderDetails)
+admin.put("/updateOrderStatus/:orderId",orderStatus)
+admin.get("/return",returnOrder)
+admin.post("/approveReturn/:orderId/:productId",approveReturn)
+admin.post("/rejectReturn/:orderId/:productId",rejectReturn)
+
 module.exports = admin;

@@ -21,11 +21,22 @@ const userSchema=new mongoose.Schema({
     },
     isBlocked:{
         type:Boolean,
-        default:false
-
+         default:false
     },
     googleId:{
         type:String
+    },
+    fullName:{
+        type:String
+    },
+    DOB:{
+        type:Date
+    },
+    bonusPoints:{
+        type:Number,
+        default:0
     }
+
+
 })
 module.exports=mongoose.model("user",userSchema)

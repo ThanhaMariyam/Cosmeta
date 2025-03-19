@@ -103,9 +103,15 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="/admin/orderManagement" class="nav-link">
                   <i class="bi bi-cart me-2"></i>
                   Orders
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/admin/return" class="nav-link">
+                  <i class="bi bi-arrow-return-left me-2"></i> 
+                  Returns
                 </a>
               </li>
               <li class="nav-item">
@@ -239,8 +245,7 @@
                                   id="brandEditDescription"
                                   onkeyup="validateEditDescription()"
                                 >
-                                    <%= brand.description %></textarea
-                                >
+                                    <%= brand.description %></textarea>
                                 <span
                                   id="editdescription-error"
                                   style="color: red"
@@ -318,8 +323,7 @@
               <% for (let i = 1; i <= totalPages; i++) { %>
               <li class="page-item <%= currentPage === i ? 'active' : '' %>">
                 <a class="page-link" href="/admin/brand?page=<%= i %>"
-                  ><%= i %></a
-                >
+                  ><%= i %></a>
               </li>
               <% } %>
               <li

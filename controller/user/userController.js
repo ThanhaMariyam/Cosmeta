@@ -1,9 +1,9 @@
 const userSchema = require("../../model/userModel");
 const otpSchema = require("../../model/otpModel");
-const productSchema=require("../../model/productModal")
+const bcrypt=require("bcryptjs")
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
-const bodyparser = require("body-parser");
+const saltround=10
 const { log } = require("console");
 
 function generateOTP() {
@@ -83,10 +83,11 @@ const verifyOtp = async (req, res) => {
         log("invalid otp");
         return res.render("user/otp", { message: "Invalid otp." });
       }
+      const hashedPassword=await bcrypt.hash(tempUser.password,saltround)
       const newUser = new userSchema({
         username: tempUser.username,
         email: tempUser.email,
-        password: tempUser.password,
+        password: hashedPassword,
         isVerified: true,
       });
       await newUser.save();
@@ -127,8 +128,8 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await userSchema.findOne({ email, password });
-    if (!user)
+    const user = await userSchema.findOne({ email});
+    if (!user || !(await bcrypt.compare(password, user.password)))
       return res.render("user/login", {
         message: "Incorrect password or email!",
       });
@@ -194,9 +195,9 @@ const SetNewPassword = async (req, res) => {
 
       return res.redirect("/email");
     }
-    console.log(newPassword, confirmPassword);
+   
     if (newPassword !== confirmPassword) {
-      console.log("password not matching");
+     
       return res.render("user/forgot", { message: "Password not matching." });
     }
 
@@ -207,7 +208,7 @@ const SetNewPassword = async (req, res) => {
       return res.redirect("/email");
     }
 
-    user.password = newPassword;
+    user.password = await bcrypt.hash(newPassword, saltround)
     await user.save();
     console.log("password reset succesfully");
 
@@ -272,16 +273,6 @@ const resendOtp = async (req, res) => {
 };
 
 
-
-
-
-
-
-const loadCart=(req,res)=>{
-  res.render('/cart')
-}
-
-
 module.exports = {
   loadSignup,
   postSignup,
@@ -294,6 +285,5 @@ module.exports = {
   loadResetPassword,
   SetNewPassword,
   resendOtp,
-  loadCart
 
 };

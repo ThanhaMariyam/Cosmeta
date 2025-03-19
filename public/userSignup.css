@@ -16,7 +16,7 @@ html, body {
 }
 
 .navbar {
-    background: var(--vine-purple) !important;
+    background:linear-gradient(to right,rgb(130, 73, 133), rgb(115, 87, 139)) !important;
     height: 60px;
     padding: 0;
 }

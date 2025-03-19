@@ -1,4 +1,6 @@
 const product=require('../../model/productModal')
+const brandSchema=require('../../model/brandModel')
+const categorySchema=require('../../model/categoryModel')
 
 const loadProduct=async(req,res)=>{
     try{

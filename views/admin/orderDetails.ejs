@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Receipt</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    rel="stylesheet"
+  />
+    <style>
+       .order-progress {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    margin: 20px 0;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Main Line */
+.order-progress::before {
+    content: "";
+    position: absolute;
+    top: 10px; /* Center with the circles */
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #ddd; /* Default line color */
+    z-index: 0;
+}
+
+/* Active Line - grows dynamically based on status */
+.order-progress .progress-line-active {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    height: 2px;
+    background-color: green;
+    z-index: 1;
+    transition: width 0.3s ease;
+}
+
+/* Step container */
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* Dots */
+.progress-step .step-circle {
+    width: 20px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 50%;
+    position: relative;
+}
+
+/* Active Dots */
+.progress-step.active .step-circle {
+    background-color: green;
+}
+
+/* Step Labels */
+.progress-step span {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+/* Optional - Cancel style */
+.progress-step .step-circle.bg-danger {
+    background-color: red;
+}
+
+
+        
+        .product-img {
+            max-width: 100px;
+            height: auto;
+        }
+        
+        .status-successful {
+            color: #28a745;
+        }
+        
+        .status-paid {
+            color: #ffc107;
+        }
+        
+        .divider {
+            border-top: 1px solid #dee2e6;
+            margin: 15px 0;
+        }
+        
+        .discount {
+            color: #dc3545;
+        }
+    
+      .sidebar {
+        min-height: 100vh;
+        background-color: #1a1a1a;
+        color: white;
+        width: 180px;
+      }
+      .sidebar .nav-link {
+        color: #ffffff;
+        padding: 0.8rem 1rem;
+        opacity: 0.8;
+      }
+      .sidebar .nav-link:hover {
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .sidebar .nav-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        opacity: 1;
+      }
+      .brand-logo {
+        width: 100px;
+        height: 60px;
+        object-fit: contain;
+        border-radius: 5px;
+      }
+      .table td {
+        vertical-align: middle;
+      }
+     
+    </style>
+    
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+          <!-- Sidebar -->
+          <div class="col-lg-2 sidebar">
+            <div class="d-flex flex-column p-3">
+              <h3 class="mb-4">Cosmeta</h3>
+              <ul class="nav nav-pills flex-column gap-2">
+                <li class="nav-item">
+                  <a href="/admin/dashboard" class="nav-link">
+                    <i class="bi bi-speedometer2 me-2"></i>
+                    Dashboard
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/admin/user" class="nav-link">
+                    <i class="bi bi-people me-2"></i>
+                    Users
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/admin/products" class="nav-link">
+                    <i class="bi bi-box me-2"></i>
+                    Products
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/admin/category" class="nav-link">
+                    <i class="bi bi-tags me-2"></i>
+                    Category
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/admin/brand" class="nav-link">
+                    <i class="bi bi-award me-2"></i>
+                    Brands
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/admin/orderManagement" class="nav-link active">
+                    <i class="bi bi-cart me-2"></i>
+                    Orders
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="admin/return" class="nav-link">
+                    <i class="bi bi-arrow-return-left me-2"></i> 
+                    Returns
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="bi bi-ticket-perforated me-2"></i>
+                    Coupons
+                  </a>
+                </li>
+                <li style="margin-bottom: 5%" class="nav-item">
+                  <a href="#" class="nav-link">
+                    <i class="bi bi-gift me-2"></i>
+                    Offers
+                  </a>
+                </li>
+              </ul>
+              <a href="/admin/logout">
+                <button
+                  style="margin-left: 9%"
+                  class="btn btn-outline-light mt-auto"
+                >
+                  <i class="bi bi-box-arrow-right me-2"></i>
+                  Logout
+                </button>
+              </a>
+            </div>
+          </div>
+  
+          <!-- Main Content -->
+    <div class="col-lg-10">
+                <div class="card shadow-sm mt-1">
+                    <div class="card-body">
+                        <div class="row mb-4">
+                            <div class="col-md-6 border-end">
+                               
+                                    <% orders.products.forEach((item)=>{ if(item.status !=="Canceled"){ %>
+                                <div class="d-flex">
+                                    <div class="me-3">
+                                      
+                                        <img src="<%= item.product.images[0] %>" alt="<%= item.product.name %>" class="product-img">
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1"><%= item.product.name %></h5>
+                                        <p class="text-muted small mb-0"><%= item.product.description %></p>
+                                        <p class="small">₹<%= item.product.price %>  Quantity: <%= item.quantity %></p>
+                                    </div>
+                                </div>
+                                <% }}) %>
+                                
+                            </div>
+                            <div class="col-md-6 mt-4">
+                                <div class="row g-2">
+                                    <div class="col-6 text-muted">Order Date</div>
+                                    <div class="col-6"><%= orders.estimateDelivery.toLocaleDateString('en-IN',{dateStyle:'long'}) %></div>
+                                    
+                                    <div class="col-6 text-muted">Order Id</div>
+                                    <div class="col-6"><%= orders.orderId %></div>
+                                    
+                                    <div class="col-6 text-muted">Order Status</div>
+                                    <div class="col-6 status-successful"><%= orders.orderStatus %></div>
+                                    
+                                    <div class="col-6 text-muted">Payment</div>
+                                    <div class="col-6"><%= orders.paymentMethod %></div>
+                                    
+                                    <div class="col-6 text-muted">Status</div>
+                                    <div class="col-6 status-paid"><%= orders.paymentStatus %></div>
+                                    
+                                    <div class="col-6 text-muted">Price</div>
+                                    <div class="col-6">₹<%= orders.totalAmount %></div>
+                                    
+                                    <div class="col-6 text-muted">User Id</div>
+                                    <div class="col-6"><%= orders.user._id %></div>
+                                    
+                                    <div class="col-6 text-muted">Coupon</div>
+                                    <div class="col-6">COSMETA2025</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="divider"></div>
+                        
+                        <div class="mb-4">
+                            <h6 class="mb-3">Billing Details</h6>
+                            
+                            <div class="row justify-content-between mb-2">
+                                <div class="col-md-6">Subtotal (<%= orders.products.length %> items)</div>
+                                <div class="col-md-6 text-end">₹<%= subtotal.toFixed(2) %></div>
+                            </div>
+                            
+                            <div class="row justify-content-between align-items-center mb-2">
+                                <div class="col-md-6">Delivery Charge</div>
+                                <div class="col-md-6 text-end">
+                                    <!-- <span class="text-decoration-line-through me-2">₹285.00</span> -->
+                                    <span class="small text-success">₹50</span>
+                                </div>
+                            </div>
+                            
+                            <!-- <div class="row justify-content-between mb-2">
+                                <div class="col-md-6">Coupon Applied</div>
+                                <div class="col-md-6 text-end text-success">+₹249.00</div>
+                            </div> -->
+                            
+                            <div class="row justify-content-between mb-2">
+                                <div class="col-md-6">Discount</div>
+                                <div class="col-md-6 text-end discount">-20%</div>
+                            </div>
+                            
+                            <div class="row justify-content-between fw-bold mt-3">
+                                <div class="col-md-6">Total</div>
+                                <div class="col-md-6 text-end">₹<%= orders.totalAmount %></div>
+                            </div>
+                        </div>
+                        
+                        <div class="divider"></div>
+                        
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <h6 class="mb-2">Billing Address:</h6>
+                                <p class="mb-0">
+                                    <%= orders.deliveryAddress.firstName %> <%= orders.deliveryAddress.phone %><br>
+                                    <%= orders.deliveryAddress.city %> <%= orders.deliveryAddress.pincode %> <%= orders.deliveryAddress.state %>
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="mb-2">Shipping Address</h6>
+                                <p class="mb-0">
+                                    <!-- Add shipping address here if available -->
+                                    Same as billing address
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="divider"></div>
+
+                    <h6 class="mb-3">Order Status:</h6>
+
+                    <div class="order-progress mb-3">
+                        <!-- The green progress line length dynamically controlled by orderStatus -->
+                        <% let activeWidth = 0; %>
+                        <% if (orders.orderStatus === 'Processing') { activeWidth = '25%'; } %>
+                        <% if (orders.orderStatus === 'Shipped') { activeWidth = '50%'; } %>
+                        <% if (orders.orderStatus === 'Delivered') { activeWidth = '100%'; } %>
+                    
+                        <div class="progress-line-active"style="width: <%= activeWidth %>;"></div>
+                    
+                        <div class="progress-step active">
+                            <div class="step-circle"></div>
+                            <span class="small">Ordered</span>
+                        </div>
+                    
+                        <div class="progress-step <% if (['Processing', 'Shipped', 'Delivered'].includes(orders.orderStatus)) { %> active <% } %>">
+                            <div class="step-circle"></div>
+                            <span class="small">Processing</span>
+                        </div>
+                    
+                        <div class="progress-step <% if (['Shipped', 'Delivered'].includes(orders.orderStatus)) { %> active <% } %>">
+                            <div class="step-circle"></div>
+                            <span class="small">Shipped</span>
+                        </div>
+                    
+                        <div class="progress-step <% if (orders.orderStatus === 'Delivered') { %> active <% } %>">
+                            <div class="step-circle"></div>
+                            <span class="small">Delivered</span>
+                        </div>
+                    
+                        <% if (orders.orderStatus === 'Canceled') { %>
+                            <div class="progress-step active">
+                                <div class="step-circle bg-danger"></div>
+                                <span class="small text-danger">Canceled</span>
+                            </div>
+                        <% }else if(orders.orderStatus === 'Returned'){ %>
+                            <div class="progress-step active">
+                                <div class="step-circle bg-warning"></div>
+                                <span class="small text-warning">Returned</span>
+                            </div>
+                            <% } %>
+                    </div>
+                    
+
+                </div>
+            
+        
+    </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

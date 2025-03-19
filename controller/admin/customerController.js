@@ -1,4 +1,5 @@
 const userSchema=require('../../model/userModel')
+const brandSchema=require('../../model/brandModel')
 
 const loadUser=async(req,res)=>{
     try{

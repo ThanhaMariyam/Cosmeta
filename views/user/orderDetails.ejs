@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order #12345 Details</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+
+  />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+ 
+  <link rel="stylesheet" href="/sidebar.css">
+    <link rel="stylesheet" href="/home.css">
+    <link rel="stylesheet" href="/userSignup.css">
+    <style>
+        .back-button {
+            color: #71208a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .download-invoice-btn {
+            background-color: #681375;
+            border-color: #430e4b;
+        }
+        .download-invoice-btn:hover {
+    background-color: #5a0f65 !important;
+    border-color: #3b0c45 !important;
+    color: white !important; /
+}
+
+        .submit-review-btn {
+            background-color:  #681375;
+            border-color: #430e4b;
+        }
+        .rating {
+            color: #c59300;
+        }
+        #cancelModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    z-index: 1050;
+    border-top: 5px solid #681375;
+}
+
+#cancelModal h4 {
+    font-weight: bold;
+    color: #681375;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#cancelModal select, #cancelModal textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+#cancelModal textarea {
+    resize: none;
+    height: 80px;
+}
+
+#cancelModal .modal-buttons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+#cancelModal button {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+}
+
+#cancelModal button:first-child {
+    background-color: #58100e;  /* Cancel/Confirm Button */
+    color: white;
+    margin-right: 5px;
+}
+
+#cancelModal button:first-child:hover {
+    background-color: #6b110e;
+}
+
+#cancelModal button:last-child {
+    background-color: #6c757d;  /* Close Button */
+    color: white;
+}
+
+#cancelModal button:last-child:hover {
+    background-color: #5a6268;
+}
+#modalBackdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1040;
+}
+#returnModal {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 400px;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        z-index: 1001;
+    }
+
+    #modalBackdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+    }
+
+    #returnModal h4 {
+        margin-top: 0;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    #returnModal p {
+        margin: 10px 0;
+    }
+
+    #returnModal select, #returnModal textarea {
+        width: 100%;
+        margin-bottom: 15px;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .modal-buttons button {
+        padding: 6px 12px;
+        cursor: pointer;
+        border: none;
+        border-radius: 6px;
+    }
+
+    .modal-buttons button:first-child {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .modal-buttons button:last-child {
+        background-color: #dc3545;
+        color: white;
+    }
+
+
+    </style>
+</head>
+<body>
+     <!-- Header -->
+   <%- include('../partials/nav.ejs') %>
+   <!-- navbar -->
+   <div class="box">
+     <div class="item">
+       <a href="/">Home</a>
+       <a href="/category">Category</a>
+       <a href="/brand">Brand</a>
+       <a href="">About us</a>
+       <a href="">Contact us</a>
+     </div>
+     <%- include('../partials/header.ejs') %>
+   </div>
+    <div class="container py-4">
+        <!-- Back Button -->
+        <div class="row mb-4">
+            <div class="col">
+                <a href="/orders" class="back-button">
+                    <i class="fas fa-arrow-left me-2"></i> Back
+                </a>
+            </div>
+        </div>
+
+        <!-- Order Header -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8 text-center">
+                <h2>Order <%= orders.orderId %> Details</h2>
+            </div>
+        </div>
+
+        <!-- Shipping Information and Invoice -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h4>Shipping Information</h4>
+                        <p class="text-muted mb-1"><small>Shipping Address:</small></p>
+                        <p><%= orderAddress.deliveryAddress.firstName %> <%= orderAddress.deliveryAddress.phone %> <%= orderAddress.deliveryAddress.city %> <%= orderAddress.deliveryAddress.pincode %> <%= orderAddress.deliveryAddress.state %></p>
+                    </div>
+                    <div class="col-md-4 text-start">
+                        <h4>Invoice</h4>
+                        <a href="/download-invoice/<%= orders._id %>" class="btn btn-sm download-invoice-btn text-white rounded-pill">
+                            Download Invoice
+                        </a>
+                        <button id="cancelOrderBtn"  
+                        <% if (orders.orderStatus === "Shipped") { %>
+                            style="background-color: rgb(94, 15, 15); color: white; padding: 4px 10px; border: none; border-radius: 15px;"
+                            onclick="alertShippedOrder()"
+                        <% } else if (orders.orderStatus === "Delivered") { %>
+                            style="background-color: green; color: white; padding: 4px 10px; border: none; border-radius: 15px; cursor: not-allowed;"
+                            disabled
+                        <% } else { %>
+                            style="background-color: rgb(94, 15, 15); color: white; padding: 4px 10px; border: none; border-radius: 15px;"
+                            onclick="openCancelModal('<%= orders._id %>')"
+                        <% } %>>
+                        
+                        <% if (orders.orderStatus === "Delivered") { %>
+                            Delivered
+                        <% } else if (orders.orderStatus === "Canceled") { %>
+                            Order Canceled!
+                        <% } else { %>
+                            Cancel Order
+                        <% } %>
+                    </button>
+                    
+
+                    </div>
+                    <div id="cancelModal">
+                        <h4>Cancel <span id="cancelTargetLabel">Order</span></h4>
+                        <p class="mb-2">Please select a reason for cancellation:</p>
+                        <select id="cancelReason" class="form-select" onchange="toggleOtherReason()">
+                            <option value="Damaged product">Found a Better Price Elsewhere</option>
+                            <option value="Poor quality">Product No Longer Needed</option>
+                            <option value="Changed my mind">Changed my mind</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    
+                        <textarea id="otherReason" class="form-control" placeholder="Enter reason..." style="display:none;"></textarea>
+                    
+                        <div class="modal-buttons mt-3">
+                            <button onclick="submitCancel()">Confirm Cancellation</button>
+                            <button onclick="closeCancelModal()">Close</button>
+                        </div>
+                    </div>
+                    
+                    
+                    
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8">
+                <h4>Order Items</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Item Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                                <% orders.products.forEach((Items,index)=>{ %>
+                            <tr>
+                                <td class="text-center">
+                                    <img src="<%= Items.product.images[0] %>" alt="No Image" width="80">
+                                </td>
+                                <td><%= Items.product.name %></td>
+                                <td><%= Items.quantity %></td>
+                                <td><%= Items.product.price %></td>
+                                <td>
+                                    <% if (Items.status === 'Canceled') { %>
+                                        <span style="color: rgb(76, 14, 14); font-weight: bold;">Canceled</span>
+                                        <% } else if (Items.status === "Return Requested") { %>
+                                            <button style="color: rgb(194, 168, 0); padding: 4px 10px; border: none;" 
+                                                    class="btn" disabled>
+                                                Return Requested
+                                            </button>
+                                            <% } else if (orders.orderStatus === "Delivered") { %>
+                                                <button style="background-color: rgb(156, 139, 9); color: white; padding: 4px 10px; border: none; border-radius: 15px;" 
+                                                        class="btn"onclick="openReturnModal('<%= orders._id %>', '<%= Items.product._id %>', <%= index %>)">
+                                                    Return
+                                                </button>
+                                            <div id="returnModal" style="display:none;">
+                                                <h4>Return Request</h4>
+                                                <p>Please select a reason for return:</p>
+                                                <select id="returnReason" class="form-select" onchange="toggleReturnOtherReason()">
+                                                    <option value="Wrong item received">Wrong item received</option>
+                                                    <option value="Item damaged">Item damaged</option>
+                                                    <option value="Quality not satisfactory">Quality not satisfactory</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                                <textarea id="returnOtherReason" class="form-control" placeholder="Enter reason..." style="display:none;"></textarea>
+                                                <div class="modal-buttons">
+                                                    <button onclick="submitReturnRequest()">Submit Request</button>
+                                                    <button onclick="closeReturnModal()">Close</button>
+                                                </div>
+                                            </div>
+                                            <div id="modalBackdrop" style="display:none;"></div>
+                                            
+                                    <% } else if (orders.orderStatus === "Shipped" || orders.orderStatus === "Delivered") { %>
+                                        <button style="background-color: rgb(94, 15, 15); color: white; padding: 4px 10px; border: none; border-radius: 15px;" 
+                                                onclick="alertShippedOrder()" 
+                                                class="btn">Cancel Item</button>
+                                    <% } else { %>
+                                        <button style="background-color: rgb(94, 15, 15); color: white; padding: 4px 10px; border: none; border-radius: 15px;" 
+                                                class="btn"onclick="openCancelModal('<%= orders._id %>', '<%= Items.product._id %>', <%= index %>)">Cancel Item</button>
+                                    <% } %>
+                                </td>
+                            </tr>
+                            <% }) %>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Amount -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-8">
+                <h4>Total Amount</h4>
+                <p>Rs.<%= orders.totalAmount %></p>
+            </div>
+        </div>
+
+        <!-- Review Section -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h4>Submit Your Review</h4>
+                <div class="mb-3">
+                    <p class="mb-1">Rating:</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <p class="mb-1">Your Review:</p>
+                    <textarea class="form-control" rows="4" placeholder="Write your review here..."></textarea>
+                </div>
+                <button class="btn submit-review-btn text-white rounded-pill">
+                    Submit Review
+                </button>
+            </div>
+        </div>
+    </div>
+     <!-- footer -->
+
+     <%- include('../partials/footer') %>  
+     <script>
+        function alertShippedOrder() {
+    Toastify({
+        text: "This order is already shipped and cannot be canceled. You can initiate a return if needed after delivered.",
+        duration: 5000,
+        gravity: "top",
+        position: "center",
+        style: { background: "orange", color: "black" },
+    }).showToast();
+}
+
+let currentReturnOrderId = null;
+let currentReturnProductId = null;
+let currentReturnProductIndex = null;
+
+function openReturnModal(orderId, productId, productIndex) {
+    currentReturnOrderId = orderId;
+    currentReturnProductId = productId;
+    currentReturnProductIndex = productIndex;
+
+    document.getElementById('returnModal').style.display = 'block';
+    document.getElementById('modalBackdrop').style.display = 'block';
+}
+
+function closeReturnModal() {
+    document.getElementById('returnModal').style.display = 'none';
+    document.getElementById('modalBackdrop').style.display = 'none';
+}
+
+function toggleReturnOtherReason() {
+    const reasonSelect = document.getElementById('returnReason');
+    document.getElementById('returnOtherReason').style.display = reasonSelect.value === 'Others' ? 'block' : 'none';
+}
+
+function submitReturnRequest() {
+    let reason = document.getElementById('returnReason').value;
+    if (reason === 'Others') {
+        reason = document.getElementById('returnOtherReason').value.trim();
+    }
+
+    if (!reason) {
+        Toastify({
+            text: "Please provide a return reason.",
+            duration: 3000,
+            gravity: "top",
+            position: "center",
+            style: { background: "purple" },
+        }).showToast();
+        return;
+    }
+
+    fetch(`/request-return/${currentReturnOrderId}/${currentReturnProductId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason, productIndex: currentReturnProductIndex })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Toastify({
+                text: "Return request submitted successfully!",
+                duration: 3000,
+                gravity: "top",
+                position: "center",
+                style: { background: "green" },
+            }).showToast();
+            
+            // Optionally update the UI to indicate "Return Requested"
+            const itemRow = document.querySelectorAll('table tbody tr')[currentReturnProductIndex];
+            const returnButton = itemRow.querySelector('button');
+            if (returnButton) {
+                const requestedText = document.createElement('span');
+                requestedText.innerText = 'Return Requested';
+                requestedText.style.color = 'orange';
+                returnButton.replaceWith(requestedText);
+            }
+        } else {
+            Toastify({
+                text: data.message || "Failed to submit return request.",
+                duration: 3000,
+                gravity: "top",
+                position: "center",
+                style: { background: "red" },
+            }).showToast();
+        }
+    })
+    .catch(() => {
+        Toastify({
+            text: "Something went wrong while requesting return.",
+            duration: 3000,
+            gravity: "top",
+            position: "center",
+            style: { background: "red" },
+        }).showToast();
+    });
+
+    closeReturnModal();
+}
+
+      let cancelMode = 'order';  
+let currentOrderId = null;
+let currentProductId = null;
+let currentProductIndex = null;  
+
+function openCancelModal(orderId, productId = null, productIndex = null) {
+    currentOrderId = orderId;
+    currentProductId = productId;
+    currentProductIndex = productIndex;
+
+    cancelMode = productId ? 'item' : 'order';
+
+    document.getElementById('cancelTargetLabel').innerText = cancelMode === 'order' ? 'Order' : 'Item';
+
+    document.getElementById('cancelModal').style.display = 'block';
+    document.getElementById('modalBackdrop').style.display = 'block'; 
+}
+
+function closeCancelModal() {
+    document.getElementById('cancelModal').style.display = 'none';
+    document.getElementById('modalBackdrop').style.display = 'none'; 
+}
+
+
+function toggleOtherReason() {
+    const reasonSelect = document.getElementById('cancelReason');
+    document.getElementById('otherReason').style.display = reasonSelect.value === 'Others' ? 'block' : 'none';
+}
+
+function submitCancel() {
+    let reason = document.getElementById('cancelReason').value;
+    if (reason === 'Others') {
+        reason = document.getElementById('otherReason').value.trim();
+    }
+
+    if (!reason) {
+        Toastify({
+            text: "Please provide a cancellation reason.",
+            duration: 3000,
+            gravity: "top",
+            position: "center",
+            style: { background: "purple" },
+        }).showToast();
+        return;
+    }
+
+    let url = cancelMode === 'order'
+        ? `/cancel-order/${currentOrderId}`
+        : `/cancel-order-item/${currentOrderId}/${currentProductId}`;
+
+    let body = { reason };
+    if (cancelMode === 'item') {
+        body.productIndex = currentProductIndex; 
+    }
+
+    fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Toastify({
+                text: `${cancelMode === 'order' ? 'Order' : 'Item'} canceled successfully!`,
+                duration: 1000,
+                gravity: "top",
+                position: "center",
+                style: { background: "purple" },
+            }).showToast();
+
+            if (cancelMode === 'order') {
+                document.getElementById('cancelOrderBtn').innerText = "Order Canceled!";
+                document.getElementById('cancelOrderBtn').disabled = true;
+
+                
+                document.querySelectorAll('table tbody tr').forEach(row => {
+                    const cancelButton = row.querySelector('button');
+                    if (cancelButton) {
+                        const canceledText = document.createElement('span');
+                        canceledText.innerText = 'Canceled';
+                        canceledText.style.color = 'rgb(76, 14, 14)';
+                        cancelButton.replaceWith(canceledText);
+                    }
+
+                });
+            } else if (cancelMode === 'item') {
+                // Find the specific item row using productIndex or productId
+                const itemRow = document.querySelectorAll('table tbody tr')[currentProductIndex];
+                const cancelButton = itemRow.querySelector('button');
+                if (cancelButton) {
+                    const canceledText = document.createElement('span');
+                    canceledText.innerText = 'Canceled';
+                    canceledText.style.color = 'rgb(76, 14, 14)';
+                    cancelButton.replaceWith(canceledText);
+                }
+                setTimeout(()=>{window.location.reload()},1000)
+                
+            }       
+
+        } else {
+            Toastify({
+                text: data.message || "Cancellation failed.",
+                duration: 3000,
+                gravity: "top",
+                position: "center",
+                style: { background: "red" },
+            }).showToast();
+        }
+    })
+    .catch(() => {
+        Toastify({
+            text: "Something went wrong!",
+            duration: 3000,
+            gravity: "top",
+            position: "center",
+            style: { background: "red" },
+        }).showToast();
+    });
+
+    closeCancelModal();
+}
+
+        </script>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</body>
+</html>

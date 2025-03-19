@@ -552,6 +552,37 @@
         return true;
       }
     </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+  const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB in bytes
+  const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "image/gif"];
+
+  const imageInputs = document.querySelectorAll('input[type="file"]');
+
+  imageInputs.forEach((imageInput) => {
+    imageInput.addEventListener("change", function (event) {
+      const file = event.target.files[0];
+
+      if (!file) return;
+
+      // Validate file type
+      if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+        alert("Invalid file type! Only JPG, JPEG, PNG, and GIF are allowed.");
+        event.target.value = ""; // Clear the input
+        return;
+      }
+
+      // Validate file size
+      if (file.size > MAX_FILE_SIZE) {
+        alert("File size exceeds 2MB! Please upload a smaller image.");
+        event.target.value = ""; // Clear the input
+        return;
+      }
+    });
+  });
+});
+
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
   </body>

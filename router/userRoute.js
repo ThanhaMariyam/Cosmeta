@@ -13,6 +13,8 @@ const {
   loadResetPassword,
   SetNewPassword,
   resendOtp,
+  searchingProduct,
+  referalCode
 } = require("../controller/user/userController");
 const {
   categoryLoad,
@@ -24,6 +26,7 @@ const {
   getBrandProd,
   getBrandProduct,
   getDetails,
+  
 } = require("../controller/user/userProductController");
 const {
   loadProfile,
@@ -47,9 +50,19 @@ const {loadCart,addToCart,remvCart,updateCart}=require("../controller/user/cartC
 const {addWishlist,remvWishlist,loadWishlist}=require("../controller/user/wishlistController")
 
 const { checkSession, isLogin } = require("../middleware/userAuth");
-const { loadCheckout,addCheckoutAddress,placeOrder,getconfirm,orderDetails,
-   order,downloadInvoice,cancelOrder,cancelItem, returnItem }
- = require("../controller/user/orderController")
+const { loadCheckout,addressSelection,placeOrder,getconfirm,orderDetails,
+   order,downloadInvoice,cancelOrder,cancelItem, returnItem,
+   trackOrder,
+   createRazorpayOrder,
+   verifyPayment,
+   retryPay,
+   getFailed,
+   getWalletBalance,
+   
+   }
+ = require("../controller/user/orderController");
+const { getWallet } = require("../controller/user/walletController");
+const { applyCoupons, remvCoupon } = require("../controller/user/couponcontrol");
 
 
 user.get("/signup",isLogin, loadSignup);
@@ -60,6 +73,7 @@ user.post("/login", login);
 
 user.get("/otp", loadOtp);
 user.post("/otp", verifyOtp);
+user.post("/check-referral-code",referalCode)
 
 user.get("/forgot", loadResetPassword);
 user.post("/forgot", SetNewPassword);
@@ -90,8 +104,9 @@ passport.authenticate("google", { failureRedirect: "/user/login" }),
     console.log("Session saved successfully!");
     next();
   });
+  res.redirect('/')
 },
-googleHome);
+getHome);
 user.get("/productDetails/:id", getProduct);
 user.get("/category", categoryLoad);
 user.get("/product", getCategoryProd);
@@ -100,6 +115,8 @@ user.get("/", getHome);
 user.get("/brand", loadBrand);
 user.get("/ProductDetail/:id", getBrandProduct);
 user.get("/Details/:id", getDetails);
+user.get("/search-products",searchingProduct)
+
 
 user.get("/profile",checkSession,loadProfile)
 user.post("/profile",checkSession,saveProfile)
@@ -115,19 +132,26 @@ user.put("/updateAddress",checkSession,editAddress)
 
 user.get("/orders",order)
 user.get("/orderDetails/:id",orderDetails)
+
 user.get("/download-invoice/:orderId",downloadInvoice)
 user.post("/cancel-order/:orderId", cancelOrder)
 user.post("/cancel-order-item/:orderId/:productId",cancelItem)
 user.post("/request-return/:orderId/:productId",returnItem)
 
 user.get("/cart", checkSession,loadCart);
-user.post('/cart/add',checkSession,addToCart)
+user.post('/cart/add',addToCart)
 user.post("/cart/remove",checkSession,remvCart)
 user.post("/cart/update",checkSession,updateCart)
 
 user.get("/checkout",checkSession,loadCheckout)
-user.post("/checkout",checkSession,addCheckoutAddress)
+
+user.post("/selectAddress",addressSelection)
 user.post("/placeOrder",checkSession,placeOrder)
+user.post("/createRazorpayOrder",createRazorpayOrder)
+user.post("/verifyPayment",verifyPayment)
+user.get("/retryPayment/:orderId",retryPay)
+user.get("/getWalletBalance",getWalletBalance)
+
 user.get("/orderConfirmation",checkSession,getconfirm)
 
 user.get("/wishlist",checkSession,loadWishlist)
@@ -138,5 +162,16 @@ user.get("/logout",logout)
 user.get("/404",(req,res)=>{
   res.render("user/404.ejs")
 })
+user.get("/500",(req,res)=>{
+  res.render("user/500.ejs")
+})
+user.get("/track/:id",trackOrder)
+user.get("/wallet",getWallet)
+user.get("/orderFailure",getFailed);
+
+user.post("/apply-coupon",applyCoupons)
+user.post("/remove-coupon",remvCoupon)
+
+
 
 module.exports = user;

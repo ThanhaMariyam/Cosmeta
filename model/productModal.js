@@ -29,6 +29,10 @@ const productSchema=new mongoose.Schema({
         default:true
 
     },
+    productOffer: {
+        type: Number,
+        default: 0
+      },
     shades:[{
         color:{
             type:String,
@@ -42,7 +46,11 @@ const productSchema=new mongoose.Schema({
     description:{
         type:String
     }
+    
 },
 {timestamps:true})
+
+
+
 
 module.exports=mongoose.model('product',productSchema)

@@ -1,18 +1,19 @@
 const wishlistSchema=require('../../model/wishlistModel')
 const productSchema=require('../../model/productModal')
+const httpStatus=require("../../utils/httpStatus")
 
 const addWishlist= async (req, res) => {
     try {
         const userId = req.session.user._id;
         if (!userId) {
-            return res.status(401).json({ success: false, message: 'User not logged in' });
+            return res.status(httpStatus.HttpStatus.UNAUTHORIZED).json({ success: false, message: 'User not logged in' });
         }
 
         const  productId = req.params.id;
         const product = await productSchema.findById(productId);
 
         if (!product) {
-            return res.status(404).json({ success: false, message: 'Product not found' });
+            return res.status(httpStatus.HttpStatus.NOT_FOUND).json({ success: false, message: 'Product not found' });
         }
 
         let wishlist = await wishlistSchema.findOne({ userId });
@@ -26,10 +27,10 @@ const addWishlist= async (req, res) => {
             await wishlist.save();
         }
 
-        res.json({ success: true, message: "Product added to wishlist" });
+        res.status(httpStatus.HttpStatus.OK).json({ success: true, message: "Product added to wishlist" });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Failed to add product to wishlist" });
+        res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).json({ success: false, message: "Failed to add product to wishlist" });
     }
 }
 
@@ -37,7 +38,7 @@ const remvWishlist=async (req, res) => {
     try {
         const userId = req.session.user._id;
         if(!userId){
-            return res.status(401).json({success:false,message:"user not logged in"})
+            return res.status(httpStatus.HttpStatus.UNAUTHORIZED).json({success:false,message:"user not logged in"})
         }
         const productId = req.params.id;
 
@@ -48,10 +49,10 @@ const remvWishlist=async (req, res) => {
             await wishlist.save();
         }
 
-        res.json({ success: true, message: "Product removed from wishlist" });
+        res.status(httpStatus.HttpStatus.OK).json({ success: true, message: "Product removed from wishlist" });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Failed to remove product from wishlist" });
+        res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).json({ success: false, message: "Failed to remove product from wishlist" });
     }
 }
 
@@ -63,13 +64,13 @@ const loadWishlist=async (req, res) => {
         }
         let wishlist = await wishlistSchema.findOne({ userId }).populate('products');
         if (!wishlist) {
-            wishlist = { products: [] }; // Ensure wishlist always exists
+            wishlist = { products: [] }; 
         }
         
         res.render('user/wishlist', { wishlist});
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Server error" });
+        res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
     }
 }
 

@@ -1,0 +1,124 @@
+
+    :root {
+      --primary-color: #0d6efd;
+      --sidebar-bg: #191c24;
+      --main-bg: #f0f2f5;
+      --card-bg: #ffffff;
+    }
+    
+    body {
+      background-color: var(--main-bg);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+   
+    
+   
+    
+    .nav-link {
+      color: #b6b8c3;
+      border-radius: 5px;
+      margin: 5px 0;
+      padding: 10px 15px;
+      transition: all 0.2s;
+    }
+    
+    .nav-link:hover, .nav-link.active {
+      background-color: rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      padding: 20px 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 15px;
+    }
+    
+    .logo-text {
+      letter-spacing: 2px;
+    }
+    
+    .stat-card {
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      transition: transform 0.3s;
+      height: 100%;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      font-size: 20px;
+    }
+    
+    .stat-title {
+      font-size: 14px;
+      color: #6c757d;
+    }
+    
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    
+    .card-header {
+      background-color: transparent;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .table th {
+      font-weight: 600;
+      color: #495057;
+    }
+    
+    .status-badge {
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .confirmed {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .pending {
+      background-color: #fff8e1;
+      color: #f57f17;
+    }
+    
+    .cancelled {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    
+    
+    
+    .chart-container {
+      position: relative;
+      height: 300px;
+      width: 100%;
+    }
+  

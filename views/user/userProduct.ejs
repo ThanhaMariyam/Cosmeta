@@ -1,82 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Products</title>
-    <link rel="stylesheet" href="/userSignup.css" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <link rel="stylesheet" href="/userProd.css" />
-    
-  </head>
-  <body>
-    <!-- Header -->
-    <%- include('../partials/nav.ejs') %>
-    <!-- navbar -->
-    <div class="box">
-      <div class="item">
-        <a href="/">Home</a>
-        <a style="color: purple" href="">Category</a>
-        <a href="/brand">Brand</a>
-        <a href="">About us</a>
-        <a href="">Contact us</a>
-      </div>
-      <%- include('../partials/header.ejs') %>
-    </div>
-    <!-- heading -->
-    <div class="bread">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/category">Category</a></li>
-          <li class="breadcrumb-item active" aria-current="page">
-            <%= category?category.name:'unknown Category' %>
-          </li>
-        </ol>
-      </nav>
-    </div>
 
-    <div class="container headings">
-      <h3 class="mb-3">
-        Collection of <%= category?category.name:'unknown Category'%>
-      </h3>
-      <p class="text-muted">-The real beauty destination-</p>
-      <p class="mb-4">Showing <%= products.length %> products</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Products</title>
+  <link rel="stylesheet" href="/userSignup.css" />
+  <link rel="stylesheet" href="/search.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/userProd.css" />
+  <style>
+    .sold-out-btn {
+      background-color: #a0a0a0 !important;
+      border: none !important;
+      cursor: not-allowed !important;
+      pointer-events: none;
+      height: 43px;
+      width: 120px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <%- include('../partials/nav.ejs') %>
+
+  <div class="box">
+    <div class="item">
+      <a href="/">Home</a>
+      <a style="color: purple" href="">Category</a>
+      <a href="/brand">Brand</a>
+      <a href="">About us</a>
+      <a href="">Contact us</a>
     </div>
+    <%- include('../partials/header.ejs') %>
+  </div>
 
-    <!-- main content -->
+  <div class="bread">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/category">Category</a></li>
+        <li class="breadcrumb-item active" aria-current="page">
+          <%= category?category.name:'unknown Category' %>
+        </li>
+      </ol>
+    </nav>
+  </div>
 
-    <div class="container pics">
-      <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-        <% products.forEach(function(product) { %>
-          
-        <div class="col">
-          <div class="card h-100">
-            <a
-                href="/productDetails/<%= product._id %>"
-                
-                style="text-decoration: none; color: rgb(0, 0, 0);">
-            <img
-              src="<%= product.images[0] %>"
-              class="img-fluid card-img-top"
-              alt="<%= product.name %>"
-            />
+  <div class="container headings">
+    <h3 class="mb-3">
+      Collection of <%= category?category.name:'unknown Category'%>
+    </h3>
+    <p class="text-muted">-The real beauty destination-</p>
+    <p class="mb-4">Showing <%= products.length %> products</p>
+  </div>
+
+
+
+  <div class="container pics">
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+      <% products.forEach(function(product) { %>
+
+      <div class="col">
+        <div class="card h-100">
+
+          <a href="/productDetails/<%= product._id %>" style="text-decoration: none; color: rgb(0, 0, 0);">
+            <img src="<%= product.images[0] %>" class="img-fluid card-img-top" alt="<%= product.name %>" />
             <div class="card-body">
               <h5 class="card-title"><%= product.name %></h5>
               <p class="card-text">
-                <i class="bi bi-currency-rupee"></i><%= product.price %>
+                <% if (product.highestDiscount > 0) { %>
+                <del>₹<%= product.price %></del>
+                <span style="color: rgb(0, 0, 0); font-weight: bold;">₹<%= product.discountedPrice %></span>
+                <span style="color: rgb(99, 14, 91); font-weight: 500;">(<%= product.highestDiscount %>% OFF)</span>
+                <% } else { %>
+                <span style="color: black; font-weight: bold;">₹<%= product.price %></span>
+                <% } %>
               </p>
-            </a>
-              <% if (product.stock <= 0) { %>
-              <p
-                style="
+          </a>
+          <% if (product.stock <= 0) { %>
+          <p style="
                   background-color: rgb(255, 255, 255);
                   border: none;
                   color: rgb(138, 0, 0);
@@ -86,13 +92,11 @@
                   margin-left: 85px;
                   font-size: small;
                   font-weight: bold;
-                "
-              >
-                Out of Stock
-              </p>
-              <% } else if(product.stock <=3) { %>
-              <p
-                style="
+                ">
+            Out of Stock
+          </p>
+          <% } else if(product.stock <=3) { %>
+          <p style="
                   background-color: rgb(255, 255, 255);
                   border: none;
                   color: rgb(138, 0, 0);
@@ -102,87 +106,85 @@
                   margin-left: 85px;
                   font-size: small;
                   font-weight: bold;
-                "
-              >
-                Only few left
-              </p>
-              <% } %>
-              <div class="d-flex mb-3" style="margin-left: 30px;">
-                <button id="add-to-cart-btn-<%= product._id %>" class="btn btn-primary" onclick="addToCart('<%= product._id %>', 'add-to-cart-btn-<%= product._id %>')">
-                  <i class="bi bi-bag-fill me-2"></i>Add to Cart
-              </button>
-                
-              <button
-              style="border: 1px solid purple; height: 44px; margin-top: 10px; margin-left: 2px; padding-top: 3px;
-              padding-left: 15px; padding-right: 15px; font-size: x-large; font-weight: bold;"
-              class="wishlist-btn btn addWish"
-              data-id="<%= product._id %>"
-              onclick="addToWishlist('<%= product._id %>')">
-              <i style="color: rgb(167, 68, 136)" class="bi bi-heart "></i>
-          </button>
-              
-              </div>
-            </div>
+                ">
+            Only few left
+          </p>
+          <% } %>
+          <div class="d-flex mb-3" style="margin-left: 30px;">
+            <% if (product.stock <= 0) { %>
+            <button class="btn btn-secondary sold-out-btn">
+              Sold Out
+            </button>
+            <% } else if(productInCart.includes(product._id.toString())) { %>
+            <button class="btn btn-primary  add-cart-btn" data-product-id="<%= product._id %>" onclick="goToCart()">
+              <i class="bi bi-bag-fill me-2"></i>Go to Cart
+            </button>
+
+            <% } else{ %>
+
+            <button id="add-to-cart-btn-<%= product._id %>" class="btn btn-primary add-cart-btn" data-product-id="<%= product._id %>" onclick="addToCart('<%= product._id %>', 'add-to-cart-btn-<%= product._id %>')">
+              <i class="bi bi-bag-fill me-2"></i>Add to Cart
+            </button>
+            <% } %>
+
+            <% if(productInWish.includes(product._id.toString())) { %>
+            <button class="wishlist-btn" data-id="<%= product._id %>" onclick="removeFromWishlist('<%= product._id %>')" style="border: 1px solid purple; height: 44px; margin-top: 10px; margin-left: 2px; padding-top: 3px;
+              padding-left: 15px; padding-right: 15px; font-size: x-large; font-weight: bold;">
+              <i style="color: rgb(167, 68, 136)" class="bi bi-heart-fill"></i>
+            </button>
+            <% } else{ %>
+            <button style="border: 1px solid purple; height: 44px; margin-top: 10px; margin-left: 2px; padding-top: 3px;
+              padding-left: 15px; padding-right: 15px; font-size: x-large; font-weight: bold;" class="btn addWish wishlist-btn" data-id="<%= product._id %>" onclick="addToWishlist('<%= product._id %>')">
+              <i style="color: rgb(167, 68, 136)" class="bi bi-heart"></i>
+            </button>
+            <% } %>
           </div>
         </div>
-       
-        <% }); %>
       </div>
-
-      <nav aria-label="Page navigation" class="mt-4">
-        <ul class="pagination justify-content-center">
-          <!-- Previous Page -->
-          <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-            <% if (category) { %>
-            <a
-              class="page-link"
-              href="/product?page=<%= currentPage - 1 %>&category=<%= category._id %>"
-              aria-label="Previous"
-            >
-              <span aria-hidden="true">&laquo;</span>
-            </a>
-            <% } %>
-          </li>
-
-          <!-- Page Numbers -->
-          <% for (let i = 1; i <= totalPages; i++) { %>
-          <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-            <% if (category) { %>
-            <a
-              class="page-link"
-              href="/product?page=<%= i %>&category=<%= category._id %>"
-              ><%= i %></a
-            >
-            <% } %>
-          </li>
-          <% } %>
-
-          <!-- Next Page -->
-          <li
-            class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>"
-          >
-            <% if (category) { %>
-            <a
-              class="page-link"
-              href="/product?page=<%= currentPage + 1 %>&category=<%= category._id %>"
-              aria-label="Next"
-            >
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-            <% } %>
-          </li>
-        </ul>
-      </nav>
     </div>
-    <!-- footer -->
-    <%- include('../partials/footer') %>
-    <script src="/script/cart.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
-    <script src="/script/wishlist.js"></script>
-  </body>
+
+    <% }); %>
+  </div>
+
+  <nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+
+      <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+        <% if (category) { %>
+        <a class="page-link" href="/product?page=<%= currentPage - 1 %>&category=<%= category._id %>" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+        <% } %>
+      </li>
+
+
+      <% for (let i = 1; i <= totalPages; i++) { %>
+      <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+        <% if (category) { %>
+        <a class="page-link" href="/product?page=<%= i %>&category=<%= category._id %>"><%= i %></a>
+        <% } %>
+      </li>
+      <% } %>
+
+
+      <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+        <% if (category) { %>
+        <a class="page-link" href="/product?page=<%= currentPage + 1 %>&category=<%= category._id %>" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+        <% } %>
+      </li>
+    </ul>
+  </nav>
+  </div>
+
+  <%- include('../partials/footer') %>
+  <script src="/script/cart.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="/script/wishlist.js"></script>
+  <script src="/script/search.js"></script>
+</body>
+
 </html>

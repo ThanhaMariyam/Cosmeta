@@ -6,7 +6,7 @@ const {
   loadLogin,
   login,
   logout,
-  adminHome,
+
 } = require("../controller/admin/adminController");
 const {
   loadProduct,
@@ -15,6 +15,7 @@ const {
   loadAddProduct,
   productEditPage,
   editProduct,
+  liveSearchProducts,
 } = require("../controller/admin/productController");
 const {
   addCategory,
@@ -42,18 +43,36 @@ const {orderLists,
   rejectReturn
 } = require("../controller/admin/orderManagement")
 
+const {
+  getCoupon,
+  addCoupons,
+  getCouponIdToEdit,
+  editCoupon,
+  toggleCouponStatus
+  
+}=require("../controller/admin/couponController")
+
 const { checkSession, isLogin } = require("../middleware/adminAuth");
+const { stockPage, updatingStock,stockSearch } = require("../controller/admin/stockController");
+const { setOffer, offerStatus, editOffer, getOffer } = require("../controller/admin/offerController");
+const { getDashboard,generatePDFReport,getTopSelling,downloadPDF, downloadExcel,salesReport, getTopSellingBrands, getTopSellingCategories }=require("../controller/admin/salesController");
+const { getWalletTransaction, getWalletTransactionDetails } = require("../controller/admin/userWalletController");
 
 admin.get("/login", isLogin, loadLogin);
 admin.post("/login", isLogin, login);
-admin.get("/dashboard", checkSession, adminHome);
+
+
 
 admin.get("/products", checkSession, loadProduct);
+admin.get("/products/search",liveSearchProducts )
 admin.get("/products/add", checkSession, loadAddProduct);
 admin.post("/products/add", upload.array("images", 3),checkSession, addProduct);
 admin.get("/products/edit/:id", checkSession, productEditPage);
 admin.post("/products/edit/:id", upload.array("images", 3), editProduct);
 admin.post("/products/toggle-list/:id", productListing);
+admin.get("/inventory",stockPage)
+admin.get("/inventory/search",stockSearch)
+admin.post("/updateStock/:productId",updatingStock)
 
 admin.get("/user", checkSession, loadUser);
 admin.post("/user/block/:id", blockUser);
@@ -76,5 +95,29 @@ admin.put("/updateOrderStatus/:orderId",orderStatus)
 admin.get("/return",returnOrder)
 admin.post("/approveReturn/:orderId/:productId",approveReturn)
 admin.post("/rejectReturn/:orderId/:productId",rejectReturn)
+
+admin.get("/coupon",getCoupon)
+admin.post("/coupons/add",addCoupons)
+admin.get("/coupons/:id",getCouponIdToEdit)
+admin.put("/coupons/edit/:id",editCoupon)
+admin.put("/coupons/toggle/:id",toggleCouponStatus)
+
+admin.post("/offers/add",setOffer)
+admin.put("/offers/toggle/:id",offerStatus)
+admin.put("/offers/edit/:id",editOffer)
+admin.get("/offer",getOffer)
+
+admin.get("/dashboard",getDashboard)
+admin.get("/salesPdf",generatePDFReport)
+admin.get("/topSelling",getTopSelling)
+admin.get("/topSellingBrand",getTopSellingBrands)
+admin.get("topSellingCategory",getTopSellingCategories)
+admin.get("/salesReport",salesReport)
+admin.get("/downloadPdf",downloadPDF)
+admin.get("/downloadExcel",downloadExcel)
+
+admin.get('/userWallet',getWalletTransaction)
+admin.get('/wallet/transaction/:id',getWalletTransactionDetails)
+
 
 module.exports = admin;

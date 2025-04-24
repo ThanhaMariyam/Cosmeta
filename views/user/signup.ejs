@@ -1,196 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cosmela - Create Account</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <link rel="stylesheet" href="/userSignup.css" />
-  </head>
-  <body>
-    <!-- Header -->
-    <%- include('../partials/nav.ejs') %>
 
-    <!-- Main Content -->
-    <div class="main-content">
-      <div class="form-container">
-        <h2 class="text-center">Create an account</h2>
-        <p class="text-center">
-          Already have an account? <a href="/login">Signin</a>
-        </p>
-        <p
-          style="
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cosmela - Create Account</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/userSignup.css" />
+</head>
+
+<body>
+  <%- include('../partials/nav.ejs') %>
+
+  <div class="main-content">
+    <div class="form-container">
+      <h2 class="text-center">Create an account</h2>
+      <p class="text-center">
+        Already have an account? <a href="/login">Signin</a>
+      </p>
+      <p style="
             margin-left: 30%;
             margin-top: 0;
             font-size: smaller;
             font-weight: bold;
-          "
-          class="text-danger"
-        >
-          <%= message %>
-        </p>
-        <form
-          id="signupForm"
-          action="/signup"
-          method="post"
-          onsubmit="return validateform()"
-        >
-          <div class="form-style">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Username"
-              name="username"
-              id="fullname"
-              onkeyup="validateName()"
-            />
-            <span id="name-error"></span>
-          </div>
-          <div class="form-style">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Email"
-              name="email"
-              id="email"
-              onkeyup="validateEmail()"
-            />
-            <span id="email-error"></span>
-          </div>
-          <div class="form-style">
-            <input
-              type="password"
-              class="form-control"
-              placeholder="Password"
-              name="password"
-              id="password"
-              onkeyup="validatePassword()"
-            />
-            <span id="password-error"></span>
-          </div>
-          <div class="form-style">
-            <input
-              type="password"
-              class="form-control"
-              placeholder="Confirm Password"
-              id="confirm-password"
-              oninput="validateConfirm()"
-            />
-            <span id="confirm-error"></span>
-          </div>
+          " class="text-danger">
+        <%= message %>
+      </p>
+      <form id="signupForm" action="/signup" method="post" onsubmit="return validateform(event)">
+        <div class="form-style">
+          <input type="text" class="form-control" placeholder="Username" name="username" id="fullname" onkeyup="validateName()" />
+          <span id="name-error"></span>
+        </div>
+        <div class="form-style">
+          <input type="text" class="form-control" placeholder="Email" name="email" id="email" onkeyup="validateEmail()" />
+          <span id="email-error"></span>
+        </div>
+        <div class="form-style">
+          <input type="password" class="form-control" placeholder="Password" name="password" id="password" onkeyup="validatePassword()" />
+          <span id="password-error"></span>
+        </div>
+        <div class="form-style">
+          <input type="password" class="form-control" placeholder="Confirm Password" id="confirm-password" oninput="validateConfirm()" />
+          <span id="confirm-error"></span>
+        </div>
 
-          <div>
-            <button type="submit" class="btn btn-primary w-100">Sign up</button>
-            <div><span id="submit-error"></span></div>
-          </div>
+        <div class="form-style" style="position: relative; display: inline-block; width: 100%">
+          <input type="text" class="form-control" placeholder="Referral Code(Optional)" name="referralCode" id="referralInput" style="padding-right: 70px" />
+          <button id="verifyButton" onclick="verifyReferralCode(event)" type="button" style="
+                position: absolute;
+                right: 10px;
+                top: 40%;
+                transform: translateY(-50%);
+                background: none;
+                border: none;
+                color: rgb(119, 6, 117);
+                cursor: pointer;
+              ">
+            Verify
+          </button>
+        </div>
+        <span id="referral-error" class="referral-error"></span>
 
-          <div class="social-login text-center">
-            <p class="text-muted mb-3">or continue with</p>
-            <div class="d-flex justify-content-center gap-3">
-              <button
-                type="button"
-                class="btn btn-outline-secondary flex-grow-1"
-                onclick="window.location.href='/auth/google'"
-              >
-                <i class="bi bi-google me-2"></i> Google
-              </button>
-            </div>
+        <div>
+          <button type="submit" class="btn btn-primary w-100">Sign up</button>
+          <div><span id="submit-error"></span></div>
+        </div>
+
+        <div class="social-login text-center">
+          <p class="text-muted mb-3">or continue with</p>
+          <div class="d-flex justify-content-center gap-3">
+            <button type="button" class="btn btn-outline-secondary flex-grow-1" onclick="window.location.href='/auth/google'">
+              <i class="bi bi-google me-2"></i> Google
+            </button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <!-- Footer -->
-    <%- include('../partials/footer') %>
-    <script>
-      var nameerror = document.getElementById("name-error");
-      var emailerror = document.getElementById("email-error");
-      var passworderror = document.getElementById("password-error");
-      var confirmerror = document.getElementById("confirm-error");
-      var submiterror = document.getElementById("submit-error");
+  <%- include('../partials/footer') %>
+  <script>
+    var nameerror = document.getElementById("name-error");
+    var emailerror = document.getElementById("email-error");
+    var passworderror = document.getElementById("password-error");
+    var confirmerror = document.getElementById("confirm-error");
+    var submiterror = document.getElementById("submit-error");
 
-      function validateName() {
-        var name = document.getElementById("fullname").value;
-        if (name.length === 0) {
-          nameerror.innerHTML = "Name is required";
-          return false;
-        }
-        if (name.length < 3) {
-          nameerror.innerHTML = "require atleat 3 characters";
-          return false;
-        }
-        if (!name.match(/^[A-Za-z]/)) {
-          nameerror.innerHTML = "Name Invalid";
-          return false;
-        }
-        nameerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+    function validateName() {
+      var name = document.getElementById("fullname").value;
+      if (name.length === 0) {
+        nameerror.innerHTML = "Name is required";
+        return false;
+      }
+      if (name.length < 3) {
+        nameerror.innerHTML = "require atleat 3 characters";
+        return false;
+      }
+      if (!name.match(/^[A-Za-z]/)) {
+        nameerror.innerHTML = "Name Invalid";
+        return false;
+      }
+      nameerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+      return true;
+    }
+
+    function validateEmail() {
+      var mail = document.getElementById("email").value;
+      if (mail.length == 0) {
+        emailerror.innerHTML = "Email is required";
+        return false;
+      }
+      if (!mail.match(/^[A-Za-z][a-z0-9_]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)) {
+        emailerror.innerHTML = "Email Invalid";
+        return false;
+      }
+      emailerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+      return true;
+    }
+
+    function validatePassword() {
+      var password = document.getElementById("password").value;
+      if (password.length == 0) {
+        passworderror.innerHTML = "password is required";
+        return false;
+      }
+      if (
+        !password.match(/^(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+      ) {
+        passworderror.innerHTML =
+          "Password needs atleast 8 characters,uppercase & special characters.";
+        return false;
+      }
+      passworderror.innerHTML = "";
+      return true;
+    }
+
+    function validateConfirm() {
+      var confirmPassword = document.getElementById("confirm-password").value;
+      var password = document.getElementById("password").value;
+      if (password !== confirmPassword) {
+        confirmerror.innerHTML = "password do not match";
+        return false;
+      }
+      confirmerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+      return true;
+    }
+
+    async function validateform(event) {
+      event.preventDefault();
+
+      submiterror.innerHTML = "";
+
+      let isValid =
+        validateName() &&
+        validateEmail() &&
+        validatePassword() &&
+        validateConfirm();
+
+      if (!isValid) {
+        submiterror.innerHTML = "Fix errors to Signup";
+        return false;
+      }
+
+      const isReferralValid = await verifyReferralCode();
+      if (!isReferralValid) {
+        submiterror.innerHTML = "Fix errors to Signup";
+        return false;
+      }
+
+      console.log("Validation passed. Submitting...");
+      event.target.submit();
+    }
+
+    async function verifyReferralCode(event) {
+      if (event) event.preventDefault();
+
+      const referralInput = document.getElementById("referralInput");
+      const referralError = document.getElementById("referral-error");
+      const referralCode = referralInput.value.trim();
+
+      if (!referralCode) {
+        referralError.innerHTML = "";
         return true;
       }
 
-      function validateEmail() {
-        var mail = document.getElementById("email").value;
-        if (mail.length == 0) {
-          emailerror.innerHTML = "Email is required";
-          return false;
-        }
-        if (!mail.match(/^[A-Za-z][a-z0-9_]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/)) {
-          emailerror.innerHTML = "Email Invalid";
-          return false;
-        }
-        emailerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
-        return true;
-      }
-      function validatePassword() {
-        var password = document.getElementById("password").value;
-        if (password.length == 0) {
-          passworderror.innerHTML = "password is required";
-          return false;
-        }
-        if (
-          !password.match(/^(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
-        ) {
-          passworderror.innerHTML =
-            "Password needs atleast 8 characters,uppercase & special characters.";
-          return false;
-        }
-        passworderror.innerHTML = "";
-        return true;
-      }
-      function validateConfirm() {
-        var confirmPassword = document.getElementById("confirm-password").value;
-        var password = document.getElementById("password").value;
-        if (password !== confirmPassword) {
-          confirmerror.innerHTML = "password do not match";
-          return false;
-        }
-        confirmerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
-        return true;
-      }
-      function validateform() {
-        if (
-          !validateName() ||
-          !validateEmail() ||
-          !validatePassword() ||
-          !validateConfirm()
-        ) {
-          submiterror.innerHTML = "Fix errors to Signup";
-          return false;
-        }
-        return true;
-      }
-    </script>
+      try {
+        const response = await fetch("/check-referral-code", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            referralCode
+          }),
+        });
 
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
-  </body>
+        const result = await response.json();
+
+        if (!result.exists) {
+          referralError.innerHTML = "Invalid referral code!";
+          return false;
+        }
+
+        referralError.innerHTML = "";
+        return true;
+      } catch (error) {
+        console.error("Referral check failed:", error);
+        referralError.innerHTML = "Something went wrong!";
+        return false;
+      }
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+
 </html>

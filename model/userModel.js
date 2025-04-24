@@ -35,7 +35,11 @@ const userSchema=new mongoose.Schema({
     bonusPoints:{
         type:Number,
         default:0
-    }
+    },
+    referralCode: { 
+        type: String,
+         unique: true 
+        }
 
 
 })

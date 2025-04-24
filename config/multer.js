@@ -6,10 +6,10 @@ const storage = new CloudinaryStorage({
   cloudinary,
   params: {
     folder: 'cosmeta',
-    allowed_formats: ['jpg', 'jpeg', 'png'],
-    transformation: [{ width: 500, height: 500, crop: 'limit' }],
+    allowed_formats: ['jpg', 'jpeg', 'png']
   },
-});
+  });
+ 
 
 const upload = multer({
   storage,
@@ -22,6 +22,8 @@ const upload = multer({
     }
   },
 });
+
+console.log(upload)
 
 
 

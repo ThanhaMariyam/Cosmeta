@@ -1,100 +1,90 @@
-<!-- views/brands.ejs -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Brand Showcase</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-  />
-    <link rel="stylesheet" href="/userSignup.css">
-    <link rel="stylesheet" href="/userBrand.css">
-  </head>
-  <body>
-   <!-- Header -->
-   <%- include('../partials/nav.ejs') %>
-   <!-- navbar -->
-   <div class="box">
-     <div class="item">
-       <a href="/">Home</a>
-       <a href="/category">Category</a>
-       <a style="color: purple" href="/brand">Brand</a>
-       <a href="">About us</a>
-       <a href="">Contact us</a>
-     </div>
-     <%- include('../partials/header.ejs') %>
-   </div>
-   
-        <div class="container py-5">
-            <div class="row row-cols-1 row-cols-md-3 g-4">
-              <% brands.forEach(brand => { %>
-              <div class="col">
-                <a style="text-decoration: none;" href="/products?brand=<%= brand._id %>">
-                <div class="card h-100 brand-card">
-                  <div class="card-header">
-                    <h5
-                      style="
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Showcase</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/userSignup.css">
+  <link rel="stylesheet" href="/userBrand.css">
+  <link rel="stylesheet" href="/search.css">
+</head>
+
+<body>
+
+  <%- include('../partials/nav.ejs') %>
+
+  <div class="box">
+    <div class="item">
+      <a href="/">Home</a>
+      <a href="/category">Category</a>
+      <a style="color: purple" href="/brand">Brand</a>
+      <a href="">About us</a>
+      <a href="">Contact us</a>
+    </div>
+    <%- include('../partials/header.ejs') %>
+  </div>
+
+  <div class="container py-5">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      <% brands.forEach(brand => { %>
+      <div class="col">
+        <a style="text-decoration: none;" href="/products?brand=<%= brand._id %>">
+          <div class="card h-100 brand-card">
+            <div class="card-header">
+              <h5 style="
                         font-style: italic;
                         font-family: 'Times New Roman', Times, serif;
                         font-weight: bold;
                         color: purple;
                         font-size: 26px;
-                      "
-                      class="card-title mb-0"
-                    >
-                      <%= brand.name %>
-                      
-                    </h5>
-                  </div>
-                  <div class="card-body">
-                    <% if (brand.origin) { %>
-                    <p class="card-text"><%= brand.origin %></p>
-                    <% } %>
-                  </div>
-                </div>
-            </a>
-              </div>
-              <% }); %>
+                      " class="card-title mb-0">
+                <%= brand.name %>
+
+              </h5>
+            </div>
+            <div class="card-body">
+              <% if (brand.origin) { %>
+              <p class="card-text"><%= brand.origin %></p>
+              <% } %>
             </div>
           </div>
-      
-
-    
-
-    
-    <nav aria-label="Page navigation" class="mt-4">
-        <ul class="pagination justify-content-center">
-            <li class="page-item <%= currentPage===1?'disabled':'' %>">
-                <a class="page-link" href="/brand?page=<%= currentPage-1 %>" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <% for (let i = 1; i <= totalPages; i++) { %>
-                <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                    <a class="page-link" href="/brand?page=<%= i %>"><%= i %></a>
-                </li>
-            <% } %>
-            <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
-                <a class="page-link" href="/brand?page=<%= currentPage + 1 %>" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+        </a>
+      </div>
+      <% }); %>
     </div>
+  </div>
 
 
-    <!-- footer -->
 
-    <%- include('../partials/footer') %>
-    
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
+
+  <nav aria-label="Page navigation" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item <%= currentPage===1?'disabled':'' %>">
+        <a class="page-link" href="/brand?page=<%= currentPage-1 %>" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <% for (let i = 1; i <= totalPages; i++) { %>
+      <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+        <a class="page-link" href="/brand?page=<%= i %>"><%= i %></a>
+      </li>
+      <% } %>
+      <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+        <a class="page-link" href="/brand?page=<%= currentPage + 1 %>" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  </div>
+  <%- include('../partials/footer') %>
+
+  <script src="/script/search.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>

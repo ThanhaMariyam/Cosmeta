@@ -1,18 +1,18 @@
-<div class="search" > 
-    <input type="text" placeholder="Search">
-    <i class="bi bi-search"></i>
+<div class="search">
+  <input type="text" id="searchInput" placeholder="Search" autocomplete="off">
+  <i class="bi bi-search"></i>
+  <div id="searchResults" class="search-dropdown"></div>
 </div>
 <% if (!user) { %>
- <h1><%user%></h1>
-<a id="signupBtn" style="background-color: purple; color: white; height: 37px; margin-top: 27px; margin-left: 80px;"
- href="/login" class="btn">Signin</a>
- <% } %>
- <% if (user) { %>
+<h1><%user%></h1>
+<a id="signupBtn" style="background-color: purple; color: white; height: 37px; margin-top: 27px; margin-left: 80px;" href="/login" class="btn">Signin</a>
+<% } %>
+<% if (user) { %>
 <div class="small">
-    <a href="/wishlist"><i class="bi bi-heart-fill"></i> </a>
+  <a href="/wishlist"><i class="bi bi-heart-fill"></i> </a>
 
-   <a href="/cart"><i class="bi bi-bag-fill" style="position: relative;">
-    <span id="cart-badge" class="badge" style="position: absolute;
+  <a href="/cart"><i class="bi bi-bag-fill" style="position: relative;">
+      <span id="cart-badge" class="badge" style="position: absolute;
     top: 15px;
     right: -5px;
     background: rgb(142, 35, 200);
@@ -26,14 +26,10 @@
     border-radius: 50%;
     font-weight: bold;
     visibility: hidden;">0</span>
-   </i></a>
-    
-  
-    <a href="/profile"> <i class="bi bi-person-circle"></i></a>
-    <% } %>
-   
+    </i></a>
+
+
+  <a href="/profile"> <i class="bi bi-person-circle"></i></a>
+  <% } %>
+
 </div>
-
-
-
-   

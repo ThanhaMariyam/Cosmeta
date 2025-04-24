@@ -1,491 +1,532 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosmeta Admin - Edit Product</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
-    <style>
-        .sidebar {
-            min-height: 100vh;
-            background-color: #1a1a1a;
-            color: white;
-        }
-        .sidebar .nav-link {
-            color: #ffffff;
-            padding: 0.8rem 1rem;
-            opacity: 0.8;
-        }
-        .sidebar .nav-link:hover {
-            opacity: 1;
-            background: rgba(255,255,255,0.1);
-        }
-        .sidebar .nav-link.active {
-            background: rgba(255,255,255,0.1);
-            opacity: 1;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cosmeta Admin - Edit Product</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+  <style>
+    .sidebar {
+      min-height: 100vh;
+      background-color: #1a1a1a;
+      color: white;
+    }
 
-        .form-style{
-    position: relative;
-    font-size: 15px;
-  }
-  .form-style span{
-    position: absolute;
-    left: 55%;
-    bottom: 3px;
-    font-size: small;
-  }
-  #submit-error{
-    color: red;
-    font-size: small;
-  }
-  .form-style span i{
-    color: seagreen;
-    font-size: 15px;
-    
-  }
-    </style>
+    .sidebar .nav-link {
+      color: #ffffff;
+      padding: 0.8rem 1rem;
+      opacity: 0.8;
+    }
+
+    .sidebar .nav-link:hover {
+      opacity: 1;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar .nav-link.active {
+      background: rgba(255, 255, 255, 0.1);
+      opacity: 1;
+    }
+
+    .form-style {
+      position: relative;
+      font-size: 15px;
+    }
+
+    .form-style span {
+      position: absolute;
+      left: 55%;
+      bottom: 3px;
+      font-size: small;
+    }
+
+    #submit-error {
+      color: red;
+      font-size: small;
+    }
+
+    .form-style span i {
+      color: seagreen;
+      font-size: 15px;
+
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-auto px-0 sidebar">
-                <div class="d-flex flex-column p-3">
-                    <h3 class="mb-4">Cosmeta</h3>
-                    <ul class="nav nav-pills flex-column gap-2">
-                        <li class="nav-item">
-                            <a href="/admin/dashboard" class="nav-link">
-                                <i class="bi bi-speedometer2 me-2"></i>Dashboard
-                            </a>
-                        </li>
-                        <!-- Sidebar options go here -->
-                    </ul>
-                    <a href="/admin/logout">
-                        <button style="margin-left: 9%;" class="btn btn-outline-light mt-auto">
-                            <i class="bi bi-box-arrow-right me-2"></i>Logout
-                        </button>
-                    </a>
-                </div>
-            </div>
+  <div class="container-fluid">
+    <div class="row">
 
-            <!-- Main Content -->
-            <div class="col px-4 py-3">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>Edit Product</h2>
-                    <a href="/admin/products" class="btn btn-outline-secondary">
-                        <i class="bi bi-arrow-left me-2"></i>Back to Products
-                    </a>
-                </div>
+      <div class="col-auto px-0 sidebar">
+        <div class="d-flex flex-column p-3">
+          <h3 class="mb-4">Cosmeta</h3>
+          <ul class="nav nav-pills flex-column gap-2">
+            <li class="nav-item">
+              <a href="/admin/dashboard" class="nav-link">
+                <i class="bi bi-speedometer2 me-2"></i>Dashboard
+              </a>
+            </li>
 
-                <div class="card">
-                    <div class="card-body">
-                        <form id="editProductForm" action="/admin/products/edit/<%= product._id %>" enctype="multipart/form-data" onsubmit="return validateProduct()">
-                            <div class="row mb-3">
-                                <div class="col-md-6 form-style">
-                                    <label class="form-label" >Product Name</label>
-                                    <input type="text" id="try" value="<%=product.id%>" hidden>
-                                    <input type="text" class="form-control" name="name" value="<%= product.name %>"  id="productName"onkeyup="validateName()">
-                                    <span id="name-error" style="color: red;"></span>
-                                </div>
-                                <div class="col-md-6 form-style">
-                                    <label class="form-label">Brand</label>
-                                    <select class="form-select" name="brand" 
-                                    id="productBrand" onkeyup="validateBrand()">
-                                        <% brands.forEach(function(brand) { %>
-                                            <option value="<%= brand._id%>" <%= product.brand === brand._id.toString() ? 'selected' : '' %>>
-                                                <%= brand.name %>
-                                            </option>
-                                        <% }); %>
-                                    </select>
-                                    <span id="brand-error" style="color: red;"></span>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-6 form-style">
-                                    <label class="form-label">Category</label>
-                                    <select class="form-select" name="category"
-                                     id="productCategory" onkeyup="validateCategory()">
-                                        <option value="">Select Category</option>
-                                        <% categories.forEach(function(category) { %>
-                                            <option value="<%= category._id %>" <%= product.category === category._id.toString() ? 'selected' : '' %>>
-                                                <%= category.name %>
-                                            </option>
-                                        <% }); %>
-                                    </select>
-                                    <span id="category-error" style="color: red;"></span>
-                                </div>
-                                <div class="col-md-3 form-style">
-                                    <label class="form-label">Price</label>
-                                    <input type="number" class="form-control" name="price" value="<%= product.price %>" min="1" id="productPrice" onkeyup="validatePrice()" >
-                                    <span id="price-error" style="color: red;"></span>
-                                </div>
-                                <div class="col-md-3 form-style">
-                                    <label class="form-label">Stock</label>
-                                    <input type="number" class="form-control" name="stock" value="<%= product.stock %>" min="0" id="productStock" onkeyup="validateStock()">
-                                    <span id="stock-error" style="color: red;"></span>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Product Images</label>
-                                <div class="row">
-                                    <% for(let i = 0; i < 3; i++) { %>
-                                        <div class="col-md-4">
-                                            <div class="card mb-2">
-                                                <div class="card-body">
-                                                    <% if (product.images && product.images[i]) { %>
-                                                        <div class="mb-2">
-                                                            <img src="<%= product.images[i] %>" class="img-thumbnail" style="height: 100px; object-fit: contain;">
-                                                            <input type="hidden" name="currentImages[]" value="<%= product.images[i] %>">
-                                                            <p class="text-muted small mb-2"><%= product.images[i].split('/').pop() %></p>
-                                                        </div>
-                                                    <% } %>
-                                                    <div class="input-group">
-                                                        <input 
-                                                            type="file" 
-                                                            class="form-control" 
-                                                            name="images" 
-                                                            accept="image/*"
-                                                            data-index="<%= i %>"
-                                                        >
-                                                    </div>
-                                                    <div id="preview<%= i %>" class="mt-2"></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <% } %>
-                                </div>
-                            </div>
-            
-                            
-                            <div class="mb-3">
-                                <label class="form-label">Available Colors</label>
-                                <div class="row" id="colorPickerContainer">
-                                    <% if (product.shades && product.shades.length > 0) { %>
-                                        <% product.shades.forEach((shade, index) => { %>
-                                            <div class="col-md-4 mb-2">
-                                                <div class="input-group form-style">
-                                                    <input type="color" class="form-control form-control-color" name="shades[]" value="<%= shade.color %>" required>
-                                                    <input type="text" class="form-control" placeholder="Color name" name="colorNames[]" value="<%= shade.name %>"  id="colorName" onkeyup="validateShade()">
-                                                    <span id="shade-error" style="color: red; display: block;"></span>
-                                                </div>
-                                            </div>
-                                        <% }); %>
-                                    <% } else { %>
-                                        <p>No colors available for this product.</p>
-                                    <% } %>
-                                </div>
-                              
-                            </div>
-                            
-                            <div class="mb-3 form-style">
-                                <label class="form-label">Description</label>
-                                <textarea class="form-control" rows="3" name="description" id="productDescription" onkeyup="validateDescription()" ><%= product.description %></textarea>
-                                <span id="description-error" style="color: red;" ></span>
-                            </div>
-                            <p style="color: red; font-size:medium;" id="error-mssg"></p>
-                            <div class="text-end">
-                                <a href="/admin/products" class="btn btn-secondary me-2">Cancel</a>
-                                <button type="submit" class="btn btn-primary">Update Product</button>
-                                <div><p id="submit-error"></p></div> 
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+          </ul>
+          <a href="/admin/logout">
+            <button style="margin-left: 9%;" class="btn btn-outline-light mt-auto">
+              <i class="bi bi-box-arrow-right me-2"></i>Logout
+            </button>
+          </a>
         </div>
+      </div>
+
+
+      <div class="col px-4 py-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2>Edit Product</h2>
+          <a href="/admin/products" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Back to Products
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <form id="editProductForm" action="/admin/products/edit/<%= product._id %>" enctype="multipart/form-data" onsubmit="return validateProduct()">
+              <div class="row mb-3">
+                <div class="col-md-6 form-style">
+                  <label class="form-label">Product Name</label>
+                  <input type="text" id="try" value="<%=product.id%>" hidden>
+                  <input type="text" class="form-control" name="name" value="<%= product.name %>" id="productName" onkeyup="validateName()">
+                  <span id="name-error" style="color: red;"></span>
+                </div>
+                <div class="col-md-6 form-style">
+                  <label class="form-label">Brand</label>
+                  <select class="form-select" name="brand" id="productBrand" onkeyup="validateBrand()">
+                    <% brands.forEach(function(brand) { %>
+                    <option value="<%= brand._id%>" <%= product.brand === brand._id.toString() ? 'selected' : '' %>>
+                      <%= brand.name %>
+                    </option>
+                    <% }); %>
+                  </select>
+                  <span id="brand-error" style="color: red;"></span>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6 form-style">
+                  <label class="form-label">Category</label>
+                  <select class="form-select" name="category" id="productCategory" onkeyup="validateCategory()">
+                    <option value="">Select Category</option>
+                    <% categories.forEach(function(category) { %>
+                    <option value="<%= category._id %>" <%= product.category === category._id.toString() ? 'selected' : '' %>>
+                      <%= category.name %>
+                    </option>
+                    <% }); %>
+                  </select>
+                  <span id="category-error" style="color: red;"></span>
+                </div>
+                <div class="col-md-3 form-style">
+                  <label class="form-label">Price</label>
+                  <input type="number" class="form-control" name="price" value="<%= product.price %>" min="1" id="productPrice" onkeyup="validatePrice()">
+                  <span id="price-error" style="color: red;"></span>
+                </div>
+                <div class="col-md-3 form-style">
+                  <label class="form-label">Offer Discount (%)</label>
+                  <input type="number" class="form-control" name="productOffer" id="productOffer" min="0" max="90" value="<%= product.productOffer %>" onkeyup="validateOffer()" />
+                  <span id="offer-error" style="color: red;"></span>
+                </div>
+
+                <div class="col-md-3 form-style">
+                  <label class="form-label">Stock</label>
+                  <input type="number" class="form-control" name="stock" value="<%= product.stock %>" min="0" id="productStock" onkeyup="validateStock()">
+                  <span id="stock-error" style="color: red;"></span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Product Images</label>
+                <div class="row">
+                  <% for(let i = 0; i < 3; i++) { %>
+                  <div class="col-md-4">
+                    <div class="card mb-2">
+                      <div class="card-body">
+                        <% if (product.images && product.images[i]) { %>
+                        <div class="mb-2">
+                          <img src="<%= product.images[i] %>" class="img-thumbnail" style="height: 100px; object-fit: contain;">
+                          <input type="hidden" name="currentImages[]" value="<%= product.images[i] %>">
+                          <p class="text-muted small mb-2"><%= product.images[i].split('/').pop() %></p>
+                        </div>
+                        <% } %>
+                        <div class="input-group">
+                          <input type="file" class="form-control" name="images" accept="image/*" data-index="<%= i %>">
+                        </div>
+                        <div id="preview<%= i %>" class="mt-2"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <% } %>
+                </div>
+              </div>
+
+
+              <div class="mb-3">
+                <label class="form-label">Available Colors</label>
+                <div class="row" id="colorPickerContainer">
+                  <% if (product.shades && product.shades.length > 0) { %>
+                  <% product.shades.forEach((shade, index) => { %>
+                  <div class="col-md-4 mb-2">
+                    <div class="input-group form-style">
+                      <input type="color" class="form-control form-control-color" name="shades[]" value="<%= shade.color %>" required>
+                      <input type="text" class="form-control" placeholder="Color name" name="colorNames[]" value="<%= shade.name %>" id="colorName" onkeyup="validateShade()">
+                      <span id="shade-error" style="color: red; display: block;"></span>
+                    </div>
+                  </div>
+                  <% }); %>
+                  <% } else { %>
+                  <p>No colors available for this product.</p>
+                  <% } %>
+                </div>
+
+              </div>
+              <input type="hidden" id="page" name="page" value="<%= page %>" />
+              <input type="hidden" id="searchQuery" name="searchQuery" value="<%= q || '' %>">
+
+
+
+              <div class="mb-3 form-style">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" rows="3" name="description" id="productDescription" onkeyup="validateDescription()"><%= product.description %></textarea>
+                <span id="description-error" style="color: red;"></span>
+              </div>
+              <p style="color: red; font-size:medium;" id="error-mssg"></p>
+              <div class="text-end">
+                <a href="/admin/products" class="btn btn-secondary me-2">Cancel</a>
+                <button type="submit" class="btn btn-primary">Update Product</button>
+                <div>
+                  <p id="submit-error"></p>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("editProductForm");
-    const imageInputs = form.querySelectorAll('input[type="file"]');
-    const cropInstances = [];
-    const error=document.getElementById('error-mssg')
-    const productId = document.getElementById('try').value // Get productId from HTML attribute//////////////////////////////
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const form = document.getElementById("editProductForm");
 
-    // Initialize Cropper for Existing Images
-    imageInputs.forEach((imageInput, index) => {
+
+      const imageInputs = form.querySelectorAll('input[type="file"]');
+      const cropInstances = [];
+      const error = document.getElementById('error-mssg')
+      const productId = document.getElementById('try').value
+
+      imageInputs.forEach((imageInput, index) => {
         const existingPreview = imageInput.closest('.col-md-4')?.querySelector('img');
 
         if (existingPreview) {
-            existingPreview.classList.add('img-thumbnail');
-                existingPreview.style.height = '100px';
-                existingPreview.style.objectFit = 'contain';
-            
+          existingPreview.classList.add('img-thumbnail');
+          existingPreview.style.height = '100px';
+          existingPreview.style.objectFit = 'contain';
+
         }
 
-        // Event Listener for New Image Selection
-        imageInput.addEventListener("change", function (event) {
-            const file = event.target.files[0];
-            if (!file || !file.type.startsWith('image/')) return;
 
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                let imagePreview = imageInput.closest('.col-md-4')?.querySelector('img');
-                if (imagePreview) {
-                    imagePreview.remove()
-                }
-                    imagePreview = document.createElement('img');
-                    imagePreview.className = 'img-thumbnail mt-2';
-                    imagePreview.style.maxHeight = '200px';
-                    imagePreview.style.objectFit = 'contain';
-                    imageInput.closest('.col-md-4').appendChild(imagePreview);
-                
-                imagePreview.src = e.target.result;
+        imageInput.addEventListener("change", function(event) {
+          const file = event.target.files[0];
+          if (!file || !file.type.startsWith('image/')) return;
 
-                if (cropInstances[index]) {
-                    cropInstances[index].destroy();
-                }
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            let imagePreview = imageInput.closest('.col-md-4')?.querySelector('img');
+            if (imagePreview) {
+              imagePreview.remove()
+            }
+            imagePreview = document.createElement('img');
+            imagePreview.className = 'img-thumbnail mt-2';
+            imagePreview.style.maxHeight = '200px';
+            imagePreview.style.objectFit = 'contain';
+            imageInput.closest('.col-md-4').appendChild(imagePreview);
 
-                cropInstances[index] = new Cropper(imagePreview, {
-                    aspectRatio: 3 / 4,
-                    viewMode: 1,
-                    zoomable: true,
-                    scalable: true,
-                    cropBoxResizable: true,
-                });
-            };
-            reader.readAsDataURL(file);
+            imagePreview.src = e.target.result;
+
+            if (cropInstances[index]) {
+              cropInstances[index].destroy();
+            }
+
+            cropInstances[index] = new Cropper(imagePreview, {
+              aspectRatio: 3 / 4,
+              viewMode: 1,
+              zoomable: true,
+              scalable: true,
+              cropBoxResizable: true,
+            });
+          };
+          reader.readAsDataURL(file);
         });
-    });
+      });
 
-    // Form Submission with Cropped Images
-    form.addEventListener("submit", async function (event) {
+
+      form.addEventListener("submit", async function(event) {
         event.preventDefault();
         const formData = new FormData(form);
-        const finalImages=[]
+        const finalImages = []
 
         try {
-            if (cropInstances.length > 0) {
-                const croppedBlobs = await Promise.all(
-                    cropInstances.map((cropper, index) => {
-                        if (!cropper || !cropper.getCroppedCanvas()) return null;
-                        return new Promise(resolve => {
-                            cropper.getCroppedCanvas().toBlob(blob => {
-                                if (blob) {
-                                    resolve({ blob, index });
-                                } else {
-                                    resolve(null);
-                                }
-                            });
-                        });
-                    })
-                );
-
-                formData.delete('images');
-
-                croppedBlobs.forEach((item) => {
-                    if (item && item.blob) {
-                        finalImages[item.index]=item.blob
-                    }
-                });
-            }
-            const currentImages=form.querySelectorAll('input[name="currentImages[]"]')
-            currentImages.forEach((input,index)=>{
-                if(!finalImages[index]){
-                    finalImages[index]=input.value
-                }
-            })
-
-            const newImages = form.querySelectorAll('input[type="file"]:not([name="currentImages[]"])');
-                newImages.forEach((imageInput, index) => {
-                    if (imageInput.files.length > 0) {
-                        finalImages[index] = imageInput.files[0];  // Update the correct index
-                    }
-                });
-
-            finalImages.forEach((image, index) => {
-                    if (image instanceof Blob) {
-                        formData.append('images', image, `image-${index + 1}.jpg`);
+          if (cropInstances.length > 0) {
+            const croppedBlobs = await Promise.all(
+              cropInstances.map((cropper, index) => {
+                if (!cropper || !cropper.getCroppedCanvas()) return null;
+                return new Promise(resolve => {
+                  cropper.getCroppedCanvas().toBlob(blob => {
+                    if (blob) {
+                      resolve({
+                        blob,
+                        index
+                      });
                     } else {
-                        formData.append('images', image);
+                      resolve(null);
                     }
+                  });
                 });
+              })
+            );
 
-            const response = await fetch(`/admin/products/edit/${productId}`, {
-                method: 'POST',
-                body: formData
+            formData.delete('images');
+
+            croppedBlobs.forEach((item) => {
+              if (item && item.blob) {
+                finalImages[item.index] = item.blob
+              }
             });
-
-            if (!response.ok) {
-                throw new Error('Failed to update product');
+          }
+          const currentImages = form.querySelectorAll('input[name="currentImages[]"]')
+          currentImages.forEach((input, index) => {
+            if (!finalImages[index]) {
+              finalImages[index] = input.value
             }
+          })
 
-            const data = await response.json();
-            if(data.success){
-                window.location.href = '/admin/products';
+          const newImages = form.querySelectorAll('input[type="file"]:not([name="currentImages[]"])');
+          newImages.forEach((imageInput, index) => {
+            if (imageInput.files.length > 0) {
+              finalImages[index] = imageInput.files[0];
+            }
+          });
 
+          finalImages.forEach((image, index) => {
+            if (image instanceof Blob) {
+              formData.append('images', image, `image-${index + 1}.jpg`);
+            } else {
+              formData.append('images', image);
             }
-            else{
-                error.textContent = data.message;
-            }
-            
+          });
+
+          const response = await fetch(`/admin/products/edit/${productId}`, {
+            method: 'POST',
+            body: formData
+          });
+
+         
+
+          const data = await response.json();
+          if (data.success) {
+            const searchQuery = document.getElementById('searchQuery')?.value || '';
+            const page = document.getElementById('page')?.value || 1;
+
+            window.location.href = `/admin/products?page=${page}${searchQuery ? `&q=${encodeURIComponent(searchQuery)}` : ''}`;
+
+          } else {
+            error.textContent = data.message;
+          }
+
         } catch (error) {
-            console.error('Error:', error);
-            error.textContent = 'Failed to update product. Please try again.';
-        }
-    });
-});
-
-let nameerror=document.getElementById('name-error')
-let priceerror=document.getElementById('price-error')
-        let branderror=document.getElementById('brand-error')
-        let categoryerror=document.getElementById('category-error')
-        let stockerror=document.getElementById('stock-error')
-        let shadeerror=document.getElementById('shade-error')
-        let descriptionerror=document.getElementById('description-error')
-        let submiterror=document.getElementById('submit-error')
-
-function validateName(){
-            let name=document.getElementById('productName').value
-            if(name.length===0){
-                nameerror.innerHTML="Product name is required."
-                return false
-            }
-            if(name.length < 3){
-                    nameerror.innerHTML='require atleat 3 characters';
-                    return false;
-                }
-                if(!name.match(/^[A-Za-z][A-Za-z0-9.]/)){
-                    nameerror.innerHTML='Name Invalid';
-                    return false;
-                }
-                nameerror.innerHTML='<i class="bi bi-check-circle-fill"></i>';
-                return true;
-
-        }
-        function validatePrice(){
-            let price=document.getElementById('productPrice').value
-            if(price.length===0 ||price.length >10){
-                priceerror.innerHTML="Price is required."
-                return false
-            }
-            if(price.match(/^[0]/)){
-                priceerror.innerHTML="Enter valid price."
-                return false
-            }
-            if(!price.match(/^[0-9]/)){
-                priceerror.innerHTML="Enter a valid price."
-                return false
-            }
-            priceerror.innerHTML='<i class="bi bi-check-circle-fill"></i>';
-                return true;
-
-        }
-         function validateStock(){
-            let stock=document.getElementById('productStock').value
-            if(stock.length===0){
-                stockerror.innerHTML="Stock is required."
-                return false
-            }
-            if(!stock.match(/^[0-9]/)){
-                stockerror.innerHTML="Enter valid number of stocks."
-                return false
-            }
-            stockerror.innerHTML='<i class="bi bi-check-circle-fill"></i>'
-            return true
-         }
-         function validateShade(){
-            let shadeName=document.getElementById('colorName').value
-            if(shadeName.length===0){
-                shadeerror.innerHTML="Shade required."
-                return false
-            }
-            if(!shadeName.match(/^[A-Za-z]/)){
-                shadeerror.innerHTML="Invalid"
-                return false
-            }
-            shadeerror.innerHTML='<i class="bi bi-check-circle-fill"></i>'
-            return true
-         }
-         function validateDescription(){
-            let description=document.getElementById('productDescription').value
-            if(description.length===0){
-                descriptionerror.innerHTML="Description is required."
-                return false
-            }
-            if(description.length<10){
-                descriptionerror.innerHTML="Atleast 10 characters is needed."
-                return false
-            }
-            if(!description.match(/^[A-Za-z][A-Za-z0-9._,''"":]/)){
-                descriptionerror.innerHTML="Invalid description."
-                return false
-            }
-            descriptionerror.innerHTML='<i class="bi bi-check-circle-fill"></i>'
-            return true
-         }
-
-         function validateBrand(){
-            let brand = document.getElementById('productBrand').value;
-            if (brand === "") {
-                branderror.innerHTML = "Please select a brand.";
-                return false;
-            }
-            branderror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
-            return true;
-                }
-
-                function validateCategory() {
-                let category = document.getElementById('category').value;
-                if (category === "") {
-                    categoryerror.innerHTML = "Please select a category.";
-                    return false;
-                }
-                categoryerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
-                return true;
-            }
-
-
-
-         function validateProduct(){
-            if(!validateName() || !validatePrice() || !validateStock() || !validateShade() || !validateDescription() || !validateBrand() || !validateCategory()){
-                submiterror.innerHTML="Fix errors to Add Product."
-                return false
-
-            }
-            return true
-         }
-
-
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-    const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB in bytes
-    const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "image/gif"];
-  
-    const imageInputs = document.querySelectorAll('input[type="file"]');
-  
-    imageInputs.forEach((imageInput) => {
-      imageInput.addEventListener("change", function (event) {
-        const file = event.target.files[0];
-  
-        if (!file) return;
-  
-        // Validate file type
-        if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-          alert("Invalid file type! Only JPG, JPEG, PNG, and GIF are allowed.");
-          event.target.value = ""; // Clear the input
-          return;
-        }
-  
-        // Validate file size
-        if (file.size > MAX_FILE_SIZE) {
-          alert("File size exceeds 2MB! Please upload a smaller image.");
-          event.target.value = ""; // Clear the input
-          return;
+          console.error('Error:', error);
+          error.textContent = 'Failed to update product. Please try again.';
         }
       });
     });
-  });
-  
-      </script>
-   
-        
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+
+    let nameerror = document.getElementById('name-error')
+    let priceerror = document.getElementById('price-error')
+    let branderror = document.getElementById('brand-error')
+    let categoryerror = document.getElementById('category-error')
+    let stockerror = document.getElementById('stock-error')
+    let shadeerror = document.getElementById('shade-error')
+    let descriptionerror = document.getElementById('description-error')
+    let offererror = document.getElementById('offer-error');
+
+    let submiterror = document.getElementById('submit-error')
+
+    function validateName() {
+      let name = document.getElementById('productName').value
+      if (name.length === 0) {
+        nameerror.innerHTML = "Product name is required."
+        return false
+      }
+      if (name.length < 3) {
+        nameerror.innerHTML = 'require atleat 3 characters';
+        return false;
+      }
+      if (!name.match(/^[A-Za-z][A-Za-z0-9.]/)) {
+        nameerror.innerHTML = 'Name Invalid';
+        return false;
+      }
+      nameerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+      return true;
+
+    }
+
+    function validatePrice() {
+      let price = document.getElementById('productPrice').value
+      if (price.length === 0 || price.length > 10) {
+        priceerror.innerHTML = "Price is required."
+        return false
+      }
+      if (price.match(/^[0]/)) {
+        priceerror.innerHTML = "Enter valid price."
+        return false
+      }
+      if (!price.match(/^[0-9]/)) {
+        priceerror.innerHTML = "Enter a valid price."
+        return false
+      }
+      priceerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+      return true;
+
+    }
+
+    function validateOffer() {
+      let offer = document.getElementById('productOffer').value;
+
+
+      if (isNaN(offer) || offer < 0 || offer > 90) {
+        offererror.innerHTML = "Offer must be between 0% and 90%.";
+        return false;
+      }
+
+      offererror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+      return true;
+    }
+
+    function validateStock() {
+      let stock = document.getElementById('productStock').value
+      if (stock.length === 0) {
+        stockerror.innerHTML = "Stock is required."
+        return false
+      }
+      if (!stock.match(/^[0-9]/)) {
+        stockerror.innerHTML = "Enter valid number of stocks."
+        return false
+      }
+      stockerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>'
+      return true
+    }
+
+    function validateShade() {
+      let shadeName = document.getElementById('colorName').value
+      if (shadeName.length === 0) {
+        shadeerror.innerHTML = "Shade required."
+        return false
+      }
+      if (!shadeName.match(/^[A-Za-z]/)) {
+        shadeerror.innerHTML = "Invalid"
+        return false
+      }
+      shadeerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>'
+      return true
+    }
+
+    function validateDescription() {
+      let description = document.getElementById('productDescription').value
+      if (description.length === 0) {
+        descriptionerror.innerHTML = "Description is required."
+        return false
+      }
+      if (description.length < 10) {
+        descriptionerror.innerHTML = "Atleast 10 characters is needed."
+        return false
+      }
+      if (!description.match(/^[A-Za-z][A-Za-z0-9._,''"":]/)) {
+        descriptionerror.innerHTML = "Invalid description."
+        return false
+      }
+      descriptionerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>'
+      return true
+    }
+
+    function validateBrand() {
+      let brand = document.getElementById('productBrand').value;
+      if (brand === "") {
+        branderror.innerHTML = "Please select a brand.";
+        return false;
+      }
+      branderror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+      return true;
+    }
+
+    function validateCategory() {
+      let category = document.getElementById('category').value;
+      if (category === "") {
+        categoryerror.innerHTML = "Please select a category.";
+        return false;
+      }
+      categoryerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+      return true;
+    }
+
+
+
+    function validateProduct() {
+      if (
+        !validateName() ||
+        !validatePrice() ||
+        !validateStock() ||
+        !validateShade() ||
+        !validateDescription() ||
+        !validateBrand() ||
+        !validateCategory() ||
+        !validateOffer()
+      ) {
+        submiterror.innerHTML = "Fix errors to Add Product.";
+        return false;
+      }
+      return true;
+    }
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const MAX_FILE_SIZE = 2 * 1024 * 1024;
+      const ALLOWED_FILE_TYPES = ["image/jpeg", "image/png", "image/gif"];
+
+      const imageInputs = document.querySelectorAll('input[type="file"]');
+
+      imageInputs.forEach((imageInput) => {
+        imageInput.addEventListener("change", function(event) {
+          const file = event.target.files[0];
+
+          if (!file) return;
+
+
+          if (!ALLOWED_FILE_TYPES.includes(file.type)) {
+            alert("Invalid file type! Only JPG, JPEG, PNG, and GIF are allowed.");
+            event.target.value = "";
+            return;
+          }
+
+
+          if (file.size > MAX_FILE_SIZE) {
+            alert("File size exceeds 2MB! Please upload a smaller image.");
+            event.target.value = "";
+            return;
+          }
+        });
+      });
+    });
+  </script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

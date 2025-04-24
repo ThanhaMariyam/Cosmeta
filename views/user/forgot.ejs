@@ -1,55 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cosmeta - Password Reset</title>
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/userSignup.css" />
-    <link rel="stylesheet" href="/forgot.css" />
-  </head>
-  <body>
-    <!-- Top Banner -->
-    <%- include('../partials/nav.ejs') %>
-    <!-- Main Content -->
-    <div class="main-content">
-      <div class="container">
-        <div class="form-container">
-          <h1 class="form-title">Forgot password?</h1>
-          <p class="form-subtitle">Set up a new password for your account</p>
-          <p style="font-size: smaller; margin-left: 28%" class="text-danger">
-            <%= message || '' %>
-          </p>
-          <form action="/forgot" method="post">
-            <div>
-              <input
-                type="password"
-                class="form-control"
-                name="newPassword"
-                placeholder="New password"
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                class="form-control"
-                name="confirmPassword"
-                placeholder="Confirm new password"
-              />
-            </div>
-            <button type="submit" class="reset-btn">Reset password</button>
-          </form>
-        </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cosmeta - Password Reset</title>
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/userSignup.css" />
+  <link rel="stylesheet" href="/forgot.css" />
+</head>
+
+<body>
+
+  <%- include('../partials/nav.ejs') %>
+
+  <div class="main-content">
+    <div class="container">
+      <div class="form-container">
+        <h1 class="form-title">Forgot password?</h1>
+        <p class="form-subtitle">Set up a new password for your account</p>
+        <p style="font-size: smaller; margin-left: 28%" class="text-danger">
+          <%= message || '' %>
+        </p>
+        <form action="/forgot" method="post">
+          <div>
+            <input type="password" class="form-control" name="newPassword" placeholder="New password" />
+          </div>
+          <div>
+            <input type="password" class="form-control" name="confirmPassword" placeholder="Confirm new password" />
+          </div>
+          <button type="submit" class="reset-btn">Reset password</button>
+        </form>
       </div>
     </div>
+  </div>
 
-    <!-- Footer -->
-    <%- include('../partials/footer') %>
-    <!-- Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-  </body>
+
+  <%- include('../partials/footer') %>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>

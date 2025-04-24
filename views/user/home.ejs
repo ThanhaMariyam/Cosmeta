@@ -1,73 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>cosmeta</title>
-    <link rel="stylesheet" href="/userSignup.css" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    />
-    <link rel="stylesheet" href="/home.css" />
-  </head>
-  <body>
-    <%- include('../partials/nav.ejs') %>
 
-    <div class="box">
-      <div class="item">
-        <a style="color: purple" href="">Home</a>
-        <a href="/category">Category</a>
-        <a href="/brand">Brand</a>
-        <a href="">About us</a>
-        <a href="">Contact us</a>
-      </div>
-      <%- include('../partials/header.ejs') %>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cosmeta</title>
+  <link rel="stylesheet" href="/userSignup.css" />
+  <link rel="stylesheet" href="/search.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/home.css" />
+  <style>
+    .container,
+    .d-flex {
+      overflow: visible !important;
+    }
+
+    .sold-out-btn {
+      background-color: #a0a0a0 !important;
+      border: none !important;
+      cursor: not-allowed !important;
+      pointer-events: none;
+      height: 43px;
+      width: 120px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('../partials/nav.ejs') %>
+
+  <div class="box">
+    <div class="item">
+      <a style="color: purple" href="">Home</a>
+      <a href="/category">Category</a>
+      <a href="/brand">Brand</a>
+      <a href="">About us</a>
+      <a href="">Contact us</a>
     </div>
+    <%- include('../partials/header.ejs') %>
+  </div>
 
-    <img
-      style="height: 300px; width: 93%; margin-top: 10px; margin-left: 50px"
-      class="img-fluid"
-      src="/image/DALL·E 2025-01-26 12.28.16 - A visually stunning and modern image of a makeup products display, featuring elegant and stylish arrangements of lipsticks, eyeshadow palettes, brushe.webp"
-      alt="Image not loading"
-    />
-    <img
-      style="width: 98%; margin-left: 20px; margin-top: 10px; "
-      src="/image/1.jpg"
-      alt=""
-    />
+  <img style="height: 300px; width: 93%; margin-top: 10px; margin-left: 50px" class="img-fluid" src="/image/DALL·E 2025-01-26 12.28.16 - A visually stunning and modern image of a makeup products display, featuring elegant and stylish arrangements of lipsticks, eyeshadow palettes, brushe.webp" alt="Image not loading" />
+  <img style="width: 98%; margin-left: 20px; margin-top: 10px; " src="/image/1.jpg" alt="" />
 
-    <div class="container pics">
-      <h3 style="color: purple; margin-top: 20px" class="mb-4 text-center">
-        Our Latest Products
-      </h3>
-      <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-        <% products.forEach(function(product) { %>
-        <div class="col">
-          <div class="card h-100">
-            <a
-                href="/productDetails/<%= product._id %>"
-               style="text-decoration: none; color: black;"
-                >
-            <img
-              src="<%= product.images[0] %>"
-              class="img-fluid card-img-top"
-              alt="<%= product.name %>"
-            />
+  <div class="container">
+    <div class="d-flex justify-content-center mb-3">
+      <select id="categoryFilter" class="form-select w-25 mt-3">
+        <option value="">Filter</option>
+        <% categories.forEach(function(category) { %>
+        <option value="<%= category.name %>" <%= selectedCategory.toLowerCase() === category.name.toLowerCase() ? 'selected' : '' %>>
+          <%= category.name %>
+        </option>
+        <% }); %>
+
+      </select>
+
+      <select id="sortFilter" class="form-select w-25 mt-3">
+        <option value="">Sort By</option>
+        <option value="price-asc" <%= sort === 'price-asc' ? 'selected' : '' %>>Price: Low to High</option>
+        <option value="price-desc" <%= sort === 'price-desc' ? 'selected' : '' %>>Price: High to Low</option>
+        <option value="relevance" <%= sort === 'relevance' ? 'selected' : '' %>>Relevance</option>
+      </select>
+    </div>
+  </div>
+
+
+
+  <div class="container pics">
+    <h3 style="color: purple; margin-top: 20px" class="mb-4 text-center">
+      Our Latest Products
+    </h3>
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+      <% products.forEach(function(product) { %>
+      <div class="col product-item" data-category="<%= product.category %>">
+        <div class="card h-100 position-relative">
+          <% if (product.highestDiscount > 0) { %>
+          <div class="discount-badge" style="position: absolute; top: 10px; right: 10px; background: linear-gradient(to right,#790ddde1,#be81f7e1); color: white; padding: 4px 8px; border-radius: 5px; font-size: 12px;">
+            <%= product.highestDiscount %>% OFF
+          </div>
+          <% } %>
+          <a href="/productDetails/<%= product._id %>" style="text-decoration: none; color: black;">
+            <img src="<%= product.images[0] %>" class="img-fluid card-img-top" alt="<%= product.name %>" />
             <div class="card-body">
               <h5 class="card-title"><%= product.name %></h5>
               <p class="card-text">
-                <i class="bi bi-currency-rupee"></i><%= product.price %>
+                <% if (product.highestDiscount > 0) { %>
+                <del>₹<%= product.price %></del>
+                <span style="color: rgb(0, 0, 0); font-weight: bold;">₹<%= product.discountedPrice %></span>
+                <% } else { %>
+                <span style="color: black; font-weight: bold;">₹<%= product.price %></span>
+                <% } %>
               </p>
-            </a>
-              <% if (product.stock <= 0) { %>
-              <p
-                style="
+          </a>
+          <% if (product.stock <= 0) { %>
+          <p style="
                   background-color: rgb(255, 255, 255);
                   border: none;
                   color: rgb(138, 0, 0);
@@ -77,13 +106,11 @@
                   margin-left: 85px;
                   font-size: small;
                   font-weight: bold;
-                "
-              >
-                Out of Stock
-              </p>
-              <% } else if(product.stock <=3) { %>
-              <p
-                style="
+                ">
+            Out of Stock
+          </p>
+          <% } else if(product.stock <=3) { %>
+          <p style="
                   background-color: rgb(255, 255, 255);
                   border: none;
                   color: rgb(138, 0, 0);
@@ -93,68 +120,75 @@
                   margin-left: 85px;
                   font-size: small;
                   font-weight: bold;
-                "
-              >
-                Only few left
-              </p>
-              <% } %>
-              <div class="d-flex mb-3" style="margin-left: 30px;">
-                <% if(productInCart.includes(product._id.toString())) { %>
-                  <button class="btn btn-primary" onclick="goToCart()">
-                    <i class="bi bi-bag-fill me-2"></i>Go to Cart
-                </button>
+                ">
+            Only few left
+          </p>
+          <% } %>
+          <div class="d-flex mb-3" style="margin-left: 30px;">
+            <% if (product.stock <= 0) { %>
+            <button class="btn btn-secondary sold-out-btn">
+              Sold Out
+            </button>
+            <% } else if(productInCart.includes(product._id.toString())) { %>
+            <button class="btn btn-primary  add-cart-btn" data-product-id="<%= product._id %>" onclick="goToCart()">
+              <i class="bi bi-bag-fill me-2"></i>Go to Cart
+            </button>
 
-                 <% } else{ %>
+            <% } else{ %>
 
-                <button id="add-to-cart-btn-<%= product._id %>" class="btn btn-primary" onclick="addToCart('<%= product._id %>', 'add-to-cart-btn-<%= product._id %>')">
-                  <i class="bi bi-bag-fill me-2"></i>Add to Cart
-              </button>
-              <% } %>
-                
-              <button
-              style="border: 1px solid purple; height: 44px; margin-top: 10px; margin-left: 2px; padding-top: 3px;
-              padding-left: 15px; padding-right: 15px; font-size: x-large; font-weight: bold;"
-              class="btn addWish"
-              data-id="<%= product._id %>"
-              onclick="addToWishlist('<%= product._id %>')">
+            <button id="add-to-cart-btn-<%= product._id %>" class="btn btn-primary add-cart-btn" data-product-id="<%= product._id %>" onclick="addToCart('<%= product._id %>')">
+              <i class="bi bi-bag-fill me-2"></i>Add to Cart
+            </button>
+            <% } %>
+
+            <% if(productInWish.includes(product._id.toString())) { %>
+            <button class="wishlist-btn" data-id="<%= product._id %>" onclick="removeFromWishlist('<%= product._id %>')" style="border: 1px solid purple; height: 44px; margin-top: 10px; margin-left: 2px; padding-top: 3px;
+              padding-left: 15px; padding-right: 15px; font-size: x-large; font-weight: bold;">
+              <i style="color: rgb(167, 68, 136)" class="bi bi-heart-fill"></i>
+            </button>
+            <% } else{ %>
+            <button style="border: 1px solid purple; height: 44px; margin-top: 10px; margin-left: 2px; padding-top: 3px;
+              padding-left: 15px; padding-right: 15px; font-size: x-large; font-weight: bold;" class="btn addWish wishlist-btn" data-id="<%= product._id %>" onclick="addToWishlist('<%= product._id %>')">
               <i style="color: rgb(167, 68, 136)" class="bi bi-heart"></i>
-          </button>
-              
-              </div>
-            </div>
+            </button>
+            <% } %>
           </div>
         </div>
-        <% }); %>
       </div>
     </div>
-    <div class="off">
-      <div class="off1">GET EXTRA 15% OFF</div>
-      <div class="off2">On All Orders Above $1500</div>
-      <div class="off3"><button>USE CODE: COSMETA2025</button></div>
-    </div>
-    <div class="container pics">
-      <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-        <% productOff.forEach(function(product) { %>
-        <div class="col">
-          <div class="card h-100">
-            <a
-                href="/productDetails/<%= product._id %>"
-               style="text-decoration: none; color: black;"
-                >
-            <img
-              src="<%= product.images[0] %>"
-              class="img-fluid card-img-top"
-              alt="<%= product.name %>"
-            />
+    <% }); %>
+  </div>
+  </div>
+  <div class="off">
+    <div class="off1">GET EXTRA ₹15 OFF</div>
+    <div class="off2">On All Orders Above ₹1500</div>
+    <div class="off3"><button>USE CODE: COSMETA15</button></div>
+  </div>
+  <div class="container pics">
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+      <% productOff.forEach(function(product) { %>
+      <div class="col">
+        <div class="card h-100 position-relative">
+          <% if (product.highestDiscount > 0) { %>
+          <div class="discount-badge" style="position: absolute; top: 10px; right: 10px; background: linear-gradient(to right,#790ddde1,#be81f7e1); color: white; padding: 4px 8px; border-radius: 5px; font-size: 12px;">
+            <%= product.highestDiscount %>% OFF
+          </div>
+          <% } %>
+          <a href="/productDetails/<%= product._id %>" style="text-decoration: none; color: black;">
+            <img src="<%= product.images[0] %>" class="img-fluid card-img-top" alt="<%= product.name %>" />
             <div class="card-body">
               <h5 class="card-title"><%= product.name %></h5>
               <p class="card-text">
-                <i class="bi bi-currency-rupee"></i><%= product.price %>
+                <% if (product.highestDiscount > 0) { %>
+                <del>₹<%= product.price %></del>
+                <span style="color: rgb(0, 0, 0); font-weight: bold;">₹<%= product.discountedPrice %></span>
+                <% } else { %>
+                <span style="color: black; font-weight: bold;">₹<%= product.price %></span>
+                <% } %>
               </p>
-            </a>
-              <% if (product.stock <= 0) { %>
-              <p
-                style="
+          </a>
+          <% if (product.stock <= 0) { %>
+          <p style="
                   background-color: rgb(255, 255, 255);
                   border: none;
                   color: rgb(138, 0, 0);
@@ -164,13 +198,11 @@
                   margin-left: 85px;
                   font-size: small;
                   font-weight: bold;
-                "
-              >
-                Out of Stock
-              </p>
-              <% } else if(product.stock <=3) { %>
-              <p
-                style="
+                ">
+            Out of Stock
+          </p>
+          <% } else if(product.stock <=3) { %>
+          <p style="
                   background-color: rgb(255, 255, 255);
                   border: none;
                   color: rgb(138, 0, 0);
@@ -180,50 +212,69 @@
                   margin-left: 85px;
                   font-size: small;
                   font-weight: bold;
-                "
-              >
-                Only few left
-              </p>
-              <% } %>
-              <div class="d-flex mb-3" style="margin-left: 30px;">
-                <% if(productInCart.includes(product._id.toString())) { %>
-                  <button class="btn btn-primary" onclick="goToCart()">
-                    <i class="bi bi-bag-fill me-2"></i>Go to Cart
-                </button>
+                ">
+            Only few left
+          </p>
+          <% } %>
+          <div class="d-flex mb-3" style="margin-left: 30px;">
+            <% if (product.stock <= 0) { %>
+            <button class="btn btn-secondary sold-out-btn">
+              Sold Out
+            </button>
+            <% } else if(productInCart.includes(product._id.toString())) { %>
+            <button class="btn btn-primary  add-cart-btn" data-product-id="<%= product._id %>" onclick="goToCart()">
+              <i class="bi bi-bag-fill me-2"></i>Go to Cart
+            </button>
 
-                 <% } else{ %>
+            <% } else{ %>
 
-                <button id="add-to-cart-btn-<%= product._id %>" class="btn btn-primary" onclick="addToCart('<%= product._id %>', 'add-to-cart-btn-<%= product._id %>')">
-                  <i class="bi bi-bag-fill me-2"></i>Add to Cart
-              </button>
-              <% } %>
-                
-              <button
-              style="border: 1px solid purple; height: 44px; margin-top: 10px; margin-left: 2px; padding-top: 3px;
-              padding-left: 15px; padding-right: 15px; font-size: x-large; font-weight: bold;"
-              class="btn addWish"
-              data-id="<%= product._id %>"
-              onclick="addToWishlist('<%= product._id %>')">
+            <button id="add-to-cart-btn-<%= product._id %>" class="btn btn-primary add-cart-btn" data-product-id="<%= product._id %>" onclick="addToCart('<%= product._id %>')">
+              <i class="bi bi-bag-fill me-2"></i>Add to Cart
+            </button>
+            <% } %>
+
+            <% if(productInWish.includes(product._id.toString())) { %>
+            <button class="wishlist-btn" data-id="<%= product._id %>" onclick="removeFromWishlist('<%= product._id %>')" style="border: 1px solid purple; height: 44px; margin-top: 10px; margin-left: 2px; padding-top: 3px;
+              padding-left: 15px; padding-right: 15px; font-size: x-large; font-weight: bold;">
+              <i style="color: rgb(167, 68, 136)" class="bi bi-heart-fill"></i>
+            </button>
+            <% } else{ %>
+            <button style="border: 1px solid purple; height: 44px; margin-top: 10px; margin-left: 2px; padding-top: 3px;
+              padding-left: 15px; padding-right: 15px; font-size: x-large; font-weight: bold;" class="btn addWish wishlist-btn" data-id="<%= product._id %>" onclick="addToWishlist('<%= product._id %>')">
               <i style="color: rgb(167, 68, 136)" class="bi bi-heart"></i>
-          </button>
-              
-              </div>
-            </div>
+            </button>
+            <% } %>
           </div>
         </div>
-        <% }); %>
       </div>
     </div>
+    <% }); %>
+  </div>
+  </div>
 
-    <%- include('../partials/footer') %>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script src="/script/cart.js"></script>
-    
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
-    <script src="/script/wishlist.js"></script>
-  </body>
+  <%- include('../partials/footer') %>
+  <script>
+    document.getElementById("categoryFilter").addEventListener("change", function() {
+      const selectedCategory = this.value;
+
+
+      if (selectedCategory === "") {
+        window.location.href = `/`;
+      } else {
+        window.location.href = selectedCategory ? `/?category=${encodeURIComponent(selectedCategory)}` : `/`;
+      }
+    });
+  </script>
+
+
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <script src="/script/search.js"></script>
+  <script src="/script/cart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="/script/wishlist.js"></script>
+
+</body>
+
 </html>

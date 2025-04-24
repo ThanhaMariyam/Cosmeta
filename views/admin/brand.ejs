@@ -1,592 +1,546 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cosmeta Admin - Brands</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-      rel="stylesheet"
-    />
-    <style>
-      .sidebar {
-        min-height: 100vh;
-        background-color: #1a1a1a;
-        color: white;
-      }
-      .sidebar .nav-link {
-        color: #ffffff;
-        padding: 0.8rem 1rem;
-        opacity: 0.8;
-      }
-      .sidebar .nav-link:hover {
-        opacity: 1;
-        background: rgba(255, 255, 255, 0.1);
-      }
-      .sidebar .nav-link.active {
-        background: rgba(255, 255, 255, 0.1);
-        opacity: 1;
-      }
-      .brand-logo {
-        width: 100px;
-        height: 60px;
-        object-fit: contain;
-        border-radius: 5px;
-      }
-      .table td {
-        vertical-align: middle;
-      }
-      .form-style {
-        position: relative;
-        font-size: 15px;
-      }
-      .form-style span {
-        position: absolute;
-        left: 55%;
-        bottom: 3px;
-        font-size: small;
-      }
-      #submit-error {
-        color: red;
-        font-size: small;
-      }
-      #editsubmit-error {
-        color: red;
-        font-size: small;
-      }
-      .form-style span i {
-        color: seagreen;
-        font-size: 15px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container-fluid">
-      <div class="row">
-        <!-- Sidebar -->
-        <div class="col-auto px-0 sidebar">
-          <div class="d-flex flex-column p-3">
-            <h3 class="mb-4">Cosmeta</h3>
-            <ul class="nav nav-pills flex-column gap-2">
-              <li class="nav-item">
-                <a href="/admin/dashboard" class="nav-link">
-                  <i class="bi bi-speedometer2 me-2"></i>
-                  Dashboard
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/user" class="nav-link">
-                  <i class="bi bi-people me-2"></i>
-                  Users
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/products" class="nav-link">
-                  <i class="bi bi-box me-2"></i>
-                  Products
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/category" class="nav-link">
-                  <i class="bi bi-tags me-2"></i>
-                  Category
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/brand" class="nav-link active">
-                  <i class="bi bi-award me-2"></i>
-                  Brands
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/orderManagement" class="nav-link">
-                  <i class="bi bi-cart me-2"></i>
-                  Orders
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/return" class="nav-link">
-                  <i class="bi bi-arrow-return-left me-2"></i> 
-                  Returns
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="bi bi-ticket-perforated me-2"></i>
-                  Coupons
-                </a>
-              </li>
-              <li style="margin-bottom: 5%" class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="bi bi-gift me-2"></i>
-                  Offers
-                </a>
-              </li>
-            </ul>
-            <a href="/admin/logout">
-              <button
-                style="margin-left: 9%"
-                class="btn btn-outline-light mt-auto"
-              >
-                <i class="bi bi-box-arrow-right me-2"></i>
-                Logout
-              </button>
-            </a>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cosmeta Admin - Brands</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <style>
+    .sidebar {
+      min-height: 100vh;
+      background-color: #1a1a1a;
+      color: white;
+    }
+
+    .sidebar .nav-link {
+      color: #ffffff;
+      padding: 0.8rem 1rem;
+      opacity: 0.8;
+    }
+
+    .sidebar .nav-link:hover {
+      opacity: 1;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar .nav-link.active {
+      background: rgba(255, 255, 255, 0.1);
+      opacity: 1;
+    }
+
+    .brand-logo {
+      width: 100px;
+      height: 60px;
+      object-fit: contain;
+      border-radius: 5px;
+    }
+
+    .table td {
+      vertical-align: middle;
+    }
+
+    .form-style {
+      position: relative;
+      font-size: 15px;
+    }
+
+    .form-style span {
+      position: absolute;
+      left: 55%;
+      bottom: 3px;
+      font-size: small;
+    }
+
+    #submit-error {
+      color: red;
+      font-size: small;
+    }
+
+    #editsubmit-error {
+      color: red;
+      font-size: small;
+    }
+
+    .form-style span i {
+      color: seagreen;
+      font-size: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-auto px-0 sidebar">
+        <div class="d-flex flex-column p-3">
+          <h3 class="mb-4">Cosmeta</h3>
+          <ul class="nav nav-pills flex-column gap-2">
+            <li class="nav-item">
+              <a href="/admin/dashboard" class="nav-link">
+                <i class="bi bi-speedometer2 me-2"></i>
+                Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/user" class="nav-link">
+                <i class="bi bi-people me-2"></i>
+                Users
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/products" class="nav-link">
+                <i class="bi bi-box me-2"></i>
+                Products
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/inventory" class="nav-link ">
+                <i class="bi bi-boxes me-2"></i>
+                Inventory
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/category" class="nav-link">
+                <i class="bi bi-tags me-2"></i>
+                Category
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/brand" class="nav-link active">
+                <i class="bi bi-award me-2"></i>
+                Brands
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/orderManagement" class="nav-link">
+                <i class="bi bi-cart me-2"></i>
+                Orders
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/return" class="nav-link">
+                <i class="bi bi-arrow-return-left me-2"></i>
+                Returns
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/coupon" class="nav-link">
+                <i class="bi bi-ticket-perforated me-2"></i>
+                Coupons
+              </a>
+            </li>
+            <li style="margin-bottom: 5%" class="nav-item">
+              <a href="/admin/offer" class="nav-link">
+                <i class="bi bi-gift me-2"></i>
+                Offers
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/userWallet" class="nav-link">
+                <i class="bi bi-wallet2 me-2"></i>
+                User Wallet
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="/admin/salesReport" class="nav-link">
+                <i class="bi bi-bar-chart me-2"></i>
+                Sales
+              </a>
+            </li>
+          </ul>
+          <a href="/admin/logout">
+            <button style="margin-left: 9%" class="btn btn-outline-light mt-auto">
+              <i class="bi bi-box-arrow-right me-2"></i>
+              Logout
+            </button>
+          </a>
+        </div>
+      </div>
+
+
+      <div class="col px-4 py-3">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2>Brands</h2>
+          <div class="d-flex gap-3 align-items-center">
+            <div class="search-box">
+              <input type="text" id="brandSearch" value="<%= search || '' %>" class="form-control" placeholder="Search brands" />
+            </div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBrandModal">
+              <i class="bi bi-plus-lg me-2"></i>Add Brand
+            </button>
           </div>
         </div>
 
-        <!-- Main Content -->
-        <div class="col px-4 py-3">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>Brands</h2>
-            <div class="d-flex gap-3 align-items-center">
-              <div class="search-box">
-                <input
-                  type="text"
-                  id="brandSearch"
-                  class="form-control"
-                  placeholder="Search brands"
-                />
-              </div>
-              <button
-                class="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#addBrandModal"
-              >
-                <i class="bi bi-plus-lg me-2"></i>Add Brand
-              </button>
-            </div>
-          </div>
 
-          <!-- Brands Table -->
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th>Brand Name</th>
-                  <th>Description</th>
-                  <th>Products Count</th>
-                  <th>Origin</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="brandTable">
-                <% if (brands && brands.length > 0) { %> <%
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Brand Name</th>
+                <th>Description</th>
+                <th>Products Count</th>
+                <th>Origin</th>
+
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="brandTable">
+              <% if (brands && brands.length > 0) { %> <%
                 brands.forEach(function(brand) { %>
-                <tr>
-                  <td><%= brand.name %></td>
-                  <td><%= brand.description %></td>
-                  <td><%= brand.productCount %></td>
-                  <td><%= brand.origin %></td>
-                  <td>
-                    <span
-                      class="badge <%= brand.status === 'Active' ? 'bg-success' : 'bg-danger' %>"
-                    >
-                      <%= brand.status %>
-                    </span>
-                  </td>
-                  <td>
-                    <button
-                      class="btn btn-sm btn-outline-primary me-2"
-                      data-bs-toggle="modal"
-                      data-bs-target="#editBrandModal<%= brand._id %>"
-                    >
-                      <i class="bi bi-pencil"></i>
-                    </button>
-                    <div
-                      class="modal fade"
-                      id="editBrandModal<%= brand._id %>"
-                      tabindex="-1"
-                    >
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title">Edit Brand</h5>
-                            <button
-                              type="button"
-                              class="btn-close"
-                              data-bs-dismiss="modal"
-                            ></button>
-                          </div>
-                          <div class="modal-body">
-                            <form
-                              id="editCategoryForm<%= brand._id %>"
-                              action="/admin/brand/edit/<%= brand._id %>"
-                              method="post"
-                              onsubmit="return validateEditBrand()"
-                            >
-                              <div class="mb-3 form-style">
-                                <label class="form-label">Brand Name</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  name="name"
-                                  value="<%= brand.name %>"
-                                  id="brandeditName"
-                                  onkeyup="validateEditName()"
-                                />
-                                <span
-                                  id="editname-error"
-                                  style="color: red"
-                                ></span>
-                              </div>
-                              <div class="mb-3 form-style">
-                                <label class="form-label">Description</label>
-                                <textarea
-                                  class="form-control"
-                                  name="description"
-                                  value="<%= brand.description %>"
-                                  rows="3"
-                                  id="brandEditDescription"
-                                  onkeyup="validateEditDescription()"
-                                >
-                                    <%= brand.description %></textarea>
-                                <span
-                                  id="editdescription-error"
-                                  style="color: red"
-                                ></span>
-                              </div>
+              <tr>
+                <td><%= brand.name %></td>
+                <td><%= brand.description %></td>
+                <td><%= brand.productCount %></td>
+                <td><%= brand.origin %></td>
 
-                              <div class="modal-footer">
-                                <button
-                                  type="button"
-                                  class="btn btn-secondary"
-                                  data-bs-dismiss="modal"
-                                >
-                                  Cancel
-                                </button>
-                                <button type="submit" class="btn btn-primary">
-                                  Save Changes
-                                </button>
-                                <div><p id="editsubmit-error"></p></div>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#editBrandModal<%= brand._id %>">
+                    <i class="bi bi-pencil"></i>
+                  </button>
+                  <div class="modal fade" id="editBrandModal<%= brand._id %>" tabindex="-1">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Edit Brand</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form id="editBrandForm-<%= brand._id %>"onsubmit="return submitEditBrand('<%= brand._id %>', '<%= search %>', <%= currentPage %>)">
+
+                            <div class="mb-3 form-style">
+                              <label class="form-label">Brand Name</label>
+                              <input type="text" class="form-control" name="name" value="<%= brand.name %>" id="brandeditName<%= brand._id %>" onkeyup="validateEditName('<%= brand._id %>')" />
+                              <span id="editname-error-<%= brand._id %>" style="color: red"></span>
+                            </div>
+
+                            <div class="mb-3 form-style">
+                              <label class="form-label">Description</label>
+                              <textarea class="form-control" name="description" value="<%= brand.description %>" rows="3" id="brandEditDescription<%= brand._id %>" onkeyup="validateEditDescription('<%= brand._id %>')">
+                                    <%= brand.description %></textarea>
+                              <span id="editdescription-error-<%= brand._id %>" style="color: red"></span>
+                            </div>
+
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                Cancel
+                              </button>
+                              <button type="submit" class="btn btn-primary">
+                                Save Changes
+                              </button>
+                              <div>
+                                <p id="editsubmit-error"></p>
                               </div>
-                            </form>
-                          </div>
+                            </div>
+                          </form>
                         </div>
                       </div>
                     </div>
-                    <form
-                      action="/admin/brand/toggle-list/<%= brand._id %>"
-                      method="post"
-                      style="display: inline"
-                    >
-                      <% if (brand.length > 0) { %> <% if (brand.isListed) { %>
+                  </div>
+                  <form action="/admin/brand/toggle-list/<%= brand._id %>" method="post" style="display: inline">
+                    <% if (brand.length > 0) { %> <% if (brand.isListed) { %>
 
-                      <button class="btn btn-sm btn-outline-danger">
-                        <i class="bi bi-dash-circle"></i>
-                      </button>
-                      <% } else { %>
+                    <button class="btn btn-sm btn-outline-danger">
+                      <i class="bi bi-dash-circle"></i>
+                    </button>
+                    <% } else { %>
 
-                      <button class="btn btn-sm btn-outline-success">
-                        <i class="bi bi-plus-circle"></i>
-                      </button>
-                      <% } %> <% } else { %> <% if (brand.isListed) { %>
+                    <button class="btn btn-sm btn-outline-success">
+                      <i class="bi bi-plus-circle"></i>
+                    </button>
+                    <% } %> <% } else { %> <% if (brand.isListed) { %>
 
-                      <button class="btn btn-sm btn-outline-danger">
-                        <i class="bi bi-dash-circle"></i>
-                      </button>
-                      <% } else { %>
+                    <button class="btn btn-sm btn-outline-danger">
+                      <i class="bi bi-dash-circle"></i>
+                    </button>
+                    <% } else { %>
 
-                      <button class="btn btn-sm btn-outline-secondary">
-                        <i class="bi bi-plus-circle"></i>
-                      </button>
-                      <% } %> <% } %>
-                    </form>
-                  </td>
-                </tr>
-                <% }); %> <% } else { %>
-                <tr>
-                  <td colspan="7" class="text-center">No brands available</td>
-                </tr>
-                <% } %>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Pagination -->
-          <nav aria-label="Page navigation" class="mt-4">
-            <ul class="pagination justify-content-center">
-              <li class="page-item <%= currentPage===1?'disabled':'' %>">
-                <a
-                  class="page-link"
-                  href="/admin/brand?page=<%= currentPage-1 %>"
-                  aria-label="Previous"
-                >
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <% for (let i = 1; i <= totalPages; i++) { %>
-              <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                <a class="page-link" href="/admin/brand?page=<%= i %>"
-                  ><%= i %></a>
-              </li>
+                    <button class="btn btn-sm btn-outline-secondary">
+                      <i class="bi bi-plus-circle"></i>
+                    </button>
+                    <% } %> <% } %>
+                  </form>
+                </td>
+              </tr>
+              <% }); %> <% } else { %>
+              <tr>
+                <td colspan="7" class="text-center">No brands available</td>
+              </tr>
               <% } %>
-              <li
-                class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>"
-              >
-                <a
-                  class="page-link"
-                  href="/admin/brand?page=<%= currentPage + 1 %>"
-                  aria-label="Next"
-                >
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
+            </tbody>
+          </table>
         </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation" class="mt-4">
+          <ul class="pagination justify-content-center">
+            <li class="page-item <%= currentPage===1?'disabled':'' %>">
+              <a class="page-link" href="/admin/brand?page=<%= currentPage-1 %>" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <% for (let i = 1; i <= totalPages; i++) { %>
+            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
+              <a class="page-link" href="/admin/brand?page=<%= i %>"><%= i %></a>
+            </li>
+            <% } %>
+            <li class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+              <a class="page-link" href="/admin/brand?page=<%= currentPage + 1 %>" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
+  </div>
 
-    <!-- Add Brand Modal -->
-    <div class="modal fade" id="addBrandModal" tabindex="-1">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Add New Brand</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-            ></button>
-          </div>
-          <div class="modal-body">
-            <form
-              id="addBrandForm"
-              action="/admin/brand/add"
-              method="post"
-              onsubmit="return validateBrand()"
-            >
-              <div class="mb-3 form-style">
-                <label class="form-label">Brand Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  name="name"
-                  id="brandName"
-                  onkeyup="validateName()"
-                />
-                <span id="name-error" style="color: red"></span>
-              </div>
+  <!-- Add Brand Modal -->
+  <div class="modal fade" id="addBrandModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Brand</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addBrandForm">
+            <div class="mb-3 form-style">
+              <label class="form-label">Brand Name</label>
+              <input type="text" class="form-control" name="name" id="brandName" onkeyup="validateName()" />
+              <span id="name-error" style="color: red"></span>
+            </div>
 
-              <div class="mb-3 form-style">
-                <label class="form-label">Description</label>
-                <textarea
-                  class="form-control"
-                  name="description"
-                  rows="3"
-                  id="brandDescription"
-                  onkeyup="validateDescription()"
-                ></textarea>
-                <span id="description-error" style="color: red"></span>
-              </div>
-              <div class="mb-3 form-style">
-                <label class="form-label">Origin Country</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  name="origin"
-                  id="brandOrigin"
-                  onkeyup="validateOrigin()"
-                />
-                <span id="origin-error" style="color: red"></span>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Status</label>
-                <select class="form-select" name="status">
-                  <option value="Active">Active</option>
-                  <option value="Inactive">Inactive</option>
-                </select>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button type="submit" form="addBrandForm" class="btn btn-primary">
-              Add Brand
-            </button>
-            <div><p id="submit-error"></p></div>
+            <div class="mb-3 form-style">
+              <label class="form-label">Description</label>
+              <textarea class="form-control" name="description" rows="3" id="brandDescription" onkeyup="validateDescription()"></textarea>
+              <span id="description-error" style="color: red"></span>
+            </div>
+            <div class="mb-3 form-style">
+              <label class="form-label">Origin Country</label>
+              <input type="text" class="form-control" name="origin" id="brandOrigin" onkeyup="validateOrigin()" />
+              <span id="origin-error" style="color: red"></span>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Status</label>
+              <select class="form-select" name="status">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="submit" form="addBrandForm" class="btn btn-primary">
+            Add Brand
+          </button>
+          <div>
+            <p id="submit-error"></p>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <script>
-      const searchInput = document.getElementById("brandSearch");
-      const productTable = document.getElementById("brandTable");
-      const rows = productTable.getElementsByTagName("tr");
+  <script>
+    const searchInput = document.getElementById("brandSearch");
 
-      searchInput.addEventListener("input", () => {
-        const filter = searchInput.value.toLowerCase();
+    let searchTimeout;
+    searchInput.addEventListener("input", () => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        const searchValue = searchInput.value.trim();
+        const url = new URL(window.location.href);
+        url.searchParams.set("search", searchValue);
+        url.searchParams.set("page", "1");
+        window.location.href = url.toString();
+      }, 300);
+    });
 
-        // Loop through all table rows
-        for (let i = 0; i < rows.length; i++) {
-          const cells = rows[i].getElementsByTagName("td");
-          let match = false;
+    document.getElementById('addBrandForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-          // Check each cell in the row
-          for (let j = 0; j < cells.length; j++) {
-            if (cells[j] && cells[j].innerText.toLowerCase().includes(filter)) {
-              match = true;
-              break;
-            }
-          }
+    const name = document.getElementById('brandName').value.trim();
+    const description = document.getElementById('brandDescription').value.trim();
+    const origin = document.getElementById('brandOrigin').value.trim();
+    const status = document.querySelector('select[name="status"]').value;
 
-          // Toggle row visibility based on match
-          rows[i].style.display = match ? "" : "none";
+    const response = await fetch('/admin/brand/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, description, origin, status })
+    });
+
+    const result = await response.json();
+
+    if (!result.success) {
+      document.getElementById('submit-error').textContent = result.message;
+    } else {
+      
+      document.getElementById('submit-error').textContent = '';
+      const modal = bootstrap.Modal.getInstance(document.getElementById('addBrandModal'));
+      modal.hide();
+      location.reload()
+      
+    }
+  });
+ 
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("form[id^='editBrandForm']").forEach((form) => {
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formId = this.id.replace("editBrandForm-", "");
+        const brandId = formId;
+        const name = document.getElementById("brandeditName" + formId).value.trim();
+        const description = document.getElementById("brandEditDescription" + formId).value.trim();
+        const search = "<%= search %>";
+        const page = "<%= currentPage %>";
+
+        const response = await fetch(`/admin/brand/edit/${brandId}?search=${encodeURIComponent(search)}&page=${page}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, description }),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          const modal = bootstrap.Modal.getInstance(document.getElementById("editBrandModal" + formId));
+          modal.hide();
+          location.reload();
+        } else {
+          document.getElementById("editsubmit-error").textContent = result.message;
         }
       });
-      let nameerror = document.getElementById("name-error");
-      let descriptionerror = document.getElementById("description-error");
-      let submiterror = document.getElementById("submit-error");
-      let originerror = document.getElementById("origin-error");
-      const countryList = [
-        "United States",
-        "Canada",
-        "United Kingdom",
-        "Australia",
-        "Germany",
-        "France",
-        "India",
-        "China",
-        "Japan",
-        "Brazil",
-        "Italy",
-        "Spain",
-        "Mexico",
-        "South Africa",
-        "Netherlands",
-        "Russia",
-        "Sweden",
-        "Norway",
-      ];
+    });
+  });
 
-      function validateName() {
-        let name = document.getElementById("brandName").value;
-        if (name.length === 0) {
-          nameerror.innerHTML = "brand name is required.";
-          return false;
-        }
-        if (name.length < 3) {
-          nameerror.innerHTML = "require atleat 3 characters";
-          return false;
-        }
-        if (!name.match(/^[A-Za-z][A-Za-z0-9.]/)) {
-          nameerror.innerHTML = "Name Invalid";
-          return false;
-        }
-        nameerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
-        return true;
-      }
-      function validateDescription() {
-        let description = document.getElementById("brandDescription").value;
-        if (description.length === 0) {
-          descriptionerror.innerHTML = "Description is required.";
-          return false;
-        }
-        if (description.length < 10) {
-          descriptionerror.innerHTML = "Atleast 10 characters is needed.";
-          return false;
-        }
-        if (!description.match(/^[A-Za-z][A-Za-z0-9._,''"":]/)) {
-          descriptionerror.innerHTML = "Invalid description.";
-          return false;
-        }
-        descriptionerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
-        return true;
-      }
-      function validateOrigin() {
-        let origin = document.getElementById("brandOrigin").value;
-        originerror.innerHTML = "";
-        if (origin.length === 0) {
-          originerror.innerHTML = "Origin country is required.";
-          return false;
-        }
-        if (origin.length < 3) {
-          originerror.innerHTML = "Requires at least 3 char.";
-          return false;
-        }
-        if (!/^[A-Za-z\s]+$/.test(origin)) {
-          originerror.innerHTML = "Invalid country name.";
-          return false;
-        }
-        if (!countryList.includes(origin)) {
-          originerror.innerHTML = "Please enter a valid country name.";
-          return false;
-        }
 
-        originerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
-        return true;
-      }
 
-      function validateBrand() {
-        if (!validateName() || !validateDescription() || !validateOrigin()) {
-          submiterror.innerHTML = "Fix errors to Add Product.";
-          return false;
-        }
-        return true;
-      }
 
-      let editnameerror = document.getElementById("editname-error");
-      let editdescriptionerror = document.getElementById(
-        "editdescription-error"
-      );
-      let editsubmiterror = document.getElementById("editsubmit-error");
-      function validateEditName() {
-        let editname = document.getElementById("brandeditName").value;
-        if (editname.length === 0) {
-          editnameerror.innerHTML = "brand name is required.";
-          return false;
-        }
-        if (ediname.length < 3) {
-          editnameerror.innerHTML = "require atleat 3 char";
-          return false;
-        }
-        if (!name.match(/^[A-Za-z][A-Za-z0-9.]/)) {
-          editnameerror.innerHTML = "Name Invalid";
-          return false;
-        }
-        editnameerror.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
-        return true;
-      }
-      function validateEditDescription() {
-        let description = document.getElementById("brandEditDescription").value;
-        if (description.length === 0) {
-          editdescriptionerror.innerHTML = "Description is required.";
-          return false;
-        }
-        if (description.length < 10) {
-          editdescriptionerror.innerHTML = "Atleast 10 characters is needed.";
-          return false;
-        }
-        if (!description.match(/^[A-Za-z][A-Za-z0-9._,''"":]/)) {
-          editdescriptionerror.innerHTML = "Invalid description.";
-          return false;
-        }
-        editdescriptionerror.innerHTML =
-          '<i class="bi bi-check-circle-fill"></i>';
-        return true;
-      }
-      function validateEditBrand() {
-        if (!validateEditName() || !validateEditDescription()) {
-          editsubmiterror.innerHTML = "Fix errors to Add Product.";
-          return false;
-        }
-        return true;
-      }
-    </script>
+    function validateEditName(id) {
+  const name = document.getElementById(`brandeditName${id}`).value.trim();
+  const errorSpan = document.getElementById(`editname-error-${id}`);
+  if (name.length === 0) {
+    errorSpan.textContent = "Brand name is required.";
+    return false;
+  }
+  if (name.length < 3) {
+    errorSpan.textContent = "At least 3 characters required.";
+    return false;
+  }
+  if (!/^[A-Za-z][A-Za-z0-9\s.]*$/.test(name)) {
+    errorSpan.textContent = "Invalid brand name.";
+    return false;
+  }
+  errorSpan.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+  return true;
+}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-  </body>
+function validateEditDescription(id) {
+  const desc = document.getElementById(`brandEditDescription${id}`).value.trim();
+  const errorSpan = document.getElementById(`editdescription-error-${id}`);
+  if (desc.length < 10) {
+    errorSpan.textContent = "At least 10 characters required.";
+    return false;
+  }
+  errorSpan.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+  return true;
+}
+
+function validateEditBrand(id) {
+  const isNameValid = validateEditName(id);
+  const isDescValid = validateEditDescription(id);
+
+  if (!isNameValid || !isDescValid) {
+    document.getElementById("editsubmit-error").textContent = "Please fix the errors before submitting.";
+    return false;
+  }
+
+  document.getElementById("editsubmit-error").textContent = "";
+  return true;
+}
+
+//validation for add brand
+
+function validateName() {
+  const name = document.getElementById("brandName").value.trim();
+  const errorSpan = document.getElementById("name-error");
+
+  if (name.length === 0) {
+    errorSpan.textContent = "Brand name is required.";
+    return false;
+  }
+  if (name.length < 3) {
+    errorSpan.textContent = "At least 3 characters required.";
+    return false;
+  }
+  if (!/^[A-Za-z][A-Za-z0-9\s.]*$/.test(name)) {
+    errorSpan.textContent = "Invalid brand name.";
+    return false;
+  }
+  errorSpan.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+  return true;
+}
+
+
+function validateDescription() {
+  const desc = document.getElementById("brandDescription").value.trim();
+  const errorSpan = document.getElementById("description-error");
+
+  if (desc.length < 10) {
+    errorSpan.textContent = "At least 10 characters required.";
+    return false;
+  }
+  errorSpan.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+  return true;
+}
+
+
+function validateOrigin() {
+  const origin = document.getElementById("brandOrigin").value.trim();
+  const errorSpan = document.getElementById("origin-error");
+
+  if (origin.length === 0) {
+    errorSpan.textContent = "Origin country is required.";
+    return false;
+  }
+  if (!/^[A-Za-z\s]+$/.test(origin)) {
+    errorSpan.textContent = "Only alphabets allowed.";
+    return false;
+  }
+  errorSpan.innerHTML = '<i class="bi bi-check-circle-fill"></i>';
+  return true;
+}
+
+
+function validateBrand() {
+  const isNameValid = validateName();
+  const isDescValid = validateDescription();
+  const isOriginValid = validateOrigin();
+
+  if (!isNameValid || !isDescValid || !isOriginValid) {
+    document.getElementById("submit-error").textContent = "Please fix the errors before submitting.";
+    return false;
+  }
+
+  document.getElementById("submit-error").textContent = "";
+  return true;
+}
+
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+
 </html>

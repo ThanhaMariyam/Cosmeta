@@ -25,8 +25,16 @@ const categorySchema=new mongoose.Schema({
         type:Number,
         default:0
     },
-},
-{timestamps:true}
-)
+    offer: {
+        discountPercentage: { 
+            type: Number, 
+            default: 0 
+        },
+        isActive: {
+             type: Boolean, 
+             default: false 
+            },
+    }
+},{timestamps:true})
 
 module.exports=mongoose.model("category",categorySchema)

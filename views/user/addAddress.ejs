@@ -1,226 +1,311 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Bootstrap Icons -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        .form-control {
-            padding: 12px 16px;
-            border-radius: 8px;
-        }
-        
-        .form-control::placeholder {
-            color: #999;
-        }
-        
-        .form-label {
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        
-        .btn:hover {
-            opacity: 0.9;
-        }
-        .back{
-        padding:5px 10px;
-        border: none;
-        background-color: rgb(255, 255, 255);
-        color: rgb(115, 8, 106);
-        font-weight: bold;
-        border-radius: 10px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Adress</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    .form-control {
+      padding: 12px 16px;
+      border-radius: 8px;
     }
-        </style>
+
+    .form-control::placeholder {
+      color: #999;
+    }
+
+    .form-label {
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+    }
+
+    .back {
+      padding: 5px 10px;
+      border: none;
+      background-color: rgb(255, 255, 255);
+      color: rgb(115, 8, 106);
+      font-weight: bold;
+      border-radius: 10px;
+    }
+  </style>
 </head>
+
 <body>
-    <div class="container py-4">
-        <!-- Back Button -->
-        <div class="mb-5">
-        <a href="/address"><button class="back"><-Back</button></a>
-        </div>
-      
-        <!-- Form Header -->
-        <h2 style="color: purple; margin-top: -10px;" class="mb-4 text-center">Add address</h2>
-      
-        <!-- Address Form -->
-        <form action="/addAddress" method="post">
-          <div class="row g-4">
-            <!-- First Name -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="firstName" class="form-label">First name <span class="text-danger">*</span>
-                </label>
-                <input type="text" 
-                       class="form-control bg-light border-0" 
-                       id="firstName" 
-                       placeholder="Enter first name"
-                       name="firstName">
+  <div class="container py-4">
 
-              </div>
-            </div>
-      
-            <!-- Last Name -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="lastName" class="form-label">
-                  Last name <span class="text-danger">*</span>
-                </label>
-                <input type="text" 
-                       class="form-control bg-light border-0" 
-                       id="lastName" 
-                       placeholder="Enter last name" 
-                       name="lastName">
-              </div>
-            </div>
-      
-            <!-- email -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="email" class="form-label">
-                  Email <span class="text-danger">*</span>
-                </label>
-                <input type="email" 
-                       class="form-control bg-light border-0" 
-                       id="email" 
-                       placeholder="Enter email" 
-                       name="email">
-              </div>
-            </div>
-      
-            <!-- phone -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="phoneNumber" class="form-label">
-                  Phone number <span class="text-danger">*</span>
-                </label>
-                <input type="text" 
-                       class="form-control bg-light border-0" 
-                       id="phoneNumber" 
-                       placeholder="Enter phone number" 
-                       name="phone">
-              </div>
-            </div>
-      
-            <!-- city -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="city" class="form-label">
-                  city <span class="text-danger">*</span>
-                </label>
-                <input type="text" 
-                       class="form-control bg-light border-0" 
-                       id="city" 
-                       placeholder="Enter your city" 
-                       name="city">
-              </div>
-            </div>
-      
-            <!-- Street -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="streetaddress" class="form-label">
-                  Street address <span class="text-danger">*</span>
-                </label>
-                <input type="text" 
-                       class="form-control bg-light border-0" 
-                       id="streetAddress" 
-                       placeholder="Enter street address" 
-                       name="streetAddress">
-              </div>
-            </div>
+    <div class="mb-5">
+      <a href="<%= from === 'checkout' ? '/checkout' : '/address' %>"><button class="back">
+          <-Back< /button></a>
+    </div>
 
-             <!-- Postal code -->
-             <div class="col-md-6">
-                <div class="form-group">
-                  <label for="postalCode" class="form-label">
-                   Postal code <span class="text-danger">*</span>
-                  </label>
-                  <input type="text" 
-                         class="form-control bg-light border-0" 
-                         id="postalCode" 
-                         placeholder="Enter postal code" 
-                         name="pincode">
-                </div>
-              </div>
 
-               <!-- landmark -->
-            <div class="col-md-6">
-                <div class="form-group">
-                  <label for="postalCode" class="form-label">
-                    LandMark </span>
-                  </label>
-                  <input type="text" 
-                         class="form-control bg-light border-0" 
-                         id="landMark" 
-                         placeholder="Enter landmark" 
-                        name="landmark">
-                </div>
-              </div>
-        
-        
-      
-            <!-- state -->
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="state" class="form-label">
-                  State <span class="text-danger">*</span>
-                </label>
-                <input type="text" 
-                       class="form-control bg-light border-0" 
-                       id="state" 
-                       placeholder="Enter state" 
-                       name="state">
-              </div>
-            </div>
+    <h2 style="color: purple; margin-top: -10px;" class="mb-4 text-center">Add address</h2>
 
-             <!-- country -->
-             <div class="col-md-6">
-                <div class="form-group">
-                  <label for="country" class="form-label">
-                   Country <span class="text-danger">*</span>
-                  </label>
-                  <input type="text" 
-                         class="form-control bg-light border-0" 
-                         id="country" 
-                         placeholder="Enter country name" 
-                         name="country">
-                </div>
-              </div>
 
-              
-        
+    <form action="/addAddress" method="post">
+      <input type="hidden" name="from" value="<%= from === 'checkout' ? 'checkout' : '' %>">
+      <div class="row g-4">
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="firstName" class="form-label">First name <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control bg-light border-0" id="firstName" placeholder="Enter first name" name="firstName">
+            <div id="firstName-error" class="text-danger small mt-1"></div>
+
           </div>
-
-          <div class="col-md-6">
-            <div class="form-group">
-                <label class="form-label">Make this address primary?</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="isPrimary" id="primaryYes" value="yes">
-                    <label class="form-check-label" for="primaryYes">Yes</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="isPrimary" id="primaryNo" value="no">
-                    <label class="form-check-label" for="primaryNo">No</label>
-                </div>
-            </div>
         </div>
-      
-          <!-- Submit Button -->
-          <div class="text-center mt-4">
-            <button type="submit" class="btn text-white px-4 py-2" style="background-color: #742070; border-radius: 8px;">
-              Add
-            </button>
+
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="lastName" class="form-label">
+              Last name <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control bg-light border-0" id="lastName" placeholder="Enter last name" name="lastName">
+            <div id="lastName-error" class="text-danger small mt-1"></div>
           </div>
-        </form>
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="email" class="form-label">
+              Email <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control bg-light border-0" id="email" placeholder="Enter email" name="email">
+            <div id="email-error" class="text-danger small mt-1"></div>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="phoneNumber" class="form-label">
+              Phone number <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control bg-light border-0" id="phoneNumber" placeholder="Enter phone number" name="phone">
+            <div id="phoneNumber-error" class="text-danger small mt-1"></div>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="city" class="form-label">
+              city <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control bg-light border-0" id="city" placeholder="Enter your city" name="city">
+            <div id="city-error" class="text-danger small mt-1"></div>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="streetaddress" class="form-label">
+              Street address <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control bg-light border-0" id="streetAddress" placeholder="Enter street address" name="streetAddress">
+            <div id="streetAddress-error" class="text-danger small mt-1"></div>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="postalCode" class="form-label">
+              Postal code <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control bg-light border-0" id="postalCode" placeholder="Enter postal code" name="pincode">
+            <div id="postalCode-error" class="text-danger small mt-1"></div>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="postalCode" class="form-label">
+              LandMark </span>
+            </label>
+            <input type="text" class="form-control bg-light border-0" id="landMark" placeholder="Enter landmark" name="landmark">
+
+          </div>
+        </div>
+
+
+
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="state" class="form-label">
+              State <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control bg-light border-0" id="state" placeholder="Enter state" name="state">
+            <div id="state-error" class="text-danger small mt-1"></div>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="country" class="form-label">
+              Country <span class="text-danger">*</span>
+            </label>
+            <input type="text" class="form-control bg-light border-0" id="country" placeholder="Enter country name" name="country">
+            <div id="country-error" class="text-danger small mt-1"></div>
+          </div>
+        </div>
+
+
+
       </div>
-      <!-- footer -->
 
-    <%- include('../partials/footer') %>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label class="form-label">Make this address primary?</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="isPrimary" id="primaryYes" value="yes">
+            <label class="form-check-label" for="primaryYes">Yes</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="isPrimary" id="primaryNo" value="no">
+            <label class="form-check-label" for="primaryNo">No</label>
+          </div>
+        </div>
+      </div>
 
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+      <div class="text-center mt-4">
+        <button type="submit" class="btn text-white px-4 py-2" style="background-color: #742070; border-radius: 8px;">
+          Add
+        </button>
+      </div>
+    </form>
+  </div>
+
+
+  <%- include('../partials/footer') %>
+
+  <script>
+    const addressForm = document.querySelector("form");
+
+    const errors = {
+      firstName: document.getElementById("firstName-error"),
+      lastName: document.getElementById("lastName-error"),
+      email: document.getElementById("email-error"),
+      phoneNumber: document.getElementById("phoneNumber-error"),
+      city: document.getElementById("city-error"),
+      streetAddress: document.getElementById("streetAddress-error"),
+      postalCode: document.getElementById("postalCode-error"),
+      state: document.getElementById("state-error"),
+      country: document.getElementById("country-error"),
+    };
+
+    const regex = {
+      name: /^[A-Za-z]+(?: [A-Za-z]+)*$/,
+      email: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/,
+      phone: /^(?!0{10})\d{10}$/,
+      postal: /^[0-9]{4,6}$/
+    };
+
+    function validateField(id, condition, errorMsg) {
+      const input = document.getElementById(id);
+      const value = input.value.trim();
+      if (!condition(value)) {
+        errors[id].textContent = errorMsg;
+        return false;
+      }
+      errors[id].innerHTML = '<i class="bi bi-check-circle-fill text-success"></i>';
+      return true;
+    }
+
+    function validateAddressForm() {
+      const isValid =
+        validateField("firstName", val => regex.name.test(val), "First name must contain only letters") &&
+        validateField("lastName", val => regex.name.test(val), "Last name must contain only letters") &&
+        validateField("email", val => regex.email.test(val), "Enter a valid email address") &&
+        validateField("phoneNumber", val => regex.phone.test(val), "Enter a valid 10-digit number") &&
+        validateField("city", val => regex.name.test(val), "City must contain only letters") &&
+        validateField("streetAddress", val => val.length >= 5, "Street address is too short") &&
+        validateField("postalCode", val => regex.postal.test(val), "Postal code must be 4-6 digits") &&
+        validateField("state", val => regex.name.test(val), "State must contain only letters") &&
+        validateField("country", val => regex.name.test(val), "Country must contain only letters");
+
+      return isValid;
+    }
+
+    addressForm.addEventListener("submit", function(e) {
+      if (!validateAddressForm()) {
+        e.preventDefault();
+      }
+    });
+  </script>
+  <script>
+    // Add live validation on keyup for each relevant field
+    const fieldValidations = {
+      firstName: {
+        validator: val => regex.name.test(val),
+        message: "First name must contain only letters"
+      },
+      lastName: {
+        validator: val => regex.name.test(val),
+        message: "Last name must contain only letters"
+      },
+      email: {
+        validator: val => regex.email.test(val),
+        message: "Enter a valid email address"
+      },
+      phoneNumber: {
+        validator: val => regex.phone.test(val),
+        message: "Enter a valid 10-digit number"
+      },
+      city: {
+        validator: val => regex.name.test(val),
+        message: "City must contain only letters"
+      },
+      streetAddress: {
+        validator: val => val.length >= 5,
+        message: "Street address is too short"
+      },
+      postalCode: {
+        validator: val => regex.postal.test(val),
+        message: "Postal code must be 4-6 digits"
+      },
+      state: {
+        validator: val => regex.name.test(val),
+        message: "State must contain only letters"
+      },
+      country: {
+        validator: val => regex.name.test(val),
+        message: "Country must contain only letters"
+      }
+    };
+
+    Object.keys(fieldValidations).forEach(id => {
+      const input = document.getElementById(id);
+      input.addEventListener("keyup", () => {
+        const {
+          validator,
+          message
+        } = fieldValidations[id];
+        validateField(id, validator, message);
+      });
+    });
+  </script>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

@@ -3,7 +3,7 @@ const orderSchema=new mongoose.Schema({
     orderId:{
         type:String,
         unique:true,
-        required:true
+        required:true   
     },
     user:{
         type:mongoose.Schema.Types.ObjectId, 
@@ -28,13 +28,21 @@ const orderSchema=new mongoose.Schema({
             type:Number,
             required:true
         },
+        category:{
+            type:String,
+            required:true
+        },
+        brand:{
+            type:String,
+            required:true
+        },
         images:{
             type:[String],
             required:true
         },
         status: {
              type: String,
-              enum: ["Pending","Return Requested", "Canceled"],
+              enum: ["Pending","Return Requested", "Canceled","Returned","Delivered"],
                default: "Pending"
              },
              cancelReason: {
@@ -52,15 +60,36 @@ const orderSchema=new mongoose.Schema({
         type:Number,
         required:true
     },
+    couponApplied:{
+        type:String,
+        default:"NIL"
+    },
+    couponDiscount: {
+        type: Number,
+        default: 0
+    },
+    offerDiscount: {
+        type: Number,
+        default: 0
+      },
+    
     paymentMethod:{
         type:String,
-        enum:["Cash on Delivery","Credit Card","Debit Card","UPI","Net Banking" ],
+        enum:["Cash on Delivery","online payment","Wallet" ],
         required:true
     },
     paymentStatus:{
         type:String,
-        enum:["Pending","Paid","Failed"],
+        enum:["Pending","Paid","Failed","Refunded"],
         default:"pending"
+    },
+    razorpayOrderId: {
+        type: String,
+        default: null
+    },
+    razorpayPaymentId: {
+        type: String,
+        default: null
     },
     transactionId:{
         type:String,
@@ -74,7 +103,7 @@ const orderSchema=new mongoose.Schema({
     },
     orderStatus:{
         type:String,
-        enum:["Processing","Shipped","Delivered","Canceled","Returned","Return Requested"],
+        enum:["pending","Processing","Shipped","Delivered","Canceled","Returned","Return Requested"],
         default:"Processing"
     },
     cancellationReason:{

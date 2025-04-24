@@ -50,8 +50,10 @@ const addresSchema=new mongoose.Schema({
         required:true
     },
     isPrimary:{
+        
         type:Boolean,
-        default:false
+        default:false,
+        required:true
     }
 
 })

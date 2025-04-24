@@ -1,0 +1,27 @@
+.search {
+    position: relative;
+    display: inline-block;
+    
+}
+
+.search-dropdown {
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+    display: none;
+    z-index: 1000;
+}
+
+.search-dropdown div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.search-dropdown div:hover {
+    background: #f1f1f1;
+}

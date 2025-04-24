@@ -1,275 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=\, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/userSignup.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=\, initial-scale=1.0">
+  <title>Address</title>
+  <link rel="stylesheet" href="/userSignup.css">
   <link rel="stylesheet" href="/userBrand.css">
   <link rel="stylesheet" href="/sidebar.css">
+  <link rel="stylesheet" href="/search.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link
-    rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-
-  />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 </head>
 <style>
-    .nav-link {
+  .nav-link {
     color: #333;
     padding: 10px 15px;
-}
-   
+  }
 </style>
+
 <body>
-    
-     <!-- Header -->
-   <%- include('../partials/nav.ejs') %>
-   <!-- navbar -->
-   <div class="box">
-     <div class="item">
-       <a href="/">Home</a>
-       <a href="/category">Category</a>
-       <a href="/brand">Brand</a>
-       <a href="">About us</a>
-       <a href="">Contact us</a>
-     </div>
-     <%- include('../partials/header.ejs') %>
-   </div>
-    <div class="container-fluid">
-        <div class="row">
-          <!-- Left Sidebar -->
-          <div class="col-md-3 col-lg-2 sidebar">
-            <div class="avatar"><%= user.username.charAt(0).toUpperCase() %></div>
-            <div class="mb-2"><%= user.username %></div>
-            <% if(user.bonusPoints>0){ %>
-              <div class="bonus-badge mb-4">🎁 <%= user.bonusPoints %> bonuses available</div>
-              <% } %>
-            
-            <nav class="nav flex-column">
-                <a class="nav-link" href="/orders"><i class="bi bi-bag"></i> Orders</a>
-                <a class="nav-link" href="/wishlist"><i class="bi bi-heart"></i> Wishlist</a>
-                <a class="nav-link" href="#"><i class="bi bi-wallet2"></i> Wallet</a>
-                
-                <div class="mt-4 mb-2 text-muted">Manage account</div>
-                <a class="nav-link"  href="/profile"><i class="bi bi-person"></i> Personal info</a>
-                <a class="nav-link active" href="/address"><i class="bi bi-geo-alt"></i> Addresses</a>
-                
-                <div class="mt-4 mb-2 text-muted">Customer service</div>
-                <a class="nav-link" href="#"><i class="bi bi-question-circle"></i> Helps</a>
-                <a class="nav-link" href="#"><i class="bi bi-info-circle"></i> About us</a>
-                
-                <a class="nav-link mt-4" href="/logout"><i class="bi bi-box-arrow-right"></i> Log out</a>
-            </nav>
-        </div>
-          
-      
-          <!-- Main Content -->
-          
-          <div class="col-md-9 p-4">
-           
-            <h4 class="mb-4">Addresses</h4>
-      
-            <!-- Address Card -->
 
-            <% if(address.length) { %>
-              <% address.forEach(address=>{ %>
+  
+  <%- include('../partials/nav.ejs') %>
+  
+  <div class="box">
+    <div class="item">
+      <a href="/">Home</a>
+      <a href="/category">Category</a>
+      <a href="/brand">Brand</a>
+      <a href="">About us</a>
+      <a href="">Contact us</a>
+    </div>
+    <%- include('../partials/header.ejs') %>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
 
-              <div class="card mb-3">
-                <div class="card-body">
-                  <div  class="d-flex justify-content-between align-items-start mb-2">
-                    <div>
-                      <h6 class="mb-0">Shipping address 
-                      </h6>
-                    </div>
-                  
-                    <a style="color: purple;" href="#" 
-   class="text-decoration-none editBtn" 
-   data-bs-toggle="modal" 
-   data-bs-target="#editAddressModal"
-   data-addressId="<%= address._id %>"
-   data-firstname="<%= address.firstName %>"
-   data-lastname="<%= address.lastName %>"
-   data-email="<%= address.email %>"
-   data-phone="<%= address.phone %>"
-   data-city="<%= address.city %>"
-   data-street="<%= address.streetAddress %>"
-   data-pincode="<%= address.pincode %>"
-   data-landmark="<%= address.landmark %>"
-   data-state="<%= address.state %>"
-   data-country="<%= address.country %>"
-> Edit</a>
+      <div class="col-md-3 col-lg-2 sidebar">
+        <div class="avatar"><%= user.username.charAt(0).toUpperCase() %></div>
+        <div class="mb-2"><%= user.username %></div>
+        <% if(user.bonusPoints>0){ %>
+        <div class="bonus-badge mb-4">🎁 <%= user.bonusPoints %> bonuses available</div>
+        <% } %>
 
-                    <!-- Edit Address Modal -->
-<div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editAddressModalLabel">Edit Address</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <nav class="nav flex-column">
+          <a class="nav-link" href="/orders"><i class="bi bi-bag"></i> Orders</a>
+          <a class="nav-link" href="/wishlist"><i class="bi bi-heart"></i> Wishlist</a>
+          <a class="nav-link" href="/wallet"><i class="bi bi-wallet2"></i> Wallet</a>
+
+          <div class="mt-4 mb-2 text-muted">Manage account</div>
+          <a class="nav-link" href="/profile"><i class="bi bi-person"></i> Personal info</a>
+          <a class="nav-link active" href="/address"><i class="bi bi-geo-alt"></i> Addresses</a>
+
+          <div class="mt-4 mb-2 text-muted">Customer service</div>
+          <a class="nav-link" href="#"><i class="bi bi-question-circle"></i> Helps</a>
+          <a class="nav-link" href="#"><i class="bi bi-info-circle"></i> About us</a>
+
+          <a class="nav-link mt-4" href="/logout"><i class="bi bi-box-arrow-right"></i> Log out</a>
+        </nav>
       </div>
-      <div class="modal-body">
-        <form id="editAddressForm">
-          <input type="hidden" id="editAddressId">
-          <div class="mb-3">
-            <label for="editFirstName" class="form-label">First Name</label>
-            <input type="text" class="form-control" id="editFirstName" name="firstName">
-          </div>
-          <div class="mb-3">
-            <label for="editLastName" class="form-label">Last Name</label>
-            <input type="text" class="form-control" id="editLastName" name="lastName">
-          </div>
-          <div class="mb-3">
-            <label for="editEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="editEmail" required>
-          </div>
-          <div class="mb-3">
-            <label for="editPhone" class="form-label">Phone</label>
-            <input type="text" class="form-control" id="editPhone" required>
-          </div>
-          <div class="mb-3">
-            <label for="editCity" class="form-label">City</label>
-            <input type="text" class="form-control" id="editCity" required>
-          </div>
-          <div class="mb-3">
-            <label for="editStreetAddress" class="form-label">Street Address</label>
-            <input type="text" class="form-control" id="editStreetAddress" required>
-          </div>
-          <div class="mb-3">
-            <label for="editLandmark" class="form-label">Landmark</label>
-            <input type="text" class="form-control" id="editLandmark" required>
-          </div>
-          <div class="mb-3">
-            <label for="editPincode" class="form-label">Pincode</label>
-            <input type="text" class="form-control" id="editPincode" required>
-          </div>
-          <div class="mb-3">
-            <label for="editState" class="form-label">State</label>
-            <input type="text" class="form-control" id="editState" required>
-          </div>
-          <div class="mb-3">
-            <label for="editCountry" class="form-label">Country</label>
-            <input type="text" class="form-control" id="editCountry" required>
-          </div>
-          <div class="mb-3">
-            
-                <label for="primary" class="form-label">Make this address primary?</label>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="isPrimary" id="primaryYes" value="yes" >
-                    <label class="form-check-label" for="primaryYes">Yes</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="isPrimary" id="primaryNo" value="no">
-                    <label class="form-check-label" for="primaryNo">No</label>
-                </div>
+
+
+
+      <div class="col-md-9 p-4">
+        <h4 class="mb-4">Addresses</h4>
+
+
+        <% if(address.length) { %>
+        <% address.forEach((address, index) => { %>
+        <div class="card mb-3 select-address" data-addressId="<%= address._id %>"style="cursor: pointer; border: <%= selectedAddress && selectedAddress.toString() === address._id.toString() ? '2px solid purple' : '1px solid #ccc' %>;">
+
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <h6 class="mb-0">Shipping Address <%= index + 1 %></h6>
+              </div>
+
+
+              <a style="color: purple;" href="#" class="text-decoration-none editBtn" data-bs-toggle="modal" data-bs-target="#editAddressModal" data-addressId="<%= address._id %>" data-firstname="<%= address.firstName %>" data-lastname="<%= address.lastName %>" data-email="<%= address.email %>" data-phone="<%= address.phone %>" data-city="<%= address.city %>" data-street="<%= address.streetAddress %>" data-pincode="<%= address.pincode %>" data-landmark="<%= address.landmark %>" data-state="<%= address.state %>" data-country="<%= address.country %>">
+                Edit
+              </a>
+
+
+
+              <button style="color: purple; border: none; background-color: white;" data-addressId="<%= address._id %>" class="text-decoration-none deleteBtn">Delete</button>
+
+
             </div>
-        
-          <button type="submit" class="btn btn-primary">Save Changes</button>
-        </form>
+            <% if(address.isPrimary) { %>
+            <span class="badge bg-primary">Primary Address</span>
+            <% } %>
+
+            <p class="mb-1"><strong><%= address.firstName %> <%= address.lastName %></strong></p>
+            <p class="mb-0"><%= address.phone %></p>
+            <p class="mb-0"><%= address.streetAddress %>, <%= address.city %>, <%= address.state %> - <%= address.pincode %></p>
+          </div>
+        </div>
+
+        <div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="editAddressModalLabel">Edit Address</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="editAddressForm">
+                  <input type="hidden" id="editAddressId">
+                  <div class="mb-3">
+                    <label for="editFirstName" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="editFirstName" name="firstName">
+                  </div>
+                  <div class="mb-3">
+                    <label for="editLastName" class="form-label">Last Name</label>
+                    <input type="text" class="form-control" id="editLastName" name="lastName">
+                  </div>
+                  <div class="mb-3">
+                    <label for="editEmail" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="editEmail" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="editPhone" class="form-label">Phone</label>
+                    <input type="text" class="form-control" id="editPhone" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="editCity" class="form-label">City</label>
+                    <input type="text" class="form-control" id="editCity" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="editStreetAddress" class="form-label">Street Address</label>
+                    <input type="text" class="form-control" id="editStreetAddress" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="editLandmark" class="form-label">Landmark</label>
+                    <input type="text" class="form-control" id="editLandmark" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="editPincode" class="form-label">Pincode</label>
+                    <input type="text" class="form-control" id="editPincode" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="editState" class="form-label">State</label>
+                    <input type="text" class="form-control" id="editState" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="editCountry" class="form-label">Country</label>
+                    <input type="text" class="form-control" id="editCountry" required>
+                  </div>
+                  <div class="mb-3">
+
+                    <label for="primary" class="form-label">Make this address primary?</label>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="isPrimary" id="primaryYes" value="yes">
+                      <label class="form-check-label" for="primaryYes">Yes</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="isPrimary" id="primaryNo" value="no">
+                      <label class="form-check-label" for="primaryNo">No</label>
+                    </div>
+                  </div>
+
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+        <% } else { %>
+        <p>You haven't added any address yet!</p>
+        <% } %>
+
+
+        <a href="/addAddress">
+          <button class="btn btn-outline-dark">
+            <i class="bi bi-plus"></i> Add Address
+          </button>
+        </a>
       </div>
     </div>
   </div>
-</div>
 
-                    <button style="color: purple; border: none; background-color: white;" data-addressId="<%= address._id %>" class="text-decoration-none deleteBtn">Delete</button>
-                    
-                    
-                  </div>
-                  <% if(address.isPrimary) { %>
-                    <span style="background-color: purple;" class="badge">Primary Address</span>
-                  <% } %>
-                  <p class="mb-1"><%= address.firstName %> <%= address.lastName %></p>
-                  <p class="mb-0"><%= address.phone %></p>
-                  <p class="mb-0"><%= address.streetAddress %> <%= address.pincode %></p>
-                  
-                </div>
-                
-              </div>
-               
-              <%  })  %>
 
-          <% } %>
-            
-            <!-- Add Address Button -->
-             
-            <a href="/addAddress">
-              <button class="btn btn-outline-dark ">
-                  <i class="bi bi-plus"></i> Add address
-                </button>
-
-           </a>
-      
-           
-
-            
-             
-            
-          </div>
-        </div>
-      </div>
-      <!-- footer -->
-
-    <%- include('../partials/footer') %>
-      <script>
-        document.querySelectorAll(".setDefaultAddress").forEach(radio => {
-    radio.addEventListener("change", async (event) => {
+  <%- include('../partials/footer') %>
+  <script>
+    document.querySelectorAll(".setDefaultAddress").forEach(radio => {
+      radio.addEventListener("change", async (event) => {
         const addressId = event.target.getAttribute("data-addressId");
 
         try {
-            const response = await fetch('/setDefaultAddress', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ addressId })
-            });
-
-            const result = await response.json();
-            if (response.ok) {
-                // Reload page or update UI dynamically
-                location.reload();
-            } else {
-                alert("Failed to set default address.");
-            }
-        } catch (error) {
-            console.error("Error setting default address:", error);
-            alert("An error occurred.");
-        }
-    });
-});
-
-        const deletebtn=document.querySelectorAll(".deleteBtn")
-        deletebtn.forEach(btn=>{
-          
-          btn.addEventListener("click", async()=>{
-            const addressId= btn.getAttribute('data-addressId') 
-            try{
-              const response =  await fetch('/deleteAddress',{
-              method:'DELETE',
-              headers:{'Content-Type':'application/json'},
-              body:JSON.stringify({addressId})
+          const response = await fetch('/setDefaultAddress', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              addressId
             })
-            const result=await response.json()
-            console.log(result)
+          });
 
-            if(response.ok){
-              btn.closest(".card").remove()
-            }else{
-              alert("Failed to delete")
-            }
-      
+          const result = await response.json();
+          if (response.ok) {
 
-            }
-            catch(error){
-              console.log(error);
-              alert("error occured while deleting")
-              
-            }
+            location.reload();
+          } else {
+            alert("Failed to set default address.");
+          }
+        } catch (error) {
+          console.error("Error setting default address:", error);
+          alert("An error occurred.");
+        }
+      });
+    });
+
+    const deletebtn = document.querySelectorAll(".deleteBtn")
+    deletebtn.forEach(btn => {
+
+      btn.addEventListener("click", async () => {
+        const addressId = btn.getAttribute('data-addressId')
+        try {
+          const response = await fetch('/deleteAddress', {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              addressId
+            })
           })
-        })
+          const result = await response.json()
+          console.log(result)
 
-        // Select all Edit buttons
-document.querySelectorAll(".editBtn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        // Get address data from button attributes
+          if (response.ok) {
+            btn.closest(".card").remove()
+          } else {
+            alert("Failed to delete")
+          }
+
+
+        } catch (error) {
+          console.log(error);
+          alert("error occured while deleting")
+
+        }
+      })
+    })
+
+
+    document.querySelectorAll(".editBtn").forEach(btn => {
+      btn.addEventListener("click", (event) => {
+        event.stopPropagation()
+
         document.getElementById("editAddressId").value = btn.getAttribute("data-addressId");
         document.getElementById("editFirstName").value = btn.getAttribute("data-firstname");
         document.getElementById("editLastName").value = btn.getAttribute("data-lastname");
@@ -281,50 +263,109 @@ document.querySelectorAll(".editBtn").forEach(btn => {
         document.getElementById("editLandmark").value = btn.getAttribute("data-landmark");
         document.getElementById("editState").value = btn.getAttribute("data-state");
         document.getElementById("editCountry").value = btn.getAttribute("data-country");
+
+      });
     });
-});
-document.getElementById("editAddressForm").addEventListener("submit", async (e) => {
-    e.preventDefault(); // Prevent form from refreshing page
+    document.getElementById("editAddressForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      e.stopPropagation()
 
-    const addressId = document.getElementById("editAddressId").value;
-    const firstName = document.getElementById("editFirstName").value;
-    const lastName = document.getElementById("editLastName").value;
-    const email = document.getElementById("editEmail").value;
-    const phone = document.getElementById("editPhone").value;
-    const city = document.getElementById("editCity").value;
-    const streetAddress = document.getElementById("editStreetAddress").value;
-    const pincode = document.getElementById("editPincode").value;
-    const landmark = document.getElementById("editLandmark").value;
-    const state = document.getElementById("editState").value;
-    const country = document.getElementById("editCountry").value;
+      const addressId = document.getElementById("editAddressId").value;
+      const firstName = document.getElementById("editFirstName").value;
+      const lastName = document.getElementById("editLastName").value;
+      const email = document.getElementById("editEmail").value;
+      const phone = document.getElementById("editPhone").value;
+      const city = document.getElementById("editCity").value;
+      const streetAddress = document.getElementById("editStreetAddress").value;
+      const pincode = document.getElementById("editPincode").value;
+      const landmark = document.getElementById("editLandmark").value;
+      const state = document.getElementById("editState").value;
+      const country = document.getElementById("editCountry").value;
+      const isPrimary = document.querySelector('input[name="isPrimary"]:checked')?.value || "no";
 
-    const response = await fetch("/updateAddress", {
+      const response = await fetch("/updateAddress", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ addressId, firstName,lastName,email, phone,city, streetAddress, pincode,landmark,state,country })
-    });
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          addressId,
+          firstName,
+          lastName,
+          email,
+          phone,
+          city,
+          streetAddress,
+          pincode,
+          landmark,
+          state,
+          country,
+          isPrimary
+        })
+      });
 
-    const result = await response.json();
-    console.log(result);
+      const result = await response.json();
+      console.log(result);
 
-    if (response.ok) {
-        // Update address on UI without refreshing
+      if (response.ok) {
+
         const updatedCard = document.querySelector(`[data-addressId='${addressId}']`).closest(".card");
         updatedCard.querySelector("p:nth-of-type(1)").textContent = firstName + " " + lastName
         updatedCard.querySelector("p:nth-of-type(2)").textContent = phone;
         updatedCard.querySelector("p:nth-of-type(3)").textContent = streetAddress + " " + pincode;
-        
-        // Close the modal
-       const modal= bootstrap.Modal.getInstance(document.getElementById("editAddressModal"))
-       modal.hide()
-    } else {
-        alert("Failed to update address.");
-    }
-});
+        window.location.reload()
 
-           
-      </script>
-      
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        const modal = bootstrap.Modal.getInstance(document.getElementById("editAddressModal"))
+        modal.hide()
+      } else {
+        alert("Failed to update address.");
+      }
+    });
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const addressCards = document.querySelectorAll(".select-address");
+      const urlParams = new URLSearchParams(window.location.search);
+      const fromCheckout = urlParams.get("from") === "checkout";
+
+      addressCards.forEach(card => {
+        console.log(card)
+        card.addEventListener("click", async () => {
+          const addressId = card.getAttribute("data-addressId");
+
+          try {
+            console.log("Selecting address with ID:", addressId);
+
+            const response = await fetch("/selectAddress", {
+
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              credentials: "include",
+              body: JSON.stringify({
+                addressId
+              })
+            });
+
+            const result = await response.json();
+            if (result.success) {
+              if (fromCheckout) {
+                window.location.href = "/checkout";
+              } else {
+                window.location.reload();
+              }
+            }
+          } catch (error) {
+            console.error("Error selecting address:", error);
+          }
+        });
+      });
+    });
+  </script>
+  <script src="/script/search.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

@@ -12,6 +12,22 @@ async function addToWishlist(productId) {
       },
     });
 
+    if (response.status === 401) {
+      Swal.fire({
+        icon: "warning",
+        title: "Sign In Required",
+        text: "You must sign in to add an item to wishlist!",
+        width: 400,
+        confirmButtonColor: "#6b247e",
+        confirmButtonText: "Go to Login",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "/login";
+        }
+      });
+      return;
+    }
+
     const data = await response.json();
 
     if (data.success) {

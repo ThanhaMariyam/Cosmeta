@@ -37,12 +37,20 @@ const getHome = async (req, res) => {
       }
     }
 
-    let products = await productSchema
-      .find(filter)
-      .populate("category", "name imageUrl")
-      .sort({ stock: -1, createdAt: -1 })
-      .limit(limit)
-      .lean();
+    let sortOption = req.query.sort;
+      let sortQuery = { stock: -1, createdAt: -1 }; 
+
+      if (sortOption === 'price-asc') {
+        sortQuery = { discountedPrice: 1 };
+      } else if (sortOption === 'price-desc') {
+        sortQuery = { discountedPrice: -1 };
+      }
+
+      let products = await productSchema
+        .find(filter).limit(12)
+        .populate("category", "name imageUrl")
+        .sort({ stock: -1, price: 1 })
+        .lean();
 
     for (let product of products) {
       const productDiscount = product.productOffer || 0;
@@ -71,6 +79,12 @@ const getHome = async (req, res) => {
       product.discountedPrice = Math.round(
         originalPrice - (originalPrice * highestDiscount) / 100
       );
+    }
+
+    if (sortOption === 'price-asc') {
+      products.sort((a, b) => a.discountedPrice - b.discountedPrice);
+    } else if (sortOption === 'price-desc') {
+      products.sort((a, b) => b.discountedPrice - a.discountedPrice);
     }
 
     let productOff = await productSchema
@@ -111,6 +125,11 @@ const getHome = async (req, res) => {
         originalPrice - (originalPrice * highestDiscount) / 100
       );
     }
+    if (sortOption === "price-asc") {
+      productOff.sort((a, b) => a.discountedPrice - b.discountedPrice);
+    } else if (sortOption === "price-desc") {
+      productOff.sort((a, b) => b.discountedPrice - a.discountedPrice);
+    }
 
     let productInCart = [];
     let productInWish = [];
@@ -142,6 +161,7 @@ const getHome = async (req, res) => {
       productInCart,
       productInWish,
       selectedCategory,
+      selectedSort: sortOption
     });
   } catch (error) {
     console.log(error);
@@ -281,6 +301,7 @@ const getBrandProd = async (req, res) => {
     const limit = 8;
     const skip = (page - 1) * limit;
     const brandId = req.query.brand;
+    const selectedSort = req.query.sort || '';
     if (!brandId) {
       return res.status(httpStatus.HttpStatus.NOT_FOUND).render("user/404");
     }
@@ -295,12 +316,19 @@ const getBrandProd = async (req, res) => {
       }
     }
 
-    const products = await productSchema
+        let allProducts = await productSchema
       .find({ brand: brandId, isListed: true })
-      .sort({ stock: -1 })
-      .lean()
-      .skip(skip)
-      .limit(limit);
+      .lean();
+
+      if (selectedSort === 'price-asc') {
+        allProducts.sort((a, b) => Number(a.price) - Number(b.price));
+      } else if (selectedSort === 'price-desc') {
+        allProducts.sort((a, b) => Number(b.price) - Number(a.price));
+      } else {
+        allProducts.sort((a, b) => b.stock - a.stock);
+      }
+
+      const products = allProducts.slice(skip, skip + limit);
 
     for (let product of products) {
       const productDiscount = product.productOffer || 0;
@@ -363,6 +391,7 @@ const getBrandProd = async (req, res) => {
       user,
       productInCart,
       productInWish,
+      selectedSort
     });
   } catch (error) {
     console.log(error);
@@ -518,6 +547,7 @@ const getCategoryProd = async (req, res) => {
     const limit = 8;
     const skip = (page - 1) * limit;
     const categoryId = req.query.category;
+    const selectedSort = req.query.sort || '';  
 
     if (!categoryId) {
       return res.status(httpStatus.HttpStatus.NOT_FOUND).render("user/404");
@@ -534,13 +564,24 @@ const getCategoryProd = async (req, res) => {
       }
     }
 
-    let products = await productSchema
-      .find({ category: categoryId, isListed: true })
-      .sort({ stock: -1 })
-      .skip(skip)
-      .limit(limit)
-      .lean();
+    let allProducts = await productSchema
+  .find({ category: categoryId, isListed: true })
+  .lean();
 
+if (selectedSort === 'price-asc') {
+  allProducts.sort((a, b) => Number(a.price) - Number(b.price));
+} else if (selectedSort === 'price-desc') {
+  allProducts.sort((a, b) => Number(b.price) - Number(a.price));
+}
+
+
+if (!selectedSort) {
+  allProducts.sort((a, b) => b.stock - a.stock);
+}
+
+
+
+const products = allProducts.slice(skip, skip + limit);
     for (let product of products) {
       const productDiscount = product.productOffer || 0;
 
@@ -605,6 +646,7 @@ const getCategoryProd = async (req, res) => {
       user,
       productInCart,
       productInWish,
+      selectedSort
     });
   } catch (error) {
     console.log(error);

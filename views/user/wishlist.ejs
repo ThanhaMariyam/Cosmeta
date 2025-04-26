@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Wishlist</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
@@ -28,8 +28,8 @@
 <body>
   <%- include('../partials/nav.ejs') %>
 
-  <div class="box">
-    <div class="item">
+  <div class="box container-fluid">
+    <div class="item col-md-4">
       <a href="/">Home</a>
       <a href="/category">Category</a>
       <a href="/brand">Brand</a>
@@ -45,29 +45,7 @@
     <% } %>
 
     <div class="d-flex">
-      <div class="col-md-3 col-lg-2 sidebar">
-        <div class="avatar"><%= user.username.charAt(0).toUpperCase() %></div>
-        <div class="mb-2"><%= user.username %></div>
-        <% if(user.bonusPoints>0){ %>
-        <div class="bonus-badge mb-4">🎁 <%= user.bonusPoints %> bonuses available</div>
-        <% } %>
-
-        <nav class="nav flex-column">
-          <a class="nav-link" href="/orders"><i class="bi bi-bag"></i> Orders</a>
-          <a class="nav-link active" href="#"><i class="bi bi-heart"></i> Wishlist</a>
-          <a class="nav-link" href="/wallet"><i class="bi bi-wallet2"></i> Wallet</a>
-
-          <div class="mt-4 mb-2 text-muted">Manage account</div>
-          <a class="nav-link" href="/profile"><i class="bi bi-person"></i> Personal info</a>
-          <a class="nav-link" href="/address"><i class="bi bi-geo-alt"></i> Addresses</a>
-
-          <div class="mt-4 mb-2 text-muted">Customer service</div>
-          <a class="nav-link" href="#"><i class="bi bi-question-circle"></i> Helps</a>
-          <a class="nav-link" href="#"><i class="bi bi-info-circle"></i> About us</a>
-
-          <a class="nav-link mt-4" href="/logout"><i class="bi bi-box-arrow-right"></i> Log out</a>
-        </nav>
-      </div>
+     <%- include('../partials/sidebar.ejs') %>
 
 
       <% if (!wishlist || !wishlist.products || wishlist.products.length === 0) { %>
@@ -205,6 +183,18 @@
   <script src="/script/search.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script src="/script/wishlist.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const pageTitle = document.title;
+      const navLinks = document.querySelectorAll('.nav-link');
+  
+      navLinks.forEach(link => {
+        if (link.getAttribute('data-title') === pageTitle) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

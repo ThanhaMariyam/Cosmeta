@@ -4,13 +4,24 @@ const httpStatus=require("../../utils/httpStatus")
 
 const addWishlist= async (req, res) => {
     try {
+           if (!req.session.user) {
+                return res
+                  .status(httpStatus.HttpStatus.UNAUTHORIZED)
+                  .json({
+                    success: false,
+                    message: "unauthorized. please login to add items to cart",
+                  });
+              }
+
         const userId = req.session.user._id;
         if (!userId) {
             return res.status(httpStatus.HttpStatus.UNAUTHORIZED).json({ success: false, message: 'User not logged in' });
         }
 
         const  productId = req.params.id;
+        console.log(productId)
         const product = await productSchema.findById(productId);
+        console.log(product)
 
         if (!product) {
             return res.status(httpStatus.HttpStatus.NOT_FOUND).json({ success: false, message: 'Product not found' });

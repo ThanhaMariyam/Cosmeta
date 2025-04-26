@@ -32,8 +32,8 @@
 <body>
   <%- include('../partials/nav.ejs') %>
 
-  <div class="box">
-    <div class="item">
+  <div class="box container-fluid">
+    <div class="item col-md-4">
       <a style="color: purple" href="">Home</a>
       <a href="/category">Category</a>
       <a href="/brand">Brand</a>
@@ -58,12 +58,14 @@
 
       </select>
 
-      <select id="sortFilter" class="form-select w-25 mt-3">
-        <option value="">Sort By</option>
-        <option value="price-asc" <%= sort === 'price-asc' ? 'selected' : '' %>>Price: Low to High</option>
-        <option value="price-desc" <%= sort === 'price-desc' ? 'selected' : '' %>>Price: High to Low</option>
-        <option value="relevance" <%= sort === 'relevance' ? 'selected' : '' %>>Relevance</option>
+      <select id="sortFilter" class="form-select w-25 mt-3 ms-2">
+        <option value="" <%= !selectedSort ? 'selected' : '' %>>Sort By</option>
+        <option value="price-asc" <%= selectedSort === 'price-asc' ? 'selected' : '' %>>Price: Low to High</option>
+        <option value="price-desc" <%= selectedSort === 'price-desc' ? 'selected' : '' %>>Price: High to Low</option>
+        <option value="relevance" <%= selectedSort === 'relevance' ? 'selected' : '' %>>Relevance</option>
       </select>
+
+      <button id="clearFilters" class="btn btn-outline-secondary mt-3 ms-2">Clear</button>
     </div>
   </div>
 
@@ -253,18 +255,53 @@
   </div>
 
   <%- include('../partials/footer') %>
-  <script>
-    document.getElementById("categoryFilter").addEventListener("change", function() {
+  <script> 
+    document.getElementById("categoryFilter").addEventListener("change", function () {
       const selectedCategory = this.value;
-
-
-      if (selectedCategory === "") {
-        window.location.href = `/`;
-      } else {
-        window.location.href = selectedCategory ? `/?category=${encodeURIComponent(selectedCategory)}` : `/`;
+      const sortValue = document.getElementById("sortFilter").value;
+  
+      const query = new URLSearchParams();
+  
+      if (selectedCategory) {
+        query.set("category", selectedCategory);
       }
+      if (sortValue) {
+        query.set("sort", sortValue);
+      }
+  
+      window.location.href = `/?${query.toString()}`;
+    });
+  
+    document.getElementById("sortFilter").addEventListener("change", function () {
+      const sortValue = this.value;
+      const selectedCategory = document.getElementById("categoryFilter").value;
+  
+      const query = new URLSearchParams();
+  
+      if (selectedCategory) {
+        query.set("category", selectedCategory);
+      }
+      if (sortValue) {
+        query.set("sort", sortValue);
+      }
+  
+      window.location.href = `/?${query.toString()}`;
     });
   </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const clearButton = document.getElementById('clearFilters');
+      const categoryFilter = document.getElementById('categoryFilter');
+      const sortFilter = document.getElementById('sortFilter');
+  
+      clearButton.addEventListener('click', () => {
+        categoryFilter.value = '';
+        sortFilter.value = '';
+        window.location.href = window.location.pathname; 
+      });
+    });
+  </script>
+  
 
 
 

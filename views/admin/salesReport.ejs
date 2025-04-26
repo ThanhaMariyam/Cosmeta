@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cosmeta sales report</title>
+    <title>sales</title>
     <link rel="stylesheet" href="/dash.css" />
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
@@ -53,93 +53,7 @@
     <div class="container-fluid">
       <div class="row">
         
-        <div class="col-auto px-0 sidebar">
-          <div class="d-flex flex-column p-3">
-            <h3 class="mb-4">Cosmeta</h3>
-            <ul class="nav nav-pills flex-column gap-2">
-              <li class="nav-item">
-                <a href="/admin/dashboard" class="nav-link">
-                  <i class="bi bi-speedometer2 me-2"></i>
-                  Dashboard
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/user" class="nav-link">
-                  <i class="bi bi-people me-2"></i>
-                  Users
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/Products" class="nav-link">
-                  <i class="bi bi-box me-2"></i>
-                  Products
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/inventory" class="nav-link">
-                  <i class="bi bi-boxes me-2"></i>
-                  Inventory
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/category" class="nav-link">
-                  <i class="bi bi-tags me-2"></i>
-                  Category
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/brand" class="nav-link">
-                  <i class="bi bi-award me-2"></i>
-                  Brands
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a href="/admin/orderManagement" class="nav-link">
-                  <i class="bi bi-cart me-2"></i>
-                  Orders
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/return" class="nav-link">
-                  <i class="bi bi-arrow-return-left me-2"></i>
-                  Returns
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a href="/admin/coupon" class="nav-link">
-                  <i class="bi bi-ticket-perforated me-2"></i>
-                  Coupons
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/offer" class="nav-link">
-                  <i class="bi bi-gift me-2"></i>
-                  Offers
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/userWallet" class="nav-link">
-                    <i class="bi bi-wallet2 me-2"></i>
-                  User Wallet
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="/admin/salesReport" class="nav-link active">
-                    <i class="bi bi-bar-chart me-2"></i>
-                  Sales
-                </a>
-              </li>
-            </ul>
-            <a href="/admin/logout">
-              <button class="btn btn-outline-light mt-2">
-                <i class="bi bi-box-arrow-right me-2"></i>
-                Logout
-              </button>
-            </a>
-          </div>
-        </div>
+        <%- include('../partials/adminSidebar.ejs') %>
         <div class="col main-content">
           <div class="container py-4">
             
@@ -513,6 +427,7 @@
     window.location.href = `/admin/salesreport?filter=custom&from=${from}&to=${to}`;
   });
 </script>
+<script src="/script/sidebar.js"></script>
 
 
   </body>

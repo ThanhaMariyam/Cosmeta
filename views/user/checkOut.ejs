@@ -92,8 +92,8 @@
 
   <%- include('../partials/nav.ejs') %>
 
-  <div class="box">
-    <div class="item">
+  <div class="box container-fluid">
+    <div class="item col-md-4">
       <a href="/">Home</a>
       <a href="/category">Category</a>
       <a href="/brand">Brand</a>
@@ -298,8 +298,8 @@
                 <span class="amount-saved" style="color: green;">-₹<%= cart.amountSaved %></span>
               </div>
               <div class="d-flex justify-content-between mb-2">
-                <span id="subTotal">Subtotal</span>
-                <span>₹<%= cart.subTotal %></span>
+                <span >Subtotal</span>
+                <span id="subTotal">₹<%= cart.subTotal %></span>
               </div>
 
 
@@ -619,8 +619,11 @@
             updateButtons(couponCode);
             document.getElementById("couponDiscount").innerText = `-₹${data.discountAmount}`;
             document.getElementById("totalPrice").innerText = `₹${data.newTotal}`;
+            console.log("oldTotal",data.totalPrice)
+            console.log("new total",data.newTotal)
             if (data.subTotal) {
               document.getElementById("subTotal").innerText = `₹${data.subTotal}`;
+              console.log("subTotal",data.subTotal)
               
             }
         } else {

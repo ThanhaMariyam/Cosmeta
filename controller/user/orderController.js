@@ -62,6 +62,7 @@ const loadCheckout = async (req, res) => {
       const discountedPrice =
         productPrice - (productPrice * itemHighestDiscount) / 100;
       const roundedDiscountedPrice = Math.round(discountedPrice);
+      console.log("rounded discount price",roundedDiscountedPrice)
 
       subTotal += roundedDiscountedPrice * item.quantity;
       totalDiscount += (productPrice - discountedPrice) * item.quantity;
@@ -121,6 +122,7 @@ const loadCheckout = async (req, res) => {
       couponDiscount = 0;
     }
 
+    console.log("totalPrice",totalPrice)
     res.render("user/checkOut", {
       shippingAddress,
       userAddress,

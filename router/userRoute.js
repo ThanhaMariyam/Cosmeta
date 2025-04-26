@@ -156,7 +156,7 @@ user.get("/orderConfirmation",checkSession,getconfirm)
 
 user.get("/wishlist",checkSession,loadWishlist)
 user.delete("/wishlist/remove/:id",checkSession,remvWishlist)
-user.post("/wishlist/add/:id",checkSession,addWishlist)
+user.post("/wishlist/add/:id",addWishlist)
 
 user.get("/logout",logout)
 user.get("/404",(req,res)=>{

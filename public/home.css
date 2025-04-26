@@ -17,8 +17,8 @@
 .item{
     display: flex;
     width: 40%;
-   
-    margin-left: 5%;
+   margin-left: 3%;
+    
     justify-content: space-between;
     margin-top: 30px;
     
@@ -30,7 +30,7 @@
     font-weight: bold;
 }
 .search input{
-    width: 400px;
+    width:80%;
     height: 40px;
     margin-top: 27px;
     margin-left: 50px;
@@ -52,7 +52,7 @@
 .small{
     display: flex;
     
-    width: 130px;
+    width: 10%;
     justify-content: space-between;
     margin-left: 70px;
 }

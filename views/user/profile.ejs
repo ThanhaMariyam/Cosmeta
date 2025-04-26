@@ -259,6 +259,18 @@
         });
       });
     </script>
+     <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const pageTitle = document.title;
+        const navLinks = document.querySelectorAll('.nav-link');
+    
+        navLinks.forEach(link => {
+          if (link.getAttribute('data-title') === pageTitle) {
+            link.classList.add('active');
+          }
+        });
+      });
+    </script>
 
     <script src="/script/referal.js"></script>
     <script src="/script/search.js"></script>

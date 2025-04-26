@@ -26,32 +26,31 @@ const applyCoupons = async (req, res) => {
     if (!coupon) {
       return res.json({ success: false, message: "Invalid or expired coupon" });
     }
-
-    const categories = await categorySchema.find(
-      {},
-      { name: 1, categoryOffer: 1 }
-    );
-    const categoryOfferMap = {};
-    for (const cat of categories) {
-      categoryOfferMap[cat.name] = cat.categoryOffer || 0;
-    }
-
     let subTotal = 0;
 
     for (const item of cart.product) {
       const product = item.productId;
       const quantity = item.quantity;
 
-      const productOffer = product.productOffer || 0;
-      const categoryOffer = categoryOfferMap[product.category] || 0;
+      const category = await categorySchema.findById(product.category);
+      const categoryDiscount = category?.offer?.isActive
+        ? category.offer.discountPercentage || 0
+        : 0;
 
-      const bestOffer = Math.max(productOffer, categoryOffer);
+      const productOffer = product.productOffer || 0;
+    
+      console.log(`catrgoryOffer${categoryDiscount}    ,,   productOffer${productOffer}` )
+
+      const bestOffer = Math.max(productOffer, categoryDiscount);
       const discountedPrice = Math.round(product.price * (1 - bestOffer / 100));
+      console.log("discountedPrice",discountedPrice)
 
       subTotal += discountedPrice * quantity;
     }
 
     const deliveryCharge = 50;
+
+    console.log(" from coupon subTotal",subTotal)
     let totalPrice = subTotal + deliveryCharge;
 
     if (totalPrice < coupon.minOrderAmount) {
@@ -107,14 +106,7 @@ const remvCoupon = async (req, res) => {
         .status(httpStatus.HttpStatus.NOT_FOUND)
         .json({ success: false, message: "Cart not found" });
     }
-    const categories = await categorySchema.find(
-      {},
-      { name: 1, categoryOffer: 1 }
-    );
-    const categoryOfferMap = {};
-    for (const cat of categories) {
-      categoryOfferMap[cat.name] = cat.categoryOffer || 0;
-    }
+    
 
     let subTotal = 0;
 
@@ -122,10 +114,15 @@ const remvCoupon = async (req, res) => {
       const product = item.productId;
       const quantity = item.quantity;
 
-      const productOffer = product.productOffer || 0;
-      const categoryOffer = categoryOfferMap[product.category] || 0;
+      const category = await categorySchema.findById(product.category);
+      const categoryDiscount = category?.offer?.isActive
+        ? category.offer.discountPercentage || 0
+        : 0;
 
-      const bestOffer = Math.max(productOffer, categoryOffer);
+      const productOffer = product.productOffer || 0;
+     
+
+      const bestOffer = Math.max(productOffer, categoryDiscount);
       const discountedPrice = Math.round(product.price * (1 - bestOffer / 100));
 
       subTotal += discountedPrice * quantity;
@@ -133,6 +130,7 @@ const remvCoupon = async (req, res) => {
 
     const deliveryCharge = 50;
     const totalPrice = subTotal + deliveryCharge;
+    console.log("34567890",totalPrice)
     req.session.appliedCoupon = null;
 
     await orderSchema.updateOne(

@@ -425,7 +425,7 @@
           confirmButtonText: "Yes, Place Order"
         }).then((result) => {
           if (result.isConfirmed) {
-            placeOrder(recaptchaResponse, paymentMethod);
+            placeOrder(paymentMethod);
           }
         });
       }

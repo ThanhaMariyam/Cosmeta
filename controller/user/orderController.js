@@ -1156,9 +1156,9 @@ const cancelOrder = async (req, res) => {
       await walletHistorySchema.create({
         wallet_id: wallet._id,
         transaction_amount: refundAmount,
-        description: `Refund for canceled order ${userOrderId}`,
+        description: `Refund for canceled order ${userOrderId.orderId}`,
         transaction_type: "credited",
-        order_id: userOrderId,
+        order_id: userOrderId.orderId,
       });
 
       if (refundAmount >= 1000) {

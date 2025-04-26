@@ -187,39 +187,13 @@ const razorpay = new Razorpay({
 
 const createRazorpayOrder = async (req, res) => {
   try {
-    const { amount, recaptchaToken } = req.body;
+    const { amount} = req.body;
 
     if (!amount || isNaN(parseFloat(amount)) || parseFloat(amount) <= 0) {
       return res.status(httpStatus.HttpStatus.BAD_REQUEST).json({
         success: false,
         message: "Invalid amount provided",
       });
-    }
-
-    if (!recaptchaToken) {
-      return res
-        .status(httpStatus.HttpStatus.BAD_REQUEST)
-        .json({
-          success: false,
-          message: "reCAPTCHA verification is required",
-        });
-    }
-
-    const recaptchaResponse = await axios.post(
-      `https://www.google.com/recaptcha/api/siteverify`,
-      null,
-      {
-        params: {
-          secret: process.env.RECAPTCHA_SECRET,
-          response: recaptchaToken,
-        },
-      }
-    );
-
-    if (!recaptchaResponse.data.success) {
-      return res
-        .status(httpStatus.HttpStatus.BAD_REQUEST)
-        .json({ success: false, message: "reCAPTCHA verification failed" });
     }
 
     let userData = {
@@ -488,31 +462,8 @@ const createOrderInDB = async (
 };
 
 const placeOrder = async (req, res) => {
-  const { recaptchaToken, paymentMethod } = req.body;
-
-  if (!recaptchaToken) {
-    return res
-      .status(httpStatus.HttpStatus.BAD_REQUEST)
-      .json({ success: false, message: "reCAPTCHA verification is required" });
-  }
-
+  const {paymentMethod } = req.body;
   try {
-    const recaptchaResponse = await axios.post(
-      `https://www.google.com/recaptcha/api/siteverify`,
-      null,
-      {
-        params: {
-          secret: process.env.RECAPTCHA_SECRET,
-          response: recaptchaToken,
-        },
-      }
-    );
-
-    if (!recaptchaResponse.data.success) {
-      return res
-        .status(httpStatus.HttpStatus.BAD_REQUEST)
-        .json({ success: false, message: "reCAPTCHA verification failed" });
-    }
 
     const userId = req.session.user._id;
 

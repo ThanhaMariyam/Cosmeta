@@ -319,7 +319,7 @@
             </div>
 
 
-            <div class="g-recaptcha mt-3" data-sitekey="6LfzM_4qAAAAACs_Jt9jH_EcW0TmNpZxn8LSnkrg"></div>
+            
 
             <button id="placeOrder" class="btn btn-primary w-100 mt-4" style="background-color: #742070; border: none;">
               Place Order
@@ -405,11 +405,7 @@
 
       function handleOrderSubmission() {
 
-        const recaptchaResponse = grecaptcha.getResponse();
-        if (!recaptchaResponse) {
-          Swal.fire("Error", "Please verify that you are not a robot.", "error");
-          return;
-        }
+        
 
         let selectedPayment = document.querySelector('input[name="paymentMethod"]:checked');
         if (!selectedPayment) {
@@ -434,14 +430,14 @@
         });
       }
 
-      function placeOrder(recaptchaToken, paymentMethod) {
+      function placeOrder(paymentMethod) {
         const totalAmountElement = document.getElementById("totalPrice");
         if (!totalAmountElement) {
           Swal.fire("Error", "Total amount not found.", "error");
           return;
         }
 
-        const totalAmount = parseFloat(totalAmountElement.innerText.replace("₹", "").trim()); // ✅ Extract numeric value
+        const totalAmount = parseFloat(totalAmountElement.innerText.replace("₹", "").trim()); 
 
         if (isNaN(totalAmount) || totalAmount <= 0) {
           Swal.fire("Error", "Invalid total amount.", "error");
@@ -449,10 +445,7 @@
         }
 
 
-        if (!recaptchaToken) {
-          Swal.fire("Error", "Please complete the reCAPTCHA verification.", "error");
-          return;
-        }
+        
 
 
         Swal.fire({
@@ -474,7 +467,7 @@
               },
               body: JSON.stringify({
                 amount: totalAmount,
-                recaptchaToken: recaptchaToken,
+                
               })
             })
             .then(response => response.json())
@@ -501,7 +494,7 @@
               },
               body: JSON.stringify({
                 paymentMethod: paymentMethod,
-                recaptchaToken: recaptchaToken,
+                
               })
             })
             .then(response => response.json())
@@ -709,7 +702,7 @@
     }
   </script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script src="/script/search.js"></script>

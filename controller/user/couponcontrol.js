@@ -138,6 +138,10 @@ const remvCoupon = async (req, res) => {
       { $set: { couponApplied: "NIL" } }
     );
 
+    cart.subTotal = subTotal;
+    cart.totalPrice = totalPrice;
+    await cart.save();
+
     return res.status(httpStatus.HttpStatus.OK).json({
       success: true,
       message: "Coupon removed successfully",

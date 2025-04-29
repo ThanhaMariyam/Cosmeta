@@ -658,8 +658,13 @@
 
       document.getElementById("couponDiscount").innerText = "-₹0.00";
       document.getElementById("totalPrice").innerText = `₹${data.newTotal}`;
-      document.getElementById("subTotal").innerText = `₹${data.subTotal}`;
-      console.log("remove time subtotal",data.subTotal)
+      if(data.subTotal){
+        document.getElementById("subTotal").innerText = `₹${data.subTotal}`;
+        console.log("remove time subtotal",data.subTotal)
+
+      }
+      
+      
 
       const mainApplyBtn = document.getElementById("applyCouponBtn");
       mainApplyBtn.innerText = "Apply";

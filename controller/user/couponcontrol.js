@@ -130,7 +130,7 @@ const remvCoupon = async (req, res) => {
 
     const deliveryCharge = 50;
     const totalPrice = subTotal + deliveryCharge;
-    console.log("34567890",totalPrice)
+    console.log("toatal price",totalPrice)
     req.session.appliedCoupon = null;
 
     await orderSchema.updateOne(

@@ -16,6 +16,7 @@ const axios = require("axios");
 const Razorpay = require("razorpay");
 const httpStatus = require("../../utils/httpStatus");
 const crypto = require("crypto");
+const { log } = require("console");
 require("dotenv").config();
 
 
@@ -185,6 +186,7 @@ const razorpay = new Razorpay({
   key_secret: process.env.RAZORPAY_SECRET,
 });
 
+
 const createRazorpayOrder = async (req, res) => {
   try {
     const { amount} = req.body;
@@ -205,6 +207,7 @@ const createRazorpayOrder = async (req, res) => {
     if (req.user) {
       try {
         const user = await userSchema.findById(req.user.id);
+        console.log(user)
         if (user) {
           userData = {
             fullName: user.fullName || user.name,
@@ -234,6 +237,7 @@ const createRazorpayOrder = async (req, res) => {
         customer_phone: userData.phone,
       },
     });
+    console.log("order amount=",razorpayOrder)
 
     if (!razorpayOrder || !razorpayOrder.id) {
       throw new Error("Failed to create Razorpay order");
@@ -251,6 +255,8 @@ const createRazorpayOrder = async (req, res) => {
         .status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR)
         .json({ success: false, message: saveResult.message });
     }
+
+    
 
     return res.json({
       success: true,
@@ -806,7 +812,7 @@ const orderDetails = async (req, res) => {
     const walletRefunds = await walletHistorySchema.aggregate([
       {
         $match: {
-          order_id: new mongoose.Types.ObjectId(orderId),
+          order_id: orderId,
           transaction_type: "credited",
         },
       },
@@ -1029,7 +1035,7 @@ const downloadInvoice = async (req, res) => {
     doc.moveDown();
     doc
       .fontSize(12)
-      .text("Thank you for Visiting Cosmeta.com!", { align: "center" });
+      .text("Thank you for Visiting Cosmeta.ddns.net!", { align: "center" });
 
     doc.end();
 

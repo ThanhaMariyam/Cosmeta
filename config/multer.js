@@ -23,7 +23,6 @@ const upload = multer({
   },
 });
 
-console.log(upload)
 
 
 

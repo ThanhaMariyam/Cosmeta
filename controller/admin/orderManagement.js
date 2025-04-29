@@ -65,7 +65,7 @@ const orderDetails = async (req, res) => {
     const walletRefunds = await walletHistorySchema.aggregate([
       {
         $match: {
-          order_id: new mongoose.Types.ObjectId(orderId),
+          order_id:orderId,
           transaction_type: "credited",
         },
       },

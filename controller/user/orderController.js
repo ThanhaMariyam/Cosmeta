@@ -1119,7 +1119,7 @@ const cancelOrder = async (req, res) => {
         item.refundedAmount = totalPrice;
       }
 
-      item.status = "Canceled";
+     
     }
 
     if (
@@ -1134,6 +1134,18 @@ const cancelOrder = async (req, res) => {
     if (refundAmount > originalPaidAmount) {
       refundAmount = originalPaidAmount;
     }
+    await Promise.all(
+      order.products.map(async (item) => {
+        if (item.status !== "Canceled" && item.status !== "Returned") {
+        await productSchema.updateOne(
+          { _id: item.product._id },
+          { $inc: { stock: item.quantity } }
+        );
+      }
+      item.status = "Canceled";
+      })
+    );
+   
 
     order.orderStatus = "Canceled";
     order.cancellationReason = reason;
@@ -1175,24 +1187,9 @@ const cancelOrder = async (req, res) => {
       }
     }
 
-    await Promise.all(
-      order.products.map(async (item) => {
-        await productSchema.updateOne(
-          { _id: item.product._id },
-          { $inc: { stock: item.quantity } }
-        );
-      })
-    );
+   
     const userId = order.user;
-    await orderSchema.updateOne(
-      { _id: orderId, user: userId },
-      {
-        $set: {
-          "products.$[].status": "Canceled",
-          orderStatus: "Canceled",
-        },
-      }
-    );
+    
     return res.json({
       success: true,
       message: "Order canceled and amount refunded.",
@@ -1248,6 +1245,10 @@ const cancelItem = async (req, res) => {
 
     item.status = "Canceled";
     item.cancelReason = reason;
+    await productSchema.updateOne(
+      { _id: item.product },
+      { $inc: { stock: item.quantity } }
+    );
 
     if (
       order.paymentMethod !== "Cash on Delivery" &&
@@ -1268,13 +1269,14 @@ const cancelItem = async (req, res) => {
         wallet.balance += refundAmount;
         await wallet.save();
       }
+      const userOrderId=await orderSchema.findById(orderId)
 
       await walletHistorySchema.create({
         wallet_id: wallet._id,
         transaction_amount: refundAmount,
         transaction_type: "credited",
         description: `Refund for canceled item: ${item.name}`,
-        order_id: order._id,
+        order_id:userOrderId.orderId,
       });
 
       order.refundedAmount = (order.refundedAmount || 0) + refundAmount;

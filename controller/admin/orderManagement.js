@@ -7,6 +7,7 @@ const couponSchema = require("../../model/couponModel");
 const categorySchema = require("../../model/categoryModel");
 const httpStatus = require("../../utils/httpStatus");
 const mongoose = require("mongoose");
+const crypto=require('crypto')
 
 const orderLists = async (req, res) => {
   try {
@@ -357,19 +358,24 @@ const approveReturn = async (req, res) => {
       wallet = new walletSchema({
         user_id: order.user._id,
         balance: refundAmount,
+        
       });
     } else {
       wallet.balance += refundAmount;
+      wallet.transactionId="TR#"+crypto.randomBytes(6).toString('hex'),
+      await wallet.save();
     }
-    await wallet.save();
-
+    
+   const userOrderId=await orderSchema.findById(orderId)
     await walletHistorySchema.create({
-      wallet_id: wallet._id,
+      
+      wallet_id:wallet._id,
+      transactionId: wallet.transactionId,
       transaction_amount: refundAmount,
       transaction_date: new Date(),
       description: `Refund for returned product: ${product.name}`,
       transaction_type: "credited",
-      order_id: order._id,
+      order_id: userOrderId.orderId,
     });
 
     if (refundAmount >= 1000) {

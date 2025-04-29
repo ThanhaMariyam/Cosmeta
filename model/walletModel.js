@@ -11,6 +11,11 @@ const walletSchema = new mongoose.Schema({
         type: Number,
         default: 0.0
     },
+    transactionId:{
+        type:String,
+        unique:true,
+           
+    },
     created_at: {
         type: Date,
         default: Date.now

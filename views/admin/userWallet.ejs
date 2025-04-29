@@ -117,7 +117,7 @@
                 <% transactions.forEach((tx, i) => { %>
                 <tr>
 
-                  <td><%= tx._id %></td>
+                  <td><%= tx.transactionId %></td>
                   <td><%= tx.wallet_id?.user_id?.username || "N/A" %></td>
                   <td><%= tx.transaction_type %></td>
                   <td>₹<%= tx.transaction_amount.toFixed(2) %></td>

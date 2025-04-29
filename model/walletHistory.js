@@ -4,8 +4,13 @@ const walletHistorySchema = new mongoose.Schema({
     wallet_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "wallet",
-        required: true
+        required:true
     },
+    transactionId: {
+        type: String,
+        required: true,
+      },
+      
     transaction_amount: {
         type: Number,
         required: true

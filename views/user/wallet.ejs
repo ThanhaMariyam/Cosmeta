@@ -85,7 +85,7 @@
         <table>
           <thead>
             <tr>
-              <th>TransactionId</th>
+             
               <th>OrderId</th>
               <th>Amount</th>
               <th>Description</th>
@@ -96,7 +96,7 @@
           <tbody>
             <% transactions.forEach(transaction => { %>
             <tr>
-              <td><%=transaction._id %></td>
+              
               <td><%= transaction.order_id %></td>
               <td>₹<%= transaction.transaction_amount.toFixed(2) %></td>
               <td><%= transaction.description %></td>

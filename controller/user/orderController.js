@@ -527,12 +527,14 @@ const placeOrder = async (req, res) => {
 
       if (orderResult.success) {
         wallet.balance -= totalAmount;
+        wallet.transactionId='TR#'+crypto.randomBytes(6).toString('hex')
         await wallet.save();
 
         const orderDoc = await orderSchema.findById(orderResult.orderId).lean();
 
         await walletHistorySchema.create({
           wallet_id: wallet._id,
+          transactionId:wallet.transactionId,
           transaction_amount: -totalAmount,
           description: `Payment for order ${orderDoc.orderId}`,
           transaction_type: "debited",
@@ -1157,9 +1159,11 @@ const cancelOrder = async (req, res) => {
         wallet = await walletSchema.create({
           user_id: order.user,
           balance: refundAmount,
+
         });
       } else {
         wallet.balance += refundAmount;
+        wallet.transactionId='TR#'+crypto.randomBytes(6).toString('hex')
         await wallet.save();
       }
 
@@ -1168,6 +1172,7 @@ const cancelOrder = async (req, res) => {
 
       await walletHistorySchema.create({
         wallet_id: wallet._id,
+        transactionId: wallet.transactionId,
         transaction_amount: refundAmount,
         description: `Refund for canceled order ${userOrderId.orderId}`,
         transaction_type: "credited",
@@ -1267,12 +1272,14 @@ const cancelItem = async (req, res) => {
         });
       } else {
         wallet.balance += refundAmount;
+        wallet.transactionId='TR#'+crypto.randomBytes(6).toString('hex')
         await wallet.save();
       }
       const userOrderId=await orderSchema.findById(orderId)
 
       await walletHistorySchema.create({
         wallet_id: wallet._id,
+        transactionId: wallet.transactionId,
         transaction_amount: refundAmount,
         transaction_type: "credited",
         description: `Refund for canceled item: ${item.name}`,

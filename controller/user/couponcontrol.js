@@ -141,6 +141,7 @@ const remvCoupon = async (req, res) => {
     return res.status(httpStatus.HttpStatus.OK).json({
       success: true,
       message: "Coupon removed successfully",
+      subTotal:subTotal,
       discountAmount: 0,
       newTotal: totalPrice,
     });

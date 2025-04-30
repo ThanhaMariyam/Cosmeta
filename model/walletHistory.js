@@ -8,7 +8,7 @@ const walletHistorySchema = new mongoose.Schema({
     },
     transactionId: {
         type: String,
-        required: true,
+        
       },
       
     transaction_amount: {

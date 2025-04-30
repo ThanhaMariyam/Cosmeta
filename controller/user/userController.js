@@ -80,6 +80,7 @@ const verifyOtp = async (req, res) => {
 
     if (req.session.isSignup) {
       const tempUser = req.session.tempUser;
+      console.log(tempUser)
       if (!tempUser) {
         console.log("Session expired");
         return res.render("user/signup", {
@@ -111,11 +112,13 @@ const verifyOtp = async (req, res) => {
         isVerified: true,
         referralCode,
       });
+      console.log(newUser)
 
       await newUser.save();
       console.log("User created:", newUser.email);
 
       let newWallet = await walletSchema.findOne({ user_id: newUser._id });
+
       if (!newWallet) {
         newWallet = new walletSchema({ user_id: newUser._id, balance: 0 });
         await newWallet.save();
@@ -155,6 +158,7 @@ const verifyOtp = async (req, res) => {
             description: `Referral bonus from ${newUser.email}`,
             transaction_type: "credited",
           });
+          
 
           newWallet.balance += 100;
           await newWallet.save();
@@ -181,6 +185,8 @@ const verifyOtp = async (req, res) => {
       console.log("Signup successful, redirecting to home.");
 
       req.session.save(() => res.redirect("/"));
+      console.log('fhakjfnm')
+      return
     }
 
     if (req.session.isForgotPassword) {

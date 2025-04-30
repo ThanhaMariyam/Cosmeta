@@ -37,12 +37,15 @@ const loadUser = async (req, res) => {
 
 const blockUser = async (req, res) => {
   try {
+    console.log(req.session.user)
     const userId = req.params.id;
     const { page = 1, search = "" } = req.query;
     await userSchema.findByIdAndUpdate(userId, { isBlocked: true });
+    req.session.user._id=null
     res.redirect(
       `/admin/user?page=${page}&search=${encodeURIComponent(search)}`
     );
+    
   } catch (error) {
     console.log(error);
     res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");

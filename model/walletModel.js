@@ -13,7 +13,6 @@ const walletSchema = new mongoose.Schema({
     },
     transactionId:{
         type:String,
-        unique:true,
            
     },
     created_at: {

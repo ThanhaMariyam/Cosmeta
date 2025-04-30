@@ -155,6 +155,7 @@ const verifyOtp = async (req, res) => {
           await walletHistorySchema.create({
             wallet_id: referrerWallet._id,
             transaction_amount: 250,
+
             description: `Referral bonus from ${newUser.email}`,
             transaction_type: "credited",
           });
@@ -168,6 +169,7 @@ const verifyOtp = async (req, res) => {
 
           await walletHistorySchema.create({
             wallet_id: newWallet._id,
+            transactionId:"TR#"+crypto.randomBytes(6).toString('hex'),
             transaction_amount: 100,
             description: "Signup bonus for using referral code",
             transaction_type: "credited",
@@ -235,7 +237,7 @@ const login = async (req, res) => {
       });
     }
     req.session.user = user;
-    res.redirect("/");
+    res.redirect("/"); 
   } catch (error) {
     res.render("user/login", { message: "something went wrong" });
   }

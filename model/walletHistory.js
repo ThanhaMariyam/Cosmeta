@@ -13,12 +13,12 @@ const walletHistorySchema = new mongoose.Schema({
       
     transaction_amount: {
         type: Number,
-        required: true
+        
     },
     transaction_type: {
         type: String,
         enum: ["credited", "debited"],
-        required: true
+        
     },
     transaction_date: {
         type: Date,

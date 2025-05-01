@@ -19,11 +19,27 @@ const loadProduct = async (req, res) => {
     const brands = await brandSchema.find();
     const categories = await categorySchema.find();
 
+    const brandsMap = {};
+    brands.forEach(b => {
+      brandsMap[b._id.toString()] = b.name;
+    });
+
+    const categoriesMap = {};
+    categories.forEach(c => {
+      categoriesMap[c._id.toString()] = c.name;
+    }); 
+
+    const productsWithNames = products.map(prod => ({
+      ...prod._doc,
+      brandName: brandsMap[prod.brand] || prod.brand,
+      categoryName: categoriesMap[prod.category] || prod.category
+    }));
+
     const totalProducts = await product.countDocuments(filter);
     const totalPages = Math.ceil(totalProducts / limit);
 
     res.render("admin/products", {
-      products,
+      products:productsWithNames,
       brands,
       categories,
       currentPage: page,

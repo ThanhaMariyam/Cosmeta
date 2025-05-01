@@ -1,0 +1,252 @@
+
+/* Responsive CSS for Cosmeta Home Page */
+
+/* Base styles for all devices */
+@media (max-width: 1400px) {
+  .off1 {
+    font-size: 40px;
+    margin-left: 150px;
+  }
+  
+  .off2 {
+    font-size: 28px;
+  }
+  
+  .off3 {
+    margin-left: 120px;
+  }
+}
+
+/* Large devices (desktops, less than 1200px) */
+@media (max-width: 1199.98px) {
+  .item {
+    width: 60%;
+    margin-left: 0;
+  }
+  
+  .search input {
+    width: 70%;
+    margin-left: 20px;
+  }
+  
+  .search i {
+    margin-left: 45px;
+  }
+  
+  .small {
+    margin-left: 20px;
+  }
+  
+  .off1 {
+    font-size: 36px;
+    margin-left: 100px;
+  }
+  
+  .off2 {
+    font-size: 24px;
+    margin-left: 20px;
+  }
+  
+  .off3 {
+    margin-left: 80px;
+  }
+}
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+  .box {
+    height: auto;
+    flex-direction: column;
+    padding: 10px 0;
+  }
+  
+  .item {
+    width: 100%;
+    justify-content: space-around;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .search {
+    width: 100%;
+    justify-content: center;
+    margin: 10px 0;
+  }
+  
+  .search input {
+    width: 80%;
+    margin: 0;
+  }
+  
+  .search i {
+    margin-top: 8px;
+    margin-left: 30px;
+  }
+  
+  .small {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+    gap: 30px;
+    margin-bottom: 10px;
+  }
+  
+  .small a {
+    margin-top: 10px;
+  }
+  
+  .off {
+    flex-direction: column;
+    height: auto;
+    padding: 15px 0;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .off1, .off2, .off3 {
+    margin: 5px 0;
+  }
+  
+  .off1 {
+    font-size: 32px;
+    margin-left: 0;
+  }
+  
+  .off2 {
+    font-size: 22px;
+    margin-left: 0;
+  }
+  
+  .off3 {
+    margin-left: 0;
+  }
+}
+
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+  img.img-fluid {
+    height: auto !important;
+    width: 90% !important;
+    margin-left: 5% !important;
+  }
+  
+  .item {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .item a {
+    font-size: 14px;
+  }
+  
+  .container.pics h3 {
+    font-size: 24px;
+  }
+  
+  .off1 {
+    font-size: 28px;
+  }
+  
+  .off2 {
+    font-size: 18px;
+  }
+  
+  /* Fix for filter options */
+  .container .d-flex.justify-content-center {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  #categoryFilter, #sortFilter, #clearFilters {
+    width: 80% !important;
+    margin: 5px auto !important;
+  }
+  
+  /* Product cards adjustments */
+  .card-body {
+    padding: 10px;
+  }
+  
+  .card-title {
+    font-size: 14px;
+  }
+  
+  .d-flex.mb-3 {
+    flex-direction: column;
+    align-items: center;
+    margin-left: 0 !important;
+  }
+  
+  .add-cart-btn, .sold-out-btn, .wishlist-btn {
+    width: 90% !important;
+    height: 38px !important;
+    margin: 5px 0 !important;
+    font-size: 14px !important;
+  }
+  
+  .wishlist-btn {
+    padding: 3px 10px !important;
+  }
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+  .navbar {
+    height: auto;
+    padding: 10px 0;
+  }
+  
+  .box {
+    padding: 5px 0;
+  }
+  
+  .item {
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .item a {
+    font-size: 12px;
+  }
+  
+  .search input {
+    width: 90%;
+    height: 35px;
+  }
+  
+  .search i {
+    margin-left: 20px;
+  }
+  
+  .off1 {
+    font-size: 24px;
+  }
+  
+  .off2 {
+    font-size: 16px;
+  }
+  
+  .off3 button {
+    padding: 8px;
+    font-size: 12px;
+  }
+  
+  .container.pics h3 {
+    font-size: 20px;
+  }
+  
+  /* Single column layout for product cards on extra small screens */
+  .row-cols-1.row-cols-md-3.row-cols-lg-4 {
+    margin: 0 -5px;
+  }
+  
+  .col.product-item {
+    padding: 5px;
+  }
+  
+  /* Fix "Out of Stock" / "Only few left" positioning */
+  .card p[style*="margin-top: -150px"] {
+    margin-top: -120px !important;
+    margin-left: 30px !important;
+  }
+}

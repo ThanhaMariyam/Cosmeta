@@ -4,6 +4,7 @@ const productSchema = require("../../model/productModal");
 const userSchema = require("../../model/userModel");
 const cartSchema = require("../../model/cartModel");
 const wishlistSchema = require("../../model/wishlistModel");
+const reviewSchema=require("../../model/reviewModel");
 const httpStatus = require("../../utils/httpStatus");
 
 const getHome = async (req, res) => {
@@ -760,6 +761,8 @@ const getProduct = async (req, res) => {
   }
 };
 
+
+
 module.exports = {
   categoryLoad,
   getCategoryProd,
@@ -770,4 +773,5 @@ module.exports = {
   getBrandProduct,
   getDetails,
   googleHome,
+  
 };

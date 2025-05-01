@@ -26,6 +26,7 @@ const {
   getBrandProd,
   getBrandProduct,
   getDetails,
+ 
   
 } = require("../controller/user/userProductController");
 const {
@@ -116,6 +117,7 @@ user.get("/brand", loadBrand);
 user.get("/ProductDetail/:id", getBrandProduct);
 user.get("/Details/:id", getDetails);
 user.get("/search-products",searchingProduct)
+
 
 
 user.get("/profile",checkSession,loadProfile)

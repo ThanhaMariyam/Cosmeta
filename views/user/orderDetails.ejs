@@ -424,33 +424,15 @@
 
 
 
-    <div class="row justify-content-center mt-3">
-      <div class="col-md-8">
-        <h4>Submit Your Review</h4>
-        <div class="mb-3">
-          <p class="mb-1">Rating:</p>
-          <div class="rating">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-          </div>
-        </div>
-        <div class="mb-3">
-          <p class="mb-1">Your Review:</p>
-          <textarea class="form-control" rows="4" placeholder="Write your review here..."></textarea>
-        </div>
-        <button class="btn submit-review-btn text-white rounded-pill">
-          Submit Review
-        </button>
-      </div>
-    </div>
+    
   </div>
 
 
   <%- include('../partials/footer') %>
   <script>
+
+    
+    
     function alertShippedOrder() {
       Toastify({
         text: "This order is already shipped and cannot be canceled. You can initiate a return if needed after delivered.",

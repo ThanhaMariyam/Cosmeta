@@ -36,19 +36,14 @@
     margin-left: 50px;
     border:0.3px solid grey;
     border-radius: 200px;
-    padding-left: 50px;
+    padding-left: 30px;
     position: relative;
 }
 .search{
     display: flex;
     
 }
-.search i{
-    position: absolute;
-    margin-top: 35px;
-    margin-left: 75px;
-    color: #666;
-}
+
 .small{
     display: flex;
     

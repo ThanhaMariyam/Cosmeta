@@ -24,7 +24,7 @@ const getCoupon = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 

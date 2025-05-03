@@ -82,7 +82,7 @@ const getWalletTransactionDetails = async (req, res) => {
       });
 
     if (!transaction) {
-      return res.status(httpStatus.HttpStatus.NOT_FOUND).render("user/500");
+      return res.status(httpStatus.HttpStatus.NOT_FOUND).render("admin/admin500")
     }
 
     res.render("admin/walletDetails", {
@@ -90,7 +90,7 @@ const getWalletTransactionDetails = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching transaction:", error);
-    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 

@@ -23,7 +23,7 @@ const loadBrand = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 
@@ -52,7 +52,7 @@ const addBrand = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 
@@ -73,7 +73,7 @@ const brandListing = async (req, res) => {
     res.redirect("/admin/brand");
   } catch (error) {
     console.log(error);
-    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 const brandEdit = async (req, res) => {
@@ -112,7 +112,7 @@ const brandEdit = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 

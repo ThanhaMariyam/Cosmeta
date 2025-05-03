@@ -48,7 +48,7 @@ const loadProduct = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 
@@ -351,7 +351,7 @@ const productListing = async (req, res) => {
     res.redirect("/admin/products");
   } catch (error) {
     console.log(error);
-    res.status(httpStatus.HttpStatus.index).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 

@@ -324,7 +324,10 @@
                         <td><%= order.orderId %></td>
                         <td><%= order.customerName %></td>
                         <td>
-                          <%= order.products.map(p => p.name).join(', ') %>
+                          <%= order.products
+                          .filter(p => p.status === 'Delivered')
+                          .map(p => p.name)
+                          .join(', ') %>
                         </td>
                         <td>₹<%= order.amount %></td>
                         <td><%= order.date %></td>

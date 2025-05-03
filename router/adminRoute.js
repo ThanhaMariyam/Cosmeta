@@ -119,5 +119,8 @@ admin.get("/downloadExcel",downloadExcel)
 admin.get('/userWallet',getWalletTransaction)
 admin.get('/wallet/transaction/:id',getWalletTransactionDetails)
 
+admin.get("/500",(req,res)=>{
+  res.render("admin/admin500")
+})
 
 module.exports = admin;

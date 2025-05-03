@@ -27,7 +27,7 @@ const loadCategory = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 
@@ -107,7 +107,7 @@ const categoryEdit = async (req, res) => {
       .json({ data: updateCategory, message: "updated succesfully" });
   } catch (error) {
     console.log(error);
-    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 
@@ -128,7 +128,7 @@ const categoryListing = async (req, res) => {
     res.redirect("/admin/category");
   } catch (error) {
     console.log(error);
-    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 

@@ -31,7 +31,7 @@ const loadUser = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 
@@ -48,7 +48,7 @@ const blockUser = async (req, res) => {
     
   } catch (error) {
     console.log(error);
-    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 
@@ -62,7 +62,7 @@ const unblockUser = async (req, res) => {
     );
   } catch (error) {
     console.log(error);
-    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 

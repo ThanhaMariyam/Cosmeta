@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="/search.css">
   <link rel="stylesheet" href="/home.css">
   <link rel="stylesheet" href="/userSignup.css">
+  <link rel="stylesheet" href="/responsive.css">
   <style>
     html,
     body {
@@ -29,9 +30,70 @@
       flex: 1;
     }
 
-    footer {
-      margin-top: auto;
-    }
+    
+    @media (max-width: 768px) {
+  .table th, .table td {
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .table img {
+    width: 40px;
+    height: 40px;
+  }
+
+  form.d-flex {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  form.d-flex label,
+  form.d-flex select,
+  form.d-flex a.btn {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .pagination .page-item {
+    flex: 1 0 20%;
+    text-align: center;
+  }
+
+  .pagination .page-link {
+    font-size: 14px;
+    padding: 5px 8px;
+  }
+
+  .box {
+    flex-direction: column;
+  }
+
+  .item a {
+    font-size: 12px;
+  }
+
+  .empty-orders {
+    text-align: center;
+    padding: 20px;
+  }
+
+  .empty-orders img {
+    max-width: 80%;
+    height: auto;
+  }
+
+  .empty-orders button {
+    width: 90%;
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
   </style>
 
 </head>
@@ -131,7 +193,7 @@
           </ul>
         </nav>
         <% }else{ %>
-        <div style="margin-left: 35%;margin-top: 50px;">
+        <div style="margin-left: 35%;margin-top: 50px;" class="empty-orders">
           <img src="/image/empty-box.svg" alt="">
           <h4>No Recent Orders</h4>
           <p style="margin-left: -50px;">Looks like you haven’t made any order yet</p>
@@ -141,7 +203,7 @@
       </div>
     </div>
   </div>
-  <%- include('../partials/footer') %>
+
   <script src="/script/search.js"></script>
   <script src="/script/sidebar.js"></script>
 

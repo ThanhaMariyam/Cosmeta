@@ -24,7 +24,7 @@ const getOffer = async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching categories:", error);
-    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("user/500");
+    res.status(httpStatus.HttpStatus.INTERNAL_SERVER_ERROR).render("admin/admin500")
   }
 };
 const setOffer = async (req, res) => {

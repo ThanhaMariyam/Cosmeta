@@ -1,4 +1,3 @@
-require("dotenv").config();
 const crypto=require('crypto')
 const passport=require('passport')
 const googleStrategy=require('passport-google-oauth20').Strategy
@@ -19,8 +18,8 @@ passport.deserializeUser(async(id,done)=>{
     }
 })
 passport.use(new googleStrategy({
-    clientID:process.env.GoogleAuth_Id,
-    clientSecret:process.env.GoogleAuth_secret,
+    clientID:"835532031732-u6a5qpqd29mlnmmtfet0mkmqvl7rr5d6.apps.googleusercontent.com",
+    clientSecret:"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",
     callbackURL:"/user/auth/google/callback"
 
 },async(accessToken, refreshToken, profile, done)=>{

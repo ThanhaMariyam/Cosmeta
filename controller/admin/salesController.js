@@ -252,7 +252,7 @@ const generatePDFReport = async (req, res) => {
       let orderAmount = nonCanceledProducts.reduce((sum, p) => sum + (p.price * p.quantity), 0);
 
       if (nonCanceledProducts.length > 0) {
-        orderAmount += 50; // Add shipping fee
+        orderAmount += 50; 
       }
 
       orderAmount -= order.couponDiscount || 0;
@@ -545,7 +545,40 @@ const downloadExcel = async (req, res) => {
     }
 
     const orders = await orderSchema.find({
-      placedAt: { $gte: startDate, $lte: endDate }
+      placedAt: { $gte: startDate, $lte: endDate },
+      orderStatus: "Delivered",
+    });
+
+    let totalAmount = 0;
+    let couponDiscount = 0;
+    let offerDiscount = 0;
+    let orderCount = 0;
+
+    const deliveredOrders = [];
+
+    orders.forEach((order) => {
+      const nonCanceledProducts = order.products.filter(p => p.status !== 'Canceled');
+      let orderAmount = nonCanceledProducts.reduce((sum, p) => sum + (p.price * p.quantity), 0);
+
+      if (nonCanceledProducts.length > 0) {
+        orderAmount += 50; 
+      }
+
+      orderAmount -= order.couponDiscount || 0;
+      couponDiscount += order.couponDiscount || 0;
+      offerDiscount += order.offerDiscount || 0;
+
+      totalAmount += orderAmount;
+      orderCount += 1;
+
+      deliveredOrders.push({
+        orderId: order.orderId,
+        deliveredItemTotal: orderAmount,
+        placedAt: order.placedAt,
+        orderStatus: order.orderStatus,
+        couponDiscount: order.couponDiscount || 0,
+        offerDiscount: order.offerDiscount || 0,
+      });
     });
 
     const workbook = new ExcelJS.Workbook();
@@ -560,45 +593,33 @@ const downloadExcel = async (req, res) => {
       { header: "Status", key: "status", width: 15 },
     ];
 
-    let hasData = false;
+    worksheet.addRow(["Summary"]);
+    worksheet.addRow(["Total Orders", orderCount]);
+    worksheet.addRow(["Total Revenue", `₹${totalAmount.toFixed(2)}`]);
+    worksheet.addRow(["Coupon Discount", `₹${couponDiscount.toFixed(2)}`]);
+    worksheet.addRow(["Offer Discount", `₹${offerDiscount.toFixed(2)}`]);
+    worksheet.addRow([]);
 
-    for (let order of orders) {
-      let deliveredItemTotal = 0;
-      let deliveredOfferDiscount = 0;
+    worksheet.addRow(["Recent Orders"]);
+    worksheet.getRow(worksheet.rowCount).font = { bold: true };
 
-      for (let item of order.products) {
-        if (item.status === "Delivered") {
-          const qty = item.quantity;
-          const price = item.price;
-          const originalPrice = item.originalPrice || price;
-          deliveredItemTotal += price * qty;
-          deliveredOfferDiscount += (originalPrice - price) * qty;
-        }
-      }
+    const recentOrders = deliveredOrders
+      .sort((a, b) => b.placedAt - a.placedAt)
+      .slice(0, 5);
 
-      if (deliveredItemTotal > 0) {
-        hasData = true;
-
-        let proportionalCoupon = 0;
-        if (order.couponApplied !== "NIL") {
-          const fullOrderTotal = order.totalAmount;
-          const couponValue = parseFloat(order.couponApplied.split("-")[1] || 0);
-          proportionalCoupon = (deliveredItemTotal / fullOrderTotal) * couponValue;
-        }
-
+    if (recentOrders.length === 0) {
+      worksheet.addRow(["No orders found for the selected period."]);
+    } else {
+      for (let order of recentOrders) {
         worksheet.addRow({
           orderId: order.orderId,
-          amount: deliveredItemTotal,
-          coupon: proportionalCoupon.toFixed(2),
-          offer: deliveredOfferDiscount.toFixed(2),
+          amount: order.deliveredItemTotal.toFixed(2),
+          coupon: order.couponDiscount.toFixed(2),
+          offer: order.offerDiscount.toFixed(2),
           date: order.placedAt.toLocaleDateString(),
-          status: "Delivered",
+          status: order.orderStatus,
         });
       }
-    }
-
-    if (!hasData) {
-      worksheet.addRow(["No sales data available for the selected date range."]);
     }
 
     res.setHeader(

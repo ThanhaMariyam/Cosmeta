@@ -67,22 +67,22 @@ const { applyCoupons, remvCoupon } = require("../controller/user/couponcontrol")
 
 
 user.get("/signup",isLogin, loadSignup);
-user.post("/signup", postSignup);
+user.post("/signup",isLogin, postSignup);
 
 user.get("/login",isLogin, loadLogin);
-user.post("/login", login);
+user.post("/login",isLogin, login);
 
-user.get("/otp", loadOtp);
-user.post("/otp", verifyOtp);
-user.post("/check-referral-code",referalCode)
+user.get("/otp",isLogin, loadOtp);
+user.post("/otp",isLogin, verifyOtp);
+user.post("/check-referral-code",isLogin,referalCode)
 
-user.get("/forgot", loadResetPassword);
-user.post("/forgot", SetNewPassword);
+user.get("/forgot",isLogin, loadResetPassword);
+user.post("/forgot",isLogin, SetNewPassword);
 
-user.get("/email", loadEmail);
-user.post("/email", forgotOtp);
+user.get("/email",isLogin, loadEmail);
+user.post("/email",isLogin, forgotOtp);
 
-user.post("/resend-otp", resendOtp);
+user.post("/resend-otp",isLogin, resendOtp);
 
 user.get(
   "/auth/google",
@@ -132,33 +132,33 @@ user.post("/addAddress",checkSession,addAddress)
 user.delete("/deleteAddress",checkSession,deleteAddress)
 user.put("/updateAddress",checkSession,editAddress)
 
-user.get("/orders",order)
-user.get("/orderDetails/:id",orderDetails)
+user.get("/orders",checkSession,order)
+user.get("/orderDetails/:id",checkSession,orderDetails)
 
-user.get("/download-invoice/:orderId",downloadInvoice)
-user.post("/cancel-order/:orderId", cancelOrder)
-user.post("/cancel-order-item/:orderId/:productId",cancelItem)
-user.post("/request-return/:orderId/:productId",returnItem)
+user.get("/download-invoice/:orderId",checkSession,downloadInvoice)
+user.post("/cancel-order/:orderId",checkSession, cancelOrder)
+user.post("/cancel-order-item/:orderId/:productId",checkSession,cancelItem)
+user.post("/request-return/:orderId/:productId",checkSession,returnItem)
 
 user.get("/cart", checkSession,loadCart);
-user.post('/cart/add',addToCart)
+user.post('/cart/add',checkSession,addToCart)
 user.post("/cart/remove",checkSession,remvCart)
 user.post("/cart/update",checkSession,updateCart)
 
 user.get("/checkout",checkSession,loadCheckout)
 
-user.post("/selectAddress",addressSelection)
+user.post("/selectAddress",checkSession,addressSelection)
 user.post("/placeOrder",checkSession,placeOrder)
-user.post("/createRazorpayOrder",createRazorpayOrder)
-user.post("/verifyPayment",verifyPayment)
-user.get("/retryPayment/:orderId",retryPay)
-user.get("/getWalletBalance",getWalletBalance)
+user.post("/createRazorpayOrder",checkSession,createRazorpayOrder)
+user.post("/verifyPayment",checkSession,verifyPayment)
+user.get("/retryPayment/:orderId",checkSession,retryPay)
+user.get("/getWalletBalance",checkSession,getWalletBalance)
 
 user.get("/orderConfirmation",checkSession,getconfirm)
 
 user.get("/wishlist",checkSession,loadWishlist)
 user.delete("/wishlist/remove/:id",checkSession,remvWishlist)
-user.post("/wishlist/add/:id",addWishlist)
+user.post("/wishlist/add/:id",checkSession,addWishlist)
 
 user.get("/logout",logout)
 user.get("/404",(req,res)=>{
@@ -167,12 +167,12 @@ user.get("/404",(req,res)=>{
 user.get("/500",(req,res)=>{
   res.render("user/500.ejs")
 })
-user.get("/track/:id",trackOrder)
-user.get("/wallet",getWallet)
-user.get("/orderFailure",getFailed);
+user.get("/track/:id",checkSession,trackOrder)
+user.get("/wallet",checkSession,getWallet)
+user.get("/orderFailure",checkSession,getFailed);
 
-user.post("/apply-coupon",applyCoupons)
-user.post("/remove-coupon",remvCoupon)
+user.post("/apply-coupon",checkSession,applyCoupons)
+user.post("/remove-coupon",checkSession,remvCoupon)
 
 
 

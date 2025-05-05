@@ -68,56 +68,56 @@ admin.get("/products/search",liveSearchProducts )
 admin.get("/products/add", checkSession, loadAddProduct);
 admin.post("/products/add", upload.array("images", 3),checkSession, addProduct);
 admin.get("/products/edit/:id", checkSession, productEditPage);
-admin.post("/products/edit/:id", upload.array("images", 3), editProduct);
-admin.post("/products/toggle-list/:id", productListing);
-admin.get("/inventory",stockPage)
-admin.get("/inventory/search",stockSearch)
-admin.post("/updateStock/:productId",updatingStock)
+admin.post("/products/edit/:id", upload.array("images", 3),checkSession, editProduct);
+admin.post("/products/toggle-list/:id",checkSession, productListing);
+admin.get("/inventory",checkSession,stockPage)
+admin.get("/inventory/search",checkSession,stockSearch)
+admin.post("/updateStock/:productId",checkSession,updatingStock)
 
 admin.get("/user", checkSession, loadUser);
-admin.post("/user/block/:id", blockUser);
-admin.post("/user/unblock/:id", unblockUser);
+admin.post("/user/block/:id",checkSession, blockUser);
+admin.post("/user/unblock/:id",checkSession, unblockUser);
 admin.get("/logout", checkSession, logout);
 
 admin.get("/category", checkSession, loadCategory);
-admin.post("/category/add", upload.single("imageUrl"), addCategory);
-admin.post("/category/toggle-list/:id", categoryListing);
-admin.post("/category/edit/:id", upload.single("imageUrl"), categoryEdit);
+admin.post("/category/add", upload.single("imageUrl"),checkSession, addCategory);
+admin.post("/category/toggle-list/:id",checkSession, categoryListing);
+admin.post("/category/edit/:id", upload.single("imageUrl"),checkSession, categoryEdit);
 
 admin.get("/brand", checkSession, loadBrand);
-admin.post("/brand/add", addBrand);
-admin.post("/brand/toggle-list/:id", brandListing);
-admin.post("/brand/edit/:id", brandEdit);
+admin.post("/brand/add",checkSession, addBrand);
+admin.post("/brand/toggle-list/:id",checkSession, brandListing);
+admin.post("/brand/edit/:id",checkSession, brandEdit);
 
-admin.get("/orderManagement",orderLists)
-admin.get("/orderDetails/:orderId",orderDetails)
-admin.put("/updateOrderStatus/:orderId",orderStatus)
-admin.get("/return",returnOrder)
-admin.post("/approveReturn/:orderId/:productId",approveReturn)
-admin.post("/rejectReturn/:orderId/:productId",rejectReturn)
+admin.get("/orderManagement",checkSession,orderLists)
+admin.get("/orderDetails/:orderId",checkSession,orderDetails)
+admin.put("/updateOrderStatus/:orderId",checkSession,orderStatus)
+admin.get("/return",checkSession,returnOrder)
+admin.post("/approveReturn/:orderId/:productId",checkSession,approveReturn)
+admin.post("/rejectReturn/:orderId/:productId",checkSession,rejectReturn)
 
-admin.get("/coupon",getCoupon)
-admin.post("/coupons/add",addCoupons)
-admin.get("/coupons/:id",getCouponIdToEdit)
-admin.put("/coupons/edit/:id",editCoupon)
-admin.put("/coupons/toggle/:id",toggleCouponStatus)
+admin.get("/coupon",checkSession,getCoupon)
+admin.post("/coupons/add",checkSession,addCoupons)
+admin.get("/coupons/:id",checkSession,getCouponIdToEdit)
+admin.put("/coupons/edit/:id",checkSession,editCoupon)
+admin.put("/coupons/toggle/:id",checkSession,toggleCouponStatus)
 
-admin.post("/offers/add",setOffer)
-admin.put("/offers/toggle/:id",offerStatus)
-admin.put("/offers/edit/:id",editOffer)
-admin.get("/offer",getOffer)
+admin.post("/offers/add",checkSession,setOffer)
+admin.put("/offers/toggle/:id",checkSession,offerStatus)
+admin.put("/offers/edit/:id",checkSession,editOffer)
+admin.get("/offer",checkSession,getOffer)
 
-admin.get("/dashboard",getDashboard)
-admin.get("/salesPdf",generatePDFReport)
-admin.get("/topSelling",getTopSelling)
-admin.get("/topSellingBrand",getTopSellingBrands)
-admin.get("topSellingCategory",getTopSellingCategories)
-admin.get("/salesReport",salesReport)
-admin.get("/downloadPdf",downloadPDF)
-admin.get("/downloadExcel",downloadExcel)
+admin.get("/dashboard",checkSession,getDashboard)
+admin.get("/salesPdf",checkSession,generatePDFReport)
+admin.get("/topSelling",checkSession,getTopSelling)
+admin.get("/topSellingBrand",checkSession,getTopSellingBrands)
+admin.get("topSellingCategory",checkSession,getTopSellingCategories)
+admin.get("/salesReport",checkSession,salesReport)
+admin.get("/downloadPdf",checkSession,downloadPDF)
+admin.get("/downloadExcel",checkSession,downloadExcel)
 
-admin.get('/userWallet',getWalletTransaction)
-admin.get('/wallet/transaction/:id',getWalletTransactionDetails)
+admin.get('/userWallet',checkSession,getWalletTransaction)
+admin.get('/wallet/transaction/:id',checkSession,getWalletTransactionDetails)
 
 admin.get("/500",(req,res)=>{
   res.render("admin/admin500")

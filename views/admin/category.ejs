@@ -569,6 +569,31 @@ function validateEditCategory(categoryId) {
   return true;
 }
   </script>
+  <script>
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  
+  function searchCategories() {
+    const searchInput = document.getElementById("categorySearch").value;
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set("search", searchInput);
+    urlParams.set("page", 1); 
+    window.location.href = `/admin/category?${urlParams.toString()}`;
+  }
+
+  
+  const debouncedSearch = debounce(searchCategories, 300);
+</script>
 
   <script src="/script/sidebar.js"></script>
   

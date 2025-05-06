@@ -18,7 +18,6 @@ const loadProduct = async (req, res) => {
       .limit(limit);
     const brands = await brandSchema.find();
     const categories = await categorySchema.find();
-
     const brandsMap = {};
     brands.forEach(b => {
       brandsMap[b._id.toString()] = b.name;

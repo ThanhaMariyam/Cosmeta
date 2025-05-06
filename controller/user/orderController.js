@@ -750,9 +750,7 @@ const order = async (req, res) => {
       .skip(skip)
       .limit(limit);
 
-    if (orders.length === 0) {
-      return res.render("user/orders", { orders: [], cartProducts: null });
-    }
+
 
     const cartProducts = await cartSchema
       .findOne({ userId })
@@ -761,7 +759,7 @@ const order = async (req, res) => {
     const totalPages = Math.ceil(totalOrders / limit);
 
     res.render("user/orders", {
-      orders,
+      orders: orders.length ? orders : [],
       cartProducts,
       currentPage: page,
       totalPages,

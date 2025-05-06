@@ -117,21 +117,22 @@
 
     <%- include('../partials/sidebar.ejs') %>
       <div class="col-md-9 col-lg-10">
-        <% if(orders.length){ %>
-        <form method="GET" action="/orders" class="d-flex align-items-center gap-2 mb-3" style="max-width: 300px;">
-          <label for="statusFilter" class="mb-0">Filter by Status:</label>
-          <select class="form-select form-select-sm w-auto mt-2" name="status" id="statusFilter" onchange="this.form.submit()">
-            <option value="">All</option>
-            <option value="Processing" <%= statusFilter === 'Processing' ? 'selected' : '' %>>Processing</option>
-            <option value="Shipped" <%= statusFilter === 'Shipped' ? 'selected' : '' %>>Shipped</option>
-            <option value="Delivered" <%= statusFilter === 'Delivered' ? 'selected' : '' %>>Delivered</option>
-            <option value="Returned" <%= statusFilter === 'Returned' ? 'selected' : '' %>>Returned</option>
-            <option value="Canceled" <%= statusFilter === 'Canceled' ? 'selected' : '' %>>Canceled</option>
-          </select>
-          <% if (statusFilter) { %>
-          <a href="/orders" class="btn mt-2" style="border: 0.2px solid rgb(204, 204, 204);padding: 2px 5px; font-size:14px;">Clear</a>
-          <% } %>
-        </form>
+        
+          <form method="GET" action="/orders" class="d-flex align-items-center gap-2 mb-3" style="max-width: 300px;">
+            <label for="statusFilter" class="mb-0">Filter by Status:</label>
+            <select class="form-select form-select-sm w-auto mt-2" name="status" id="statusFilter" onchange="this.form.submit()">
+              <option value="">All</option>
+              <option value="Processing" <%= statusFilter === 'Processing' ? 'selected' : '' %>>Processing</option>
+              <option value="Shipped" <%= statusFilter === 'Shipped' ? 'selected' : '' %>>Shipped</option>
+              <option value="Delivered" <%= statusFilter === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+              <option value="Returned" <%= statusFilter === 'Returned' ? 'selected' : '' %>>Returned</option>
+              <option value="Canceled" <%= statusFilter === 'Canceled' ? 'selected' : '' %>>Canceled</option>
+            </select>
+            <% if (statusFilter) { %>
+            <a href="/orders" class="btn mt-2" style="border: 0.2px solid rgb(204, 204, 204);padding: 2px 5px; font-size:14px;">Clear</a>
+            <% } %>
+          </form>
+          <% if(orders.length){ %>
         <div class="table-responsive">
           <table class="table bg-white rounded">
             <thead>

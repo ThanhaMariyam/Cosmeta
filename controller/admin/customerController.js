@@ -37,11 +37,13 @@ const loadUser = async (req, res) => {
 
 const blockUser = async (req, res) => {
   try {
-    console.log(req.session.user)
+    
     const userId = req.params.id;
     const { page = 1, search = "" } = req.query;
     await userSchema.findByIdAndUpdate(userId, { isBlocked: true });
-    req.session.user._id=null
+    if (req.session.user && req.session.user._id === userId) {
+      req.session.user = null;
+    }
     res.redirect(
       `/admin/user?page=${page}&search=${encodeURIComponent(search)}`
     );

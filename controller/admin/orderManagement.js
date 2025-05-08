@@ -36,12 +36,10 @@ const orderLists = async (req, res) => {
       .limit(limit);
     const totalOrders = await orderSchema.countDocuments(filter);
     const totalPages = Math.ceil(totalOrders / limit);
-    if (!orders || orders.length === 0) {
-      return res.render("admin/orderManagement", { orders: [] });
-    }
+    
 
     res.render("admin/orderManagement", {
-      orders,
+      orders :orders.length ? orders : [],
       currentPage: page,
       totalPages,
       search,

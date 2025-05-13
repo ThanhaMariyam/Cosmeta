@@ -1,4 +1,4 @@
-const { width, height } = require("pdfkit/js/page");
+
 
 async function addToCart(productId) {
   try {

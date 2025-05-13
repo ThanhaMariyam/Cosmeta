@@ -141,7 +141,7 @@ user.post("/cancel-order-item/:orderId/:productId",checkSession,cancelItem)
 user.post("/request-return/:orderId/:productId",checkSession,returnItem)
 
 user.get("/cart", checkSession,loadCart);
-user.post('/cart/add',checkSession,addToCart)
+user.post('/cart/add',addToCart)
 user.post("/cart/remove",checkSession,remvCart)
 user.post("/cart/update",checkSession,updateCart)
 
@@ -158,7 +158,7 @@ user.get("/orderConfirmation",checkSession,getconfirm)
 
 user.get("/wishlist",checkSession,loadWishlist)
 user.delete("/wishlist/remove/:id",checkSession,remvWishlist)
-user.post("/wishlist/add/:id",checkSession,addWishlist)
+user.post("/wishlist/add/:id",addWishlist)
 
 user.get("/logout",logout)
 user.get("/404",(req,res)=>{
